@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+         
+         <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <meta name="description" content="DRONACHARYA secure prototype login.">
+         <title>Login | DRONACHARYA</title>
+         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+         <link rel="preconnect" href="https://fonts.googleapis.com">
+         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Playfair+Display:wght@600;700&display=swap"
+                  rel="stylesheet">
+         <style>
+                  :root {
+                           --black: #050806;
+                           --panel: #111a14;
+                           --line: rgba(112, 255, 150, .18);
+                           --green: #62ff93;
+                           --green2: #b8ffca;
+                           --muted: #8da092;
+                           --yellow: #e7d45e;
+                           --white: #eff9f1;
+                  }
+
+                  html,
+                  body {
+                           min-height: 100%;
+                           background: var(--black);
+                  }
+
+                  body {
+                           color: var(--white);
+                           font-family: 'DM Sans', Arial, sans-serif;
+                  }
+
+                  .topbar {
+                           height: 82px;
+                           padding: 0 6vw;
+                           border-bottom: 1px solid var(--line);
+                           background: rgba(5, 8, 6, .9);
+                  }
+
+                  .brand {
+                           color: var(--green);
+                           font-family: 'Manrope', sans-serif;
+                           font-weight: 800;
+                           letter-spacing: .2em;
+                           text-shadow: 0 0 25px rgba(98, 255, 147, .34);
+                  }
+
+                  .brand-tagline {
+                           color: var(--muted);
+                           font-size: 10px;
+                           letter-spacing: .12em;
+                  }
+
+                  .login-shell {
+                           position: relative;
+                           display: grid;
+                           width: min(1120px, 88vw);
+                           min-height: calc(100vh - 155px);
+                           margin: 0 auto;
+                           grid-template-columns: 1fr 440px;
+                           align-items: center;
+                           gap: 9vw;
+                           padding: 68px 0;
+                  }
+
+                  .login-shell:before {
+                           position: absolute;
+                           z-index: -1;
+                           top: 60px;
+                           left: -18vw;
+                           width: 590px;
+                           height: 590px;
+                           border-radius: 50%;
+                           background: radial-gradient(circle, rgba(35, 174, 83, .18), transparent 68%);
+                           content: '';
+                           filter: blur(18px);
+                  }
+
+                  .login-copy h1 {
+                           max-width: 620px;
+                           margin: 0 0 24px;
+                           color: var(--white);
+                           font-family: 'Playfair Display', Georgia, serif;
+                           font-size: clamp(43px, 5.8vw, 78px);
+                           line-height: 1;
+                           letter-spacing: -.055em;
+                  }
+
+                  .login-copy h1 em {
+                           color: var(--green2);
+                           font-style: normal;
+                  }
+
+                  .eyebrow {
+                           color: var(--green);
+                           font-size: 10px;
+                           letter-spacing: .2em;
+                  }
+
+                  .login-copy>p:not(.eyebrow) {
+                           max-width: 530px;
+                           color: var(--muted);
+                           font-size: 17px;
+                           line-height: 1.8;
+                  }
+
+                  .login-note {
+                           display: flex;
+                           max-width: 510px;
+                           margin-top: 32px;
+                           padding: 16px 18px;
+                           flex-direction: column;
+                           gap: 5px;
+                           border: 1px solid var(--line);
+                           border-left: 3px solid var(--green);
+                           background: rgba(98, 255, 147, .07);
+                  }
+
+                  .login-note strong {
+                           color: var(--green2);
+                           font-family: 'Manrope', sans-serif;
+                  }
+
+                  .login-note span {
+                           color: var(--muted);
+                           font-size: 13px;
+                  }
+
+                  .login-card {
+                           position: relative;
+                           padding: 34px;
+                           border: 1px solid var(--line);
+                           background: linear-gradient(145deg, rgba(19, 29, 22, .98), rgba(7, 11, 8, .98));
+                           box-shadow: 0 22px 70px rgba(0, 0, 0, .42), 0 0 48px rgba(35, 174, 83, .1);
+                  }
+
+                  .login-card:before {
+                           position: absolute;
+                           top: 0;
+                           right: 30px;
+                           left: 30px;
+                           height: 2px;
+                           background: linear-gradient(90deg, transparent, var(--green), transparent);
+                           content: '';
+                           box-shadow: 0 0 18px var(--green);
+                  }
+
+                  .login-card h2 {
+                           color: var(--white);
+                           font-family: 'Manrope', sans-serif;
+                           font-size: 28px;
+                  }
+
+                  .card-copy {
+                           color: var(--muted);
+                           font-size: 13px;
+                           line-height: 1.7;
+                  }
+
+                  .login-form {
+                           display: flex;
+                           flex-direction: column;
+                           gap: 10px;
+                           margin-top: 25px;
+                  }
+
+                  .login-form label {
+                           margin-top: 8px;
+                           color: var(--green2);
+                           font-size: 12px;
+                           font-weight: 700;
+                           letter-spacing: .04em;
+                  }
+
+                  .login-form input {
+                           width: 100%;
+                           padding: 13px 14px;
+                           border: 1px solid var(--line);
+                           outline: none;
+                           background: rgba(5, 8, 6, .75);
+                           color: var(--white);
+                           font: inherit;
+                  }
+
+                  .login-form input:focus {
+                           border-color: var(--green);
+                           box-shadow: 0 0 18px rgba(98, 255, 147, .13);
+                  }
+
+                  .login-form input::placeholder {
+                           color: #607466;
+                  }
+
+                  .field-help {
+                           color: var(--muted);
+                           font-size: 11px;
+                  }
+
+                  .acceptance-row {
+                           display: flex;
+                           align-items: flex-start;
+                           gap: 9px;
+                           margin: 12px 0 3px;
+                           color: var(--muted);
+                           font-size: 11px;
+                           line-height: 1.5;
+                  }
+
+                  .acceptance-row input {
+                           width: auto;
+                           margin-top: 3px;
+                           accent-color: var(--green);
+                  }
+
+                  .primary-button {
+                           border: 1px solid var(--green);
+                           background: var(--green);
+                           color: var(--black);
+                           font-family: 'Manrope', sans-serif;
+                           box-shadow: 0 0 25px rgba(98, 255, 147, .22);
+                  }
+
+                  .primary-button:hover {
+                           background: var(--green2);
+                           box-shadow: 0 0 34px rgba(98, 255, 147, .42);
+                  }
+
+                  .status-message {
+                           min-height: 22px;
+                           margin-top: 12px;
+                           font-size: 12px;
+                  }
+
+                  .status-message.error {
+                           color: #ff9d91;
+                  }
+
+                  .status-message.success {
+                           color: var(--green2);
+                  }
+
+                  .prototype-label {
+                           display: inline-flex;
+                           margin-top: 18px;
+                           padding: 5px 8px;
+                           border: 1px solid rgba(231, 212, 94, .23);
+                           background: rgba(231, 212, 94, .08);
+                           color: var(--yellow);
+                           font-size: 10px;
+                           letter-spacing: .08em;
+                           text-transform: uppercase;
+                  }
+
+                  .footer {
+                           border-top-color: var(--line);
+                           background: var(--black);
+                           color: #6d7e70;
+                  }
+
+                  @media(max-width:850px) {
+                           .login-shell {
+                                    grid-template-columns: 1fr;
+                                    gap: 38px;
+                                    padding: 58px 0
+                           }
+
+                           .login-copy h1 {
+                                    font-size: clamp(43px, 10vw, 70px)
+                           }
+                  }
+
+                  @media(max-width:600px) {
+                           .topbar {
+                                    height: auto;
+                                    min-height: 72px;
+                                    padding: 14px 6vw;
+                                    align-items: flex-start;
+                                    flex-direction: column;
+                                    gap: 5px
+                           }
+
+                           .login-card {
+                                    padding: 25px
+                           }
+                  }
+         </style>
+</head>
+
+<body>
+         <header class="topbar">
+                  <a class="brand" href="{{ url_for('login_page') }}">DRONACHARYA</a>
+                  <span class="brand-tagline">Secure field intelligence / Prototype access</span>
+         </header>
+
+         <main class="login-shell">
+                  <section class="login-copy">
+                           <p class="eyebrow">WELCOME TO THE FIELD INTELLIGENCE LAYER</p>
+                           <h1>Bring your field data into a <em>clearer future.</em></h1>
+                           <p>Access your DRONACHARYA workspace to inspect agriculture datasets, understand data
+                                    quality, explore harvest outlooks, and compare responsible recommendations.</p>
+                           <div class="login-note"><strong>Your identity is used only to create a
+                                             workspace.</strong><span>For this prototype, Aadhaar and phone values are
+                                             validated and stored as one-way hashes. Never use real sensitive identity
+                                             information in a public demo.</span></div>
+                           <span class="prototype-label">Development prototype · Not government authentication</span>
+                  </section>
+
+                  <section class="login-card" aria-labelledby="loginTitle">
+                           <p class="eyebrow">WORKSPACE ACCESS</p>
+                           <h2 id="loginTitle">Enter your details</h2>
+                           <p class="card-copy">Aadhaar number and phone number are required acceptance parameters.
+                                    Email is optional and can help identify your workspace.</p>
+
+                           <form id="loginForm" class="login-form" autocomplete="off">
+                                    <label for="aadhaar_number">Aadhaar card number</label>
+                                    <input id="aadhaar_number" name="aadhaar_number" type="text" inputmode="numeric"
+                                             maxlength="14" placeholder="XXXX XXXX XXXX" required>
+                                    <small class="field-help">Enter 12 digits. Spaces and hyphens are accepted.</small>
+
+                                    <label for="phone_number">Phone number</label>
+                                    <input id="phone_number" name="phone_number" type="tel" inputmode="tel"
+                                             maxlength="14" placeholder="+91 XXXXX XXXXX" required>
+                                    <small class="field-help">Use a valid 10-digit Indian mobile number.</small>
+
+                                    <label for="email_id">Email ID <span class="optional">(optional)</span></label>
+                                    <input id="email_id" name="email_id" type="email" autocomplete="email"
+                                             placeholder="farmer@example.com">
+
+                                    <label class="acceptance-row" for="prototypeConsent"><input id="prototypeConsent"
+                                                      type="checkbox" required><span>I understand this is a development
+                                                      prototype and I will not submit real Aadhaar or other sensitive
+                                                      identity information.</span></label>
+
+                                    <button class="primary-button" type="submit" id="loginButton">Enter workspace
+                                             <span>→</span></button>
+                                    <div id="loginStatus" class="status-message" role="status"></div>
+                           </form>
+                  </section>
+         </main>
+
+         <footer class="footer">DRONACHARYA · Secure prototype access for responsible agricultural intelligence.
+         </footer>
+         <script src="{{ url_for('static', filename='js/login.js' ) }}"></script>
+</body>
+
+</html>
