@@ -293,7 +293,7 @@
 
 <body>
          <header class="topbar">
-                  <a class="brand" href="{{ url_for('login_page') }}">DRONACHARYA</a>
+                  <a class="brand" href="index.html">DRONACHARYA</a>
                   <span class="brand-tagline">Secure field intelligence / Prototype access</span>
          </header>
 
@@ -314,7 +314,7 @@
                            <p class="eyebrow">WORKSPACE ACCESS</p>
                            <h2 id="loginTitle">Enter your details</h2>
                            <p class="card-copy">Aadhaar number and phone number are required acceptance parameters.
-                                    Email is optional and can help identify your workspace.</p>
+                                    E-mail is optional and can help identify your workspace.</p>
 
                            <form id="loginForm" class="login-form" autocomplete="off">
                                     <label for="aadhaar_number">Aadhaar card number</label>
@@ -322,10 +322,10 @@
                                              maxlength="14" placeholder="XXXX XXXX XXXX" required>
                                     <small class="field-help">Enter 12 digits. Spaces and hyphens are accepted.</small>
 
-                                    <label for="phone_number">Phone number</label>
-                                    <input id="phone_number" name="phone_number" type="tel" inputmode="tel"
-                                             maxlength="14" placeholder="+91 XXXXX XXXXX" required>
-                                    <small class="field-help">Use a valid 10-digit Indian mobile number.</small>
+                                    <label for="PAN_number">PAN number</label>
+                                    <input id="PAN_number" name="PAN_number" type="text" inputmode="text"
+                                             maxlength="12" placeholder="AbCXXXXX1p" required>
+                                    <small class="field-help">Use a valid 10-digit PAN number.</small>
 
                                     <label for="email_id">Email ID <span class="optional">(optional)</span></label>
                                     <input id="email_id" name="email_id" type="email" autocomplete="email"
