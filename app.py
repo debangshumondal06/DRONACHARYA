@@ -5,7 +5,7 @@ import uuid
 
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 
-from database import (
+from DRONACHARYA import (
     get_analysis,
     get_user_by_id,
     init_db,

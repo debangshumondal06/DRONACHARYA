@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+         <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <meta name="description" content="DRONACHARYA farmer marketplace — buy and sell agricultural produce.">
+         <title>Store | DRONACHARYA — Farmer Marketplace</title>
+         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+         <link rel="preconnect" href="https://fonts.googleapis.com">
+         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Baloo+2:wght@600;700&display=swap"
+                  rel="stylesheet">
+         <style>
+                  :root {
+                           --navy: #46e212;
+                           --navy-dark: #35f40f;
+                           --saffron: #f8f7f5;
+                           --india-green: #138808;
+                           --white: #ffffff;
+                           --bg: #f4f6f8;
+                           --panel: #ffffff;
+                           --line: #d7dde3;
+                           --text: #10ee22;
+                           --muted: #6a7178;
+                           --error: #b3261e;
+                           --success: #1e7d32;
+                           --warn-bg: #fdf6e3;
+                           --warn-line: #f0c869;
+                           --warn-text: #7a5b00;
+                  }
+
+                  * {
+                           box-sizing: border-box;
+                  }
+
+                  html,
+                  body {
+                           min-height: 100%;
+                           margin: 0;
+                           background: var(--bg);
+                  }
+
+                  body {
+                           color: var(--text);
+                           font-family: 'Noto Sans', Arial, sans-serif;
+                  }
+
+                  a {
+                           color: inherit;
+                  }
+
+                  .tricolor-strip {
+                           height: 4px;
+                           background: linear-gradient(90deg, var(--saffron) 0 33.3%, var(--white) 33.3% 66.6%, var(--india-green) 66.6% 100%);
+                  }
+
+                  /* ---------- Top bar ---------- */
+                  .topbar {
+                           display: flex;
+                           align-items: center;
+                           justify-content: space-between;
+                           height: 78px;
+                           padding: 0 5vw;
+                           background: var(--india-green);
+                           border-bottom: 1px solid var(--navy-dark);
+                  }
+
+                  .brand-group {
+                           display: flex;
+                           align-items: center;
+                           gap: 14px;
+                  }
+
+                  .emblem {
+                           width: 42px;
+                           height: 42px;
+                           border-radius: 50%;
+                           border: 2px solid var(--saffron);
+                           display: flex;
+                           align-items: center;
+                           justify-content: center;
+                           color: var(--saffron);
+                           font-family: 'Baloo 2', sans-serif;
+                           font-weight: 700;
+                           font-size: 18px;
+                           flex-shrink: 0;
+                  }
+
+                  .brand {
+                           color: var(--white);
+                           font-family: 'Baloo 2', sans-serif;
+                           font-weight: 700;
+                           font-size: 20px;
+                           line-height: 1.1;
+                  }
+
+                  .brand-tagline {
+                           display: block;
+                           color: #b8c4d0;
+                           font-size: 11px;
+                           margin-top: 2px;
+                  }
+
+                  .topbar-right {
+                           display: flex;
+                           align-items: center;
+                           gap: 14px;
+                  }
+
+                  .lang-select {
+                           background: transparent;
+                           border: 1px solid #2c4562;
+                           color: var(--white);
+                           font: inherit;
+                           font-size: 13px;
+                           padding: 6px 10px;
+                  }
+
+                  .cart-button {
+                           position: relative;
+                           display: inline-flex;
+                           align-items: center;
+                           gap: 6px;
+                           background: var(--saffron);
+                           color: var(--navy-dark);
+                           border: none;
+                           font: inherit;
+                           font-weight: 700;
+                           font-size: 13px;
+                           padding: 9px 14px;
+                           cursor: pointer;
+                  }
+
+                  .cart-count {
+                           background: var(--navy-dark);
+                           color: var(--white);
+                           border-radius: 50%;
+                           font-size: 11px;
+                           min-width: 18px;
+                           height: 18px;
+                           display: inline-flex;
+                           align-items: center;
+                           justify-content: center;
+                           padding: 0 4px;
+                  }
+
+                  /* ---------- Breadcrumb ---------- */
+                  .breadcrumb {
+                           width: min(1200px, 92vw);
+                           margin: 16px auto 0;
+                           font-size: 12.5px;
+                           color: var(--muted);
+                  }
+
+                  .breadcrumb .current {
+                           color: var(--navy);
+                           font-weight: 600;
+                  }
+
+                  /* ---------- Role selector ---------- */
+                  .role-section {
+                           width: min(1200px, 92vw);
+                           margin: 22px auto 10px;
+                  }
+
+                  .role-section h1 {
+                           font-family: 'Baloo 2', sans-serif;
+                           color: var(--navy);
+                           font-size: clamp(24px, 2.6vw, 32px);
+                           margin: 0 0 6px;
+                  }
+
+                  .role-section p.lead {
+                           color: var(--muted);
+                           font-size: 14.5px;
+                           margin: 0 0 20px;
+                           max-width: 640px;
+                  }
+
+                  .role-cards {
+                           display: grid;
+                           grid-template-columns: 1fr 1fr;
+                           gap: 18px;
+                  }
+
+                  .role-card {
+                           display: flex;
+                           flex-direction: column;
+                           align-items: flex-start;
+                           gap: 8px;
+                           padding: 22px 22px 20px;
+                           border: 1px solid var(--line);
+                           border-top: 4px solid var(--muted);
+                           background: var(--panel);
+                           cursor: pointer;
+                           text-align: left;
+                           font: inherit;
+                           box-shadow: 0 1px 3px rgba(10, 37, 64, .06);
+                  }
+
+                  .role-card .icon {
+                           width: 40px;
+                           height: 40px;
+                           border-radius: 50%;
+                           display: flex;
+                           align-items: center;
+                           justify-content: center;
+                           font-size: 18px;
+                           font-weight: 700;
+                           color: var(--white);
+                           background: var(--muted);
+                  }
+
+                  .role-card[data-role="buyer"] {
+                           border-top-color: var(--navy);
+                  }
+
+                  .role-card[data-role="buyer"] .icon {
+                           background: var(--navy);
+                  }
+
+                  .role-card[data-role="seller"] {
+                           border-top-color: var(--india-green);
+                  }
+
+                  .role-card[data-role="seller"] .icon {
+                           background: var(--india-green);
+                  }
+
+                  .role-card h2 {
+                           font-family: 'Baloo 2', sans-serif;
+                           font-size: 19px;
+                           color: var(--navy);
+                           margin: 4px 0 0;
+                  }
+
+                  .role-card p {
+                           color: var(--muted);
+                           font-size: 13px;
+                           line-height: 1.6;
+                           margin: 0;
+                  }
+
+                  .role-card .cta {
+                           margin-top: 10px;
+                           font-size: 12.5px;
+                           font-weight: 700;
+                           color: var(--india-green);
+                  }
+
+                  .role-card.active {
+                           box-shadow: 0 0 0 2px var(--navy) inset;
+                  }
+
+                  @media (max-width: 700px) {
+                           .role-cards {
+                                    grid-template-columns: 1fr;
+                           }
+                  }
+
+                  /* ---------- Panels ---------- */
+                  .panel {
+                           width: min(1200px, 92vw);
+                           margin: 26px auto 60px;
+                           display: none;
+                  }
+
+                  .panel.visible {
+                           display: block;
+                  }
+
+                  .panel-header {
+                           display: flex;
+                           align-items: baseline;
+                           justify-content: space-between;
+                           flex-wrap: wrap;
+                           gap: 10px;
+                           margin-bottom: 16px;
+                  }
+
+                  .panel-header h2 {
+                           font-family: 'Baloo 2', sans-serif;
+                           color: var(--navy);
+                           font-size: 21px;
+                           margin: 0;
+                  }
+
+                  .panel-header .switch-role {
+                           font-size: 12.5px;
+                           color: var(--navy);
+                           font-weight: 600;
+                           background: none;
+                           border: 1px solid var(--line);
+                           padding: 7px 12px;
+                           cursor: pointer;
+                  }
+
+                  /* ---------- Info / prototype banners ---------- */
+                  .info-card {
+                           display: flex;
+                           gap: 12px;
+                           padding: 14px 16px;
+                           border: 1px solid var(--line);
+                           border-left: 4px solid var(--india-green);
+                           background: #f0f7f0;
+                           margin-bottom: 18px;
+                  }
+
+                  .info-card .icon {
+                           flex-shrink: 0;
+                           width: 20px;
+                           height: 20px;
+                           border-radius: 50%;
+                           border: 1.5px solid var(--india-green);
+                           color: var(--india-green);
+                           font-size: 13px;
+                           font-weight: 700;
+                           display: flex;
+                           align-items: center;
+                           justify-content: center;
+                  }
+
+                  .info-card strong {
+                           display: block;
+                           color: var(--navy);
+                           font-size: 13.5px;
+                           margin-bottom: 3px;
+                  }
+
+                  .info-card span {
+                           color: var(--muted);
+                           font-size: 12.5px;
+                           line-height: 1.6;
+                  }
+
+                  /* ---------- Buyer: toolbar ---------- */
+                  .toolbar {
+                           display: flex;
+                           flex-wrap: wrap;
+                           gap: 10px;
+                           align-items: center;
+                           margin-bottom: 14px;
+                  }
+
+                  .search-input {
+                           flex: 1 1 260px;
+                           padding: 10px 12px;
+                           border: 1px solid #b6c1cb;
+                           background: #fbfcfd;
+                           font: inherit;
+                           font-size: 13.5px;
+                  }
+
+                  .search-input:focus {
+                           outline: none;
+                           border-color: var(--navy);
+                           box-shadow: 0 0 0 3px rgba(10, 37, 64, .1);
+                  }
+
+                  .sort-select {
+                           padding: 10px 12px;
+                           border: 1px solid #b6c1cb;
+                           background: #fbfcfd;
+                           font: inherit;
+                           font-size: 13.5px;
+                  }
+
+                  .category-chips {
+                           display: flex;
+                           flex-wrap: wrap;
+                           gap: 8px;
+                           margin-bottom: 18px;
+                  }
+
+                  .chip {
+                           padding: 6px 13px;
+                           border: 1px solid var(--line);
+                           background: var(--white);
+                           color: var(--navy);
+                           font-size: 12.5px;
+                           font-weight: 600;
+                           cursor: pointer;
+                  }
+
+                  .chip.active {
+                           background: var(--navy);
+                           border-color: var(--navy);
+                           color: var(--white);
+                  }
+
+                  /* ---------- Buyer + Seller shared layout ---------- */
+                  .store-layout {
+                           display: grid;
+                           grid-template-columns: 1fr 320px;
+                           gap: 22px;
+                           align-items: start;
+                  }
+
+                  @media (max-width: 900px) {
+                           .store-layout {
+                                    grid-template-columns: 1fr;
+                           }
+                  }
+
+                  /* ---------- Product grid ---------- */
+                  .product-grid {
+                           display: grid;
+                           grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                           gap: 16px;
+                  }
+
+                  .product-card {
+                           border: 1px solid var(--line);
+                           background: var(--panel);
+                           display: flex;
+                           flex-direction: column;
+                           box-shadow: 0 1px 3px rgba(10, 37, 64, .06);
+                  }
+
+                  .product-thumb {
+                           height: 120px;
+                           background: linear-gradient(135deg, #eef3ee, #dfe9df);
+                           display: flex;
+                           align-items: center;
+                           justify-content: center;
+                           color: var(--india-green);
+                           font-size: 30px;
+                           font-weight: 700;
+                           border-bottom: 1px solid var(--line);
+                  }
+
+                  .product-body {
+                           padding: 12px 14px 14px;
+                           display: flex;
+                           flex-direction: column;
+                           gap: 6px;
+                           flex: 1;
+                  }
+
+                  .product-category {
+                           font-size: 10.5px;
+                           font-weight: 700;
+                           letter-spacing: .04em;
+                           text-transform: uppercase;
+                           color: var(--india-green);
+                  }
+
+                  .product-name {
+                           font-family: 'Baloo 2', sans-serif;
+                           font-size: 16px;
+                           color: var(--navy);
+                           margin: 0;
+                  }
+
+                  .product-meta {
+                           font-size: 12px;
+                           color: var(--muted);
+                  }
+
+                  .product-price {
+                           font-size: 15px;
+                           font-weight: 700;
+                           color: var(--navy);
+                           margin-top: 2px;
+                  }
+
+                  .product-price span {
+                           font-weight: 400;
+                           font-size: 11.5px;
+                           color: var(--muted);
+                  }
+
+                  .stock-badge {
+                           display: inline-block;
+                           width: fit-content;
+                           font-size: 10.5px;
+                           font-weight: 700;
+                           padding: 3px 8px;
+                           border-radius: 2px;
+                  }
+
+                  .stock-badge.in-stock {
+                           background: #e6f4ea;
+                           color: var(--success);
+                  }
+
+                  .stock-badge.low-stock {
+                           background: #fdf1e3;
+                           color: #a15c00;
+                  }
+
+                  .add-cart-btn {
+                           margin-top: auto;
+                           padding: 9px 10px;
+                           border: 1px solid var(--navy);
+                           background: var(--navy);
+                           color: var(--white);
+                           font: inherit;
+                           font-size: 12.5px;
+                           font-weight: 700;
+                           cursor: pointer;
+                  }
+
+                  .add-cart-btn:hover {
+                           background: #0d3054;
+                  }
+
+                  .empty-state {
+                           padding: 40px 20px;
+                           text-align: center;
+                           color: var(--muted);
+                           border: 1px dashed var(--line);
+                           background: var(--white);
+                           grid-column: 1 / -1;
+                  }
+
+                  /* ---------- Cart / checkout sidebar ---------- */
+                  .cart-panel {
+                           border: 1px solid var(--line);
+                           border-top: 4px solid var(--saffron);
+                           background: var(--panel);
+                           padding: 18px;
+                           position: sticky;
+                           top: 16px;
+                  }
+
+                  .cart-panel h3 {
+                           font-family: 'Baloo 2', sans-serif;
+                           font-size: 16px;
+                           color: var(--navy);
+                           margin: 0 0 12px;
+                  }
+
+                  .cart-item {
+                           display: flex;
+                           justify-content: space-between;
+                           gap: 8px;
+                           padding: 8px 0;
+                           border-bottom: 1px solid var(--line);
+                           font-size: 12.5px;
+                  }
+
+                  .cart-item .cart-item-name {
+                           font-weight: 600;
+                           color: var(--navy);
+                  }
+
+                  .cart-item .cart-item-meta {
+                           color: var(--muted);
+                           font-size: 11.5px;
+                  }
+
+                  .cart-item button {
+                           border: none;
+                           background: none;
+                           color: var(--error);
+                           font-size: 11px;
+                           cursor: pointer;
+                           text-decoration: underline;
+                  }
+
+                  .cart-total {
+                           display: flex;
+                           justify-content: space-between;
+                           font-weight: 700;
+                           color: var(--navy);
+                           margin-top: 12px;
+                           padding-top: 12px;
+                           border-top: 1px solid var(--line);
+                           font-size: 14px;
+                  }
+
+                  .cart-empty {
+                           color: var(--muted);
+                           font-size: 12.5px;
+                           padding: 10px 0;
+                  }
+
+                  .checkout-form {
+                           margin-top: 14px;
+                           display: flex;
+                           flex-direction: column;
+                           gap: 4px;
+                  }
+
+                  .checkout-form label {
+                           font-size: 12px;
+                           font-weight: 600;
+                           color: var(--navy);
+                           margin-top: 8px;
+                  }
+
+                  .checkout-form input,
+                  .checkout-form textarea {
+                           padding: 9px 10px;
+                           border: 1px solid #b6c1cb;
+                           background: #fbfcfd;
+                           font: inherit;
+                           font-size: 13px;
+                           margin-top: 4px;
+                  }
+
+                  .checkout-form textarea {
+                           resize: vertical;
+                           min-height: 54px;
+                  }
+
+                  .primary-button {
+                           width: 100%;
+                           margin-top: 14px;
+                           padding: 12px 16px;
+                           border: 1px solid var(--navy);
+                           background: var(--navy);
+                           color: var(--white);
+                           font: inherit;
+                           font-weight: 600;
+                           font-size: 14px;
+                           cursor: pointer;
+                  }
+
+                  .primary-button:hover {
+                           background: #0d3054;
+                  }
+
+                  .primary-button:disabled {
+                           background: #9aa7b3;
+                           border-color: #9aa7b3;
+                           cursor: not-allowed;
+                  }
+
+                  .status-message {
+                           min-height: 18px;
+                           margin-top: 10px;
+                           font-size: 12px;
+                           font-weight: 500;
+                  }
+
+                  .status-message.error {
+                           color: var(--error);
+                  }
+
+                  .status-message.success {
+                           color: var(--success);
+                  }
+
+                  /* ---------- Seller: form ---------- */
+                  .seller-form-card {
+                           border: 1px solid var(--line);
+                           border-top: 4px solid var(--india-green);
+                           background: var(--panel);
+                           padding: 20px;
+                  }
+
+                  .seller-form-card h3 {
+                           font-family: 'Baloo 2', sans-serif;
+                           color: var(--navy);
+                           font-size: 17px;
+                           margin: 0 0 4px;
+                  }
+
+                  .seller-form-card .card-copy {
+                           color: var(--muted);
+                           font-size: 12.5px;
+                           margin: 0 0 14px;
+                  }
+
+                  .form-grid {
+                           display: grid;
+                           grid-template-columns: 1fr 1fr;
+                           gap: 0 14px;
+                  }
+
+                  .form-grid .full {
+                           grid-column: 1 / -1;
+                  }
+
+                  .seller-form-card label {
+                           font-size: 12.5px;
+                           font-weight: 600;
+                           color: var(--navy);
+                           margin-top: 12px;
+                           display: block;
+                  }
+
+                  .required-mark {
+                           color: var(--error);
+                  }
+
+                  .seller-form-card input,
+                  .seller-form-card select,
+                  .seller-form-card textarea {
+                           width: 100%;
+                           padding: 10px 11px;
+                           border: 1px solid #b6c1cb;
+                           background: #fbfcfd;
+                           font: inherit;
+                           font-size: 13.5px;
+                           margin-top: 5px;
+                  }
+
+                  .seller-form-card textarea {
+                           resize: vertical;
+                           min-height: 60px;
+                  }
+
+                  /* ---------- Seller: stats + listings table ---------- */
+                  .stats-row {
+                           display: grid;
+                           grid-template-columns: repeat(3, 1fr);
+                           gap: 12px;
+                           margin-bottom: 18px;
+                  }
+
+                  .stat-box {
+                           border: 1px solid var(--line);
+                           background: var(--panel);
+                           padding: 14px 16px;
+                  }
+
+                  .stat-box .stat-value {
+                           font-family: 'Baloo 2', sans-serif;
+                           color: var(--navy);
+                           font-size: 24px;
+                  }
+
+                  .stat-box .stat-label {
+                           color: var(--muted);
+                           font-size: 11.5px;
+                           text-transform: uppercase;
+                           letter-spacing: .03em;
+                  }
+
+                  .listings-table-wrap {
+                           border: 1px solid var(--line);
+                           background: var(--panel);
+                           overflow-x: auto;
+                  }
+
+                  table.listings-table {
+                           width: 100%;
+                           border-collapse: collapse;
+                           font-size: 13px;
+                  }
+
+                  table.listings-table th {
+                           text-align: left;
+                           background: var(--navy);
+                           color: var(--white);
+                           padding: 10px 12px;
+                           font-weight: 600;
+                           font-size: 11.5px;
+                           text-transform: uppercase;
+                           letter-spacing: .02em;
+                  }
+
+                  table.listings-table td {
+                           padding: 10px 12px;
+                           border-bottom: 1px solid var(--line);
+                           color: var(--text);
+                  }
+
+                  table.listings-table tr:last-child td {
+                           border-bottom: none;
+                  }
+
+                  .table-action-btn {
+                           border: 1px solid var(--line);
+                           background: var(--white);
+                           padding: 5px 9px;
+                           font-size: 11.5px;
+                           font-weight: 600;
+                           cursor: pointer;
+                           margin-right: 6px;
+                  }
+
+                  .table-action-btn.delete {
+                           color: var(--error);
+                           border-color: #f0c2bd;
+                  }
+
+                  .table-action-btn.delete:hover {
+                           background: #fdeceb;
+                  }
+
+                  /* ---------- Footer ---------- */
+                  .footer {
+                           border-top: 1px solid var(--line);
+                           background: var(--white);
+                           padding: 18px 5vw;
+                           color: var(--muted);
+                           font-size: 12px;
+                           text-align: center;
+                  }
+
+                  /* ---------- Toast ---------- */
+                  #toast {
+                           position: fixed;
+                           bottom: 20px;
+                           right: 20px;
+                           background: var(--navy);
+                           color: var(--white);
+                           padding: 12px 18px;
+                           font-size: 13px;
+                           box-shadow: 0 4px 14px rgba(0, 0, 0, .2);
+                           display: none;
+                           z-index: 50;
+                  }
+
+                  @media (max-width: 700px) {
+                           .form-grid {
+                                    grid-template-columns: 1fr;
+                           }
+
+                           .stats-row {
+                                    grid-template-columns: 1fr;
+                           }
+                  }
+         </style>
+
+         <style id="dronacharya-theme-override">
+                  /* DRONACHARYA marketplace restyle: preserve markup and links; only change visual language. */
+                  :root {
+                           --navy: #050806;
+                           --navy-dark: #0b110d;
+                           --saffron: #e7c85e;
+                           --india-green: #5eeb8a;
+                           --white: #eef7f0;
+                           --bg: #050806;
+                           --panel: #111a14;
+                           --line: rgba(112, 255, 150, .16);
+                           --text: #eef7f0;
+                           --muted: #8ea297;
+                           --error: #ff9d91;
+                           --success: #5eeb8a;
+                           --warn-bg: rgba(231, 200, 94, .08);
+                           --warn-line: rgba(231, 200, 94, .42);
+                           --warn-text: #e7c85e
+                  }
+
+                  html,
+                  body {
+                           background: radial-gradient(circle at 15% 10%, rgba(36, 94, 51, .16), transparent 30%), #050806;
+                           color: var(--text)
+                  }
+
+                  body {
+                           font-family: 'DM Sans', 'Noto Sans', Arial, sans-serif;
+                           -webkit-font-smoothing: antialiased
+                  }
+
+                  body:before {
+                           content: "";
+                           position: fixed;
+                           inset: 0;
+                           pointer-events: none;
+                           opacity: .04;
+                           background-image: radial-gradient(rgba(255, 255, 255, .65) .5px, transparent .5px);
+                           background-size: 5px 5px;
+                           mix-blend-mode: screen;
+                           z-index: 100
+                  }
+
+                  .tricolor-strip {
+                           height: 3px;
+                           background: linear-gradient(90deg, transparent 0 30%, var(--green) 30% 70%, transparent 70% 100%);
+                           box-shadow: 0 0 16px var(--green)
+                  }
+
+                  .topbar {
+                           height: 76px;
+                           padding: 0 6vw;
+                           background: rgba(5, 8, 6, .9);
+                           border-bottom: 1px solid var(--line);
+                           backdrop-filter: blur(16px);
+                           position: sticky;
+                           top: 0;
+                           z-index: 40
+                  }
+
+                  .brand-group {
+                           gap: 11px
+                  }
+
+                  .emblem {
+                           width: 34px;
+                           height: 34px;
+                           border-radius: 0;
+                           border: 1px solid var(--line-strong);
+                           background: linear-gradient(160deg, rgba(94, 235, 138, .16), transparent);
+                           color: var(--green);
+                           font-family: 'Playfair Display', serif;
+                           font-size: 17px
+                  }
+
+                  .brand {
+                           color: var(--green);
+                           font-family: 'Manrope', sans-serif;
+                           font-size: 15px;
+                           letter-spacing: .2em;
+                           text-shadow: 0 0 25px rgba(98, 255, 147, .3)
+                  }
+
+                  .brand-tagline {
+                           color: var(--muted);
+                           font-size: 9.5px;
+                           letter-spacing: .1em
+                  }
+
+                  .topbar-right {
+                           gap: 12px
+                  }
+
+                  .lang-select {
+                           background: var(--panel);
+                           border: 1px solid var(--line);
+                           color: var(--white);
+                           border-radius: 3px
+                  }
+
+                  .cart-button {
+                           background: var(--green);
+                           color: var(--black);
+                           border: 1px solid var(--green);
+                           border-radius: 3px;
+                           box-shadow: 0 0 20px rgba(98, 255, 147, .18);
+                           transition: all .16s cubic-bezier(.23, 1, .32, 1)
+                  }
+
+                  .cart-button:hover {
+                           background: var(--green2);
+                           box-shadow: 0 0 30px rgba(98, 255, 147, .34)
+                  }
+
+                  .cart-count {
+                           background: var(--black);
+                           color: var(--green2)
+                  }
+
+                  .breadcrumb {
+                           color: var(--muted)
+                  }
+
+                  .breadcrumb .current {
+                           color: var(--green)
+                  }
+
+                  .role-section h1,
+                  .panel-header h2,
+                  .role-card h2 {
+                           font-family: 'Playfair Display', Georgia, serif;
+                           color: var(--white)
+                  }
+
+                  .role-section h1 {
+                           font-size: clamp(28px, 3.5vw, 44px);
+                           letter-spacing: -.02em
+                  }
+
+                  .role-section p.lead {
+                           color: var(--muted)
+                  }
+
+                  .role-cards {
+                           gap: 18px
+                  }
+
+                  .role-card {
+                           padding: 22px;
+                           border: 1px solid var(--line);
+                           border-top: 2px solid var(--line-strong);
+                           background: linear-gradient(150deg, rgba(19, 29, 22, .9), rgba(7, 11, 8, .95));
+                           box-shadow: 0 18px 50px rgba(0, 0, 0, .28);
+                           transition: transform .18s cubic-bezier(.23, 1, .32, 1), border-color .18s ease, box-shadow .18s ease
+                  }
+
+                  .role-card:hover {
+                           transform: translateY(-3px);
+                           border-color: var(--line-strong);
+                           box-shadow: 0 22px 54px rgba(0, 0, 0, .38)
+                  }
+
+                  .role-card[data-role="buyer"] {
+                           border-top-color: var(--green)
+                  }
+
+                  .role-card[data-role="seller"] {
+                           border-top-color: var(--saffron)
+                  }
+
+                  .role-card .icon {
+                           border-radius: 0;
+                           background: var(--panel);
+                           color: var(--green);
+                           border: 1px solid var(--line)
+                  }
+
+                  .role-card[data-role="buyer"] .icon {
+                           background: rgba(94, 235, 138, .14);
+                           color: var(--green)
+                  }
+
+                  .role-card[data-role="seller"] .icon {
+                           background: rgba(231, 200, 94, .12);
+                           color: var(--saffron)
+                  }
+
+                  .role-card h2 {
+                           font-size: 22px
+                  }
+
+                  .role-card p {
+                           color: var(--muted)
+                  }
+
+                  .role-card .cta {
+                           color: var(--green)
+                  }
+
+                  .role-card.active {
+                           box-shadow: 0 0 0 2px var(--green) inset, 0 18px 50px rgba(0, 0, 0, .3)
+                  }
+
+                  .panel {
+                           margin-top: 26px;
+                           background: transparent
+                  }
+
+                  .panel-header {
+                           margin-bottom: 18px
+                  }
+
+                  .panel-header h2 {
+                           font-size: 25px
+                  }
+
+                  .panel-header .switch-role {
+                           color: var(--green);
+                           border: 1px solid var(--line);
+                           background: transparent;
+                           border-radius: 3px;
+                           transition: all .15s ease
+                  }
+
+                  .panel-header .switch-role:hover {
+                           border-color: var(--line-strong);
+                           background: rgba(112, 255, 150, .07)
+                  }
+
+                  .info-card {
+                           border: 1px solid var(--line);
+                           border-left: 3px solid var(--green);
+                           background: rgba(17, 33, 21, .72);
+                           box-shadow: none
+                  }
+
+                  .info-card .icon {
+                           border-color: var(--green);
+                           color: var(--green)
+                  }
+
+                  .info-card strong {
+                           color: var(--green2)
+                  }
+
+                  .info-card span {
+                           color: var(--muted)
+                  }
+
+                  .toolbar {
+                           gap: 10px
+                  }
+
+                  .search-input,
+                  .sort-select {
+                           border: 1px solid var(--line);
+                           background: rgba(5, 8, 6, .72);
+                           color: var(--white);
+                           border-radius: 3px
+                  }
+
+                  .search-input:focus {
+                           border-color: var(--green);
+                           box-shadow: 0 0 18px rgba(98, 255, 147, .13)
+                  }
+
+                  .category-chips {
+                           gap: 8px
+                  }
+
+                  .chip {
+                           border: 1px solid var(--line);
+                           background: transparent;
+                           color: var(--muted);
+                           border-radius: 20px;
+                           transition: all .15s ease
+                  }
+
+                  .chip:hover,
+                  .chip.active {
+                           border-color: var(--green);
+                           background: rgba(94, 235, 138, .14);
+                           color: var(--green2)
+                  }
+
+                  .card,
+                  .product-card,
+                  .listing-card,
+                  .market-card,
+                  .table-wrap,
+                  .form-card,
+                  .summary-card,
+                  .checkout-card,
+                  .empty-state {
+                           border: 1px solid var(--line) !important;
+                           background: linear-gradient(150deg, rgba(19, 29, 22, .9), rgba(7, 11, 8, .95)) !important;
+                           color: var(--white);
+                           box-shadow: 0 18px 50px rgba(0, 0, 0, .25) !important
+                  }
+
+                  .card:before,
+                  .product-card:before,
+                  .listing-card:before {
+                           background: linear-gradient(90deg, transparent, var(--green), transparent) !important
+                  }
+
+                  .card h3,
+                  .product-card h3,
+                  .listing-card h3,
+                  .market-card h3,
+                  .form-card h3,
+                  .summary-card h3,
+                  .checkout-card h3 {
+                           font-family: 'Manrope', sans-serif;
+                           color: var(--white)
+                  }
+
+                  .card p,
+                  .product-card p,
+                  .listing-card p,
+                  .market-card p,
+                  .empty-state p {
+                           color: var(--muted)
+                  }
+
+                  input,
+                  textarea,
+                  select {
+                           border-color: var(--line) !important;
+                           background: rgba(5, 8, 6, .72) !important;
+                           color: var(--white) !important;
+                           border-radius: 3px !important
+                  }
+
+                  input:focus,
+                  textarea:focus,
+                  select:focus {
+                           border-color: var(--green) !important;
+                           outline: 1px solid var(--green);
+                           box-shadow: 0 0 18px rgba(98, 255, 147, .13) !important
+                  }
+
+                  button,
+                  .button,
+                  .btn,
+                  .primary-button,
+                  .secondary-button {
+                           border-radius: 3px !important;
+                           font-family: 'Manrope', sans-serif !important;
+                           transition: all .16s cubic-bezier(.23, 1, .32, 1)
+                  }
+
+                  .primary-button,
+                  .btn-primary,
+                  .button-primary {
+                           background: var(--green) !important;
+                           border-color: var(--green) !important;
+                           color: var(--black) !important;
+                           box-shadow: 0 0 22px rgba(98, 255, 147, .2)
+                  }
+
+                  .primary-button:hover,
+                  .btn-primary:hover,
+                  .button-primary:hover {
+                           background: var(--green2) !important
+                  }
+
+                  .secondary-button,
+                  .btn-secondary {
+                           background: transparent !important;
+                           border: 1px solid var(--line) !important;
+                           color: var(--muted) !important
+                  }
+
+                  .secondary-button:hover,
+                  .btn-secondary:hover {
+                           border-color: var(--line-strong) !important;
+                           color: var(--white) !important
+                  }
+
+                  .badge,
+                  .tag,
+                  .status {
+                           border-radius: 20px !important;
+                           border-color: var(--line) !important;
+                           background: rgba(94, 235, 138, .1) !important;
+                           color: var(--green2) !important
+                  }
+
+                  .table-wrap {
+                           overflow: hidden
+                  }
+
+                  .table-wrap table {
+                           color: var(--white)
+                  }
+
+                  th {
+                           background: rgba(94, 235, 138, .08) !important;
+                           color: var(--green2) !important;
+                           font-family: 'Manrope', sans-serif !important
+                  }
+
+                  td {
+                           border-color: var(--line) !important;
+                           color: var(--muted)
+                  }
+
+                  .price,
+                  .amount,
+                  .total {
+                           color: var(--green2) !important;
+                           font-family: 'Playfair Display', serif
+                  }
+
+                  .notice,
+                  .warning,
+                  .alert {
+                           background: var(--warn-bg) !important;
+                           border-color: var(--warn-line) !important;
+                           color: var(--warn-text) !important
+                  }
+
+                  .success {
+                           color: var(--green) !important
+                  }
+
+                  .error {
+                           color: var(--error) !important
+                  }
+
+                  .footer {
+                           background: transparent !important;
+                           border-top: 1px solid var(--line) !important;
+                           color: #6c7d71 !important
+                  }
+
+                  @media(max-width:700px) {
+                           .topbar {
+                                    padding: 0 4vw
+                           }
+
+                           .role-section,
+                           .panel,
+                           .breadcrumb {
+                                    width: 92vw
+                           }
+
+                           .role-section h1 {
+                                    font-size: 34px
+                           }
+                  }
+         </style>
+</head>
+
+<body>
+         <div class="tricolor-strip"></div>
+         <header class="topbar">
+                  <div class="brand-group">
+                           <div class="emblem" aria-hidden="true">D</div>
+                           <div>
+                                    <span class="brand">DRONACHARYA</span>
+
+                           </div>
+                  </div>
+                  <div class="topbar-right">
+                           <select class="lang-select" aria-label="Select language">
+                                    <option value="en">English</option>
+                                    <option value="hi">हिंदी (Hindi)</option>
+                                    <option value="bn">বাংলা (Bengali)</option>
+                                    <option value="ta">தமிழ் (Tamil)</option>
+                                    <option value="te">తెలుగు (Telugu)</option>
+                                    <option value="mr">मराठी (Marathi)</option>
+                                    <option value="gu">ગુજરાતી (Gujarati)</option>
+                                    <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                                    <option value="ml">മലയാളം (Malayalam)</option>
+                                    <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+                                    <option value="or">ଓଡ଼ିଆ (Odia)</option>
+                                    <option value="as">অসমীয়া (Assamese)</option>
+                           </select>
+                           <button class="cart-button" id="cartHeaderBtn" type="button">
+                                    CART <span class="cart-count" id="cartCount">0</span>
+                           </button>
+                  </div>
+         </header>
+
+         <nav class="breadcrumb"><a href="index.html">Home</a> &nbsp;/&nbsp; <span class="current">Store</span></nav>
+
+         <section class="role-section">
+                  <h1>Buy and sell farm produce directly</h1>
+                  <p class="lead">Choose how you want to use the marketplace today. You can switch between buying and
+                           selling
+                           at any time — both modes stay open on this page.</p>
+
+                  <div class="role-cards">
+                           <button class="role-card" data-role="buyer" type="button">
+                                    <span class="icon">B</span>
+                                    <h2>I am a Buyer</h2>
+                                    <p>Browse produce listed by farmers near you, compare prices, and place an order
+                                             directly with the
+                                             seller.</p>
+                                    <span class="cta">Browse the marketplace →</span>
+                           </button>
+                           <button class="role-card" data-role="seller" type="button">
+                                    <span class="icon">S</span>
+                                    <h2>I am a Seller</h2>
+                                    <p>List your harvest with quantity, price, and location so buyers can find and order
+                                             directly from
+                                             you.</p>
+                                    <span class="cta">List your produce →</span>
+                           </button>
+                  </div>
+         </section>
+
+         <!-- ================= BUYER PANEL ================= -->
+         <section class="panel" id="buyerPanel">
+                  <div class="panel-header">
+                           <h2>Marketplace — Browse produce</h2>
+                           <button class="switch-role" data-target="seller">Switch to Seller view</button>
+                  </div>
+
+                  <div class="info-card">
+                           <span class="icon">i</span>
+                           <div>
+                                    <strong>Buying on DRONACHARYA</strong>
+                                    <span>Orders are recorded and shared directly with the seller. Payment and delivery
+                                             are arranged
+                                             between buyer and seller — this prototype does not process payments.</span>
+                           </div>
+                  </div>
+
+                  <div class="store-layout">
+                           <div>
+                                    <div class="toolbar">
+                                             <input type="text" class="search-input" id="searchInput"
+                                                      placeholder="Search for crop, e.g. wheat, tomato, mango...">
+                                             <select class="sort-select" id="sortSelect">
+                                                      <option value="newest">Newest listings</option>
+                                                      <option value="price_low">Price: low to high</option>
+                                                      <option value="price_high">Price: high to low</option>
+                                                      <option value="quantity">Quantity available</option>
+                                             </select>
+                                    </div>
+                                    <div class="category-chips" id="categoryChips">
+                                             <button class="chip active" data-category="all" type="button">All
+                                                      categories</button>
+                                             <button class="chip" data-category="Grains" type="button">Grains</button>
+                                             <button class="chip" data-category="Vegetables"
+                                                      type="button">Vegetables</button>
+                                             <button class="chip" data-category="Fruits" type="button">Fruits</button>
+                                             <button class="chip" data-category="Pulses" type="button">Pulses</button>
+                                             <button class="chip" data-category="Spices" type="button">Spices</button>
+                                             <button class="chip" data-category="Dairy" type="button">Dairy</button>
+                                    </div>
+
+                                    <div class="product-grid" id="productGrid">
+                                             <div class="empty-state">Loading listings…</div>
+                                    </div>
+                           </div>
+
+                           <aside class="cart-panel">
+                                    <h3>Your cart</h3>
+                                    <div id="cartItems">
+                                             <div class="cart-empty">Your cart is empty. Add produce from the listings
+                                                      to get started.</div>
+                                    </div>
+                                    <div class="cart-total" id="cartTotal" style="display:none;">
+                                             <span>Total</span>
+                                             <span id="cartTotalValue">₹0</span>
+                                    </div>
+
+                                    <form id="checkoutForm" class="checkout-form" style="display:none;">
+                                             <label for="buyerName">Your name <span
+                                                               class="required-mark">*</span></label>
+                                             <input id="buyerName" name="buyerName" type="text" required
+                                                      placeholder="Full name">
+
+                                             <label for="buyerContact">Phone number <span
+                                                               class="required-mark">*</span></label>
+                                             <input id="buyerContact" name="buyerContact" type="tel" required
+                                                      placeholder="10-digit mobile number">
+
+                                             <label for="buyerAddress">Delivery address <span
+                                                               class="required-mark">*</span></label>
+                                             <textarea id="buyerAddress" name="buyerAddress" required
+                                                      placeholder="Village, district, state, PIN"></textarea>
+
+                                             <button class="primary-button" type="submit" id="checkoutBtn">Place
+                                                      order</button>
+                                             <div id="checkoutStatus" class="status-message" role="status"
+                                                      aria-live="polite"></div>
+                                    </form>
+                           </aside>
+                  </div>
+         </section>
+
+         <!-- ================= SELLER PANEL ================= -->
+         <section class="panel" id="sellerPanel">
+                  <div class="panel-header">
+                           <h2>Seller dashboard — List your produce</h2>
+                           <button class="switch-role" data-target="buyer">Switch to Buyer view</button>
+                  </div>
+
+                  <div class="info-card">
+                           <span class="icon">i</span>
+                           <div>
+                                    <strong>Listing your harvest</strong>
+                                    <span>Fields marked required must be filled to publish a listing. Your listing
+                                             becomes visible to
+                                             all buyers on the marketplace immediately.</span>
+                           </div>
+                  </div>
+
+                  <div class="stats-row">
+                           <div class="stat-box">
+                                    <div class="stat-value" id="statActiveListings">0</div>
+                                    <div class="stat-label">Active listings</div>
+                           </div>
+                           <div class="stat-box">
+                                    <div class="stat-value" id="statTotalQuantity">0</div>
+                                    <div class="stat-label">Total quantity listed</div>
+                           </div>
+                           <div class="stat-box">
+                                    <div class="stat-value" id="statOrders">0</div>
+                                    <div class="stat-label">Orders received</div>
+                           </div>
+                  </div>
+
+                  <div class="store-layout">
+                           <div class="listings-table-wrap">
+                                    <table class="listings-table">
+                                             <thead>
+                                                      <tr>
+                                                               <th>Crop</th>
+                                                               <th>Category</th>
+                                                               <th>Quantity</th>
+                                                               <th>Price / unit</th>
+                                                               <th>Location</th>
+                                                               <th>Status</th>
+                                                               <th>Actions</th>
+                                                      </tr>
+                                             </thead>
+                                             <tbody id="sellerListingsBody">
+                                                      <tr>
+                                                               <td colspan="7"
+                                                                        style="text-align:center; color:var(--muted); padding:24px;">
+                                                                        No listings yet — add your first one.</td>
+                                                      </tr>
+                                             </tbody>
+                                    </table>
+                           </div>
+
+                           <aside class="seller-form-card">
+                                    <h3 id="sellerFormTitle">Add a new listing</h3>
+                                    <p class="card-copy">This appears on the buyer marketplace as soon as you publish
+                                             it.</p>
+
+                                    <form id="sellerForm">
+                                             <input type="hidden" id="editingProductId" value="">
+
+                                             <div class="form-grid">
+                                                      <div class="full">
+                                                               <label for="sellerName">Your name <span
+                                                                                 class="required-mark">*</span></label>
+                                                               <input id="sellerName" name="sellerName" type="text"
+                                                                        required placeholder="Farmer name">
+                                                      </div>
+
+                                                      <div class="full">
+                                                               <label for="sellerContact">Contact number <span
+                                                                                 class="required-mark">*</span></label>
+                                                               <input id="sellerContact" name="sellerContact" type="tel"
+                                                                        required placeholder="10-digit mobile number">
+                                                      </div>
+
+                                                      <div>
+                                                               <label for="cropName">Crop name <span
+                                                                                 class="required-mark">*</span></label>
+                                                               <input id="cropName" name="cropName" type="text" required
+                                                                        placeholder="e.g. Basmati Rice">
+                                                      </div>
+
+                                                      <div>
+                                                               <label for="category">Category <span
+                                                                                 class="required-mark">*</span></label>
+                                                               <select id="category" name="category" required>
+                                                                        <option value="">Select</option>
+                                                                        <option>Grains</option>
+                                                                        <option>Vegetables</option>
+                                                                        <option>Fruits</option>
+                                                                        <option>Pulses</option>
+                                                                        <option>Spices</option>
+                                                                        <option>Dairy</option>
+                                                               </select>
+                                                      </div>
+
+                                                      <div>
+                                                               <label for="quantity">Quantity <span
+                                                                                 class="required-mark">*</span></label>
+                                                               <input id="quantity" name="quantity" type="number"
+                                                                        min="0" step="0.01" required
+                                                                        placeholder="e.g. 500">
+                                                      </div>
+
+                                                      <div>
+                                                               <label for="unit">Unit <span
+                                                                                 class="required-mark">*</span></label>
+                                                               <select id="unit" name="unit" required>
+                                                                        <option value="">Select</option>
+                                                                        <option>kg</option>
+                                                                        <option>quintal</option>
+                                                                        <option>tonne</option>
+                                                                        <option>litre</option>
+                                                                        <option>dozen</option>
+                                                               </select>
+                                                      </div>
+
+                                                      <div>
+                                                               <label for="price">Price per unit (₹) <span
+                                                                                 class="required-mark">*</span></label>
+                                                               <input id="price" name="price" type="number" min="0"
+                                                                        step="0.01" required placeholder="e.g. 2200">
+                                                      </div>
+
+                                                      <div>
+                                                               <label for="harvestDate">Harvest date</label>
+                                                               <input id="harvestDate" name="harvestDate" type="date">
+                                                      </div>
+
+                                                      <div class="full">
+                                                               <label for="location">Village / district <span
+                                                                                 class="required-mark">*</span></label>
+                                                               <input id="location" name="location" type="text" required
+                                                                        placeholder="e.g. Nashik, Maharashtra">
+                                                      </div>
+
+                                                      <div class="full">
+                                                               <label for="description">Description</label>
+                                                               <textarea id="description" name="description"
+                                                                        placeholder="Grade, organic certification, storage condition, etc."></textarea>
+                                                      </div>
+                                             </div>
+
+                                             <button class="primary-button" type="submit" id="sellerSubmitBtn">Publish
+                                                      listing</button>
+                                             <button class="primary-button" type="button" id="cancelEditBtn"
+                                                      style="display:none; background:var(--white); color:var(--navy); margin-top:8px;">Cancel
+                                                      edit</button>
+                                             <div id="sellerFormStatus" class="status-message" role="status"
+                                                      aria-live="polite"></div>
+                                    </form>
+                           </aside>
+                  </div>
+         </section>
+
+         <footer class="footer">
+                  DRONACHARYA Store · Prototype marketplace connecting farmers directly with buyers. Not affiliated with
+                  any
+                  government e-marketplace (GeM) or e-NAM platform.
+         </footer>
+
+         <div id="toast" role="status" aria-live="polite"></div>
+
+         <script src="{{ url_for('static', filename='js/store.js') }}"></script>
+</body>
+
+</html>

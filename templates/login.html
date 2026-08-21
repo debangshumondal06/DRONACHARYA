@@ -2,350 +2,840 @@
 <html lang="en">
 
 <head>
-         
          <meta charset="UTF-8">
          <meta name="viewport" content="width=device-width, initial-scale=1.0">
          <meta name="description" content="DRONACHARYA secure prototype login.">
-         <title>Login | DRONACHARYA</title>
+         <title>Login | DRONACHARYA — Field Intelligence Portal</title>
          <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
          <link rel="preconnect" href="https://fonts.googleapis.com">
          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Playfair+Display:wght@600;700&display=swap"
+         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Baloo+2:wght@600;700&display=swap"
                   rel="stylesheet">
          <style>
                   :root {
-                           --black: #050806;
-                           --panel: #111a14;
-                           --line: rgba(112, 255, 150, .18);
-                           --green: #62ff93;
-                           --green2: #b8ffca;
-                           --muted: #8da092;
-                           --yellow: #e7d45e;
-                           --white: #eff9f1;
+                           --navy: #16e10f;
+                           --navy-dark: #2fb706;
+                           --saffron: #ff9933;
+                           --india-green: #138808;
+                           --white: #ffffff;
+                           --bg: #fdfdfd;
+                           --panel: #ffffff;
+                           --line: #d7dde3;
+                           --text: #1c2733;
+                           --muted: #5b6b78;
+                           --error: #b3261e;
+                           --success: #1e7d32;
+                  }
+
+                  * {
+                           box-sizing: border-box;
                   }
 
                   html,
                   body {
                            min-height: 100%;
-                           background: var(--black);
+                           margin: 0;
+                           background: var(--bg);
                   }
 
                   body {
-                           color: var(--white);
-                           font-family: 'DM Sans', Arial, sans-serif;
+                           color: var(--text);
+                           font-family: 'Noto Sans', Arial, sans-serif;
+                  }
+
+                  /* Tricolor strip — standard on GoI portals */
+                  .tricolor-strip {
+                           height: 4px;
+                           background: linear-gradient(90deg, var(--saffron) 0 33.3%, var(--white) 33.3% 66.6%, var(--india-green) 66.6% 100%);
                   }
 
                   .topbar {
-                           height: 82px;
-                           padding: 0 6vw;
-                           border-bottom: 1px solid var(--line);
-                           background: rgba(5, 8, 6, .9);
+                           display: flex;
+                           align-items: center;
+                           justify-content: space-between;
+                           height: 78px;
+                           padding: 0 5vw;
+                           background: var(--india-green);
+                           border-bottom: 1px solid var(--black);
+                  }
+
+                  .brand-group {
+                           display: flex;
+                           align-items: center;
+                           gap: 14px;
+                  }
+
+                  .emblem {
+                           width: 42px;
+                           height: 42px;
+                           border-radius: 50%;
+                           border: 2px solid var(--saffron);
+                           display: flex;
+                           align-items: center;
+                           justify-content: center;
+                           color: var(--saffron);
+                           font-family: 'Baloo 2', sans-serif;
+                           font-weight: 700;
+                           font-size: 18px;
+                           flex-shrink: 0;
                   }
 
                   .brand {
-                           color: var(--green);
-                           font-family: 'Manrope', sans-serif;
-                           font-weight: 800;
-                           letter-spacing: .2em;
-                           text-shadow: 0 0 25px rgba(98, 255, 147, .34);
+                           color: var(--white);
+                           font-family: 'Baloo 2', sans-serif;
+                           font-weight: 700;
+                           font-size: 20px;
+                           letter-spacing: .02em;
+                           line-height: 1.1;
                   }
 
                   .brand-tagline {
-                           color: var(--muted);
-                           font-size: 10px;
-                           letter-spacing: .12em;
+                           display: block;
+                           color: #b8c4d0;
+                           font-size: 11px;
+                           font-weight: 400;
+                           letter-spacing: .02em;
+                           margin-top: 2px;
+                  }
+
+                  .lang-select {
+                           background: transparent;
+                           border: 1px solid #c3d3d2;
+                           color: var(--white);
+                           font: inherit;
+                           font-size: 13px;
+                           padding: 6px 10px;
                   }
 
                   .login-shell {
-                           position: relative;
                            display: grid;
-                           width: min(1120px, 88vw);
-                           min-height: calc(100vh - 155px);
+                           width: min(1100px, 90vw);
                            margin: 0 auto;
-                           grid-template-columns: 1fr 440px;
-                           align-items: center;
-                           gap: 9vw;
-                           padding: 68px 0;
+                           grid-template-columns: 1fr 420px;
+                           align-items: start;
+                           gap: 48px;
+                           padding: 56px 0 72px;
                   }
 
-                  .login-shell:before {
-                           position: absolute;
-                           z-index: -1;
-                           top: 60px;
-                           left: -18vw;
-                           width: 590px;
-                           height: 590px;
-                           border-radius: 50%;
-                           background: radial-gradient(circle, rgba(35, 174, 83, .18), transparent 68%);
-                           content: '';
-                           filter: blur(18px);
+                  .login-copy .eyebrow {
+                           display: inline-block;
+                           color: var(--india-green);
+                           font-size: 12px;
+                           font-weight: 700;
+                           letter-spacing: .06em;
+                           text-transform: uppercase;
+                           margin-bottom: 14px;
                   }
 
                   .login-copy h1 {
-                           max-width: 620px;
-                           margin: 0 0 24px;
-                           color: var(--white);
-                           font-family: 'Playfair Display', Georgia, serif;
-                           font-size: clamp(43px, 5.8vw, 78px);
-                           line-height: 1;
-                           letter-spacing: -.055em;
-                  }
-
-                  .login-copy h1 em {
-                           color: var(--green2);
-                           font-style: normal;
-                  }
-
-                  .eyebrow {
-                           color: var(--green);
-                           font-size: 10px;
-                           letter-spacing: .2em;
+                           max-width: 560px;
+                           margin: 0 0 18px;
+                           color: var(--navy);
+                           font-family: 'Baloo 2', sans-serif;
+                           font-weight: 700;
+                           font-size: clamp(30px, 3.4vw, 42px);
+                           line-height: 1.2;
                   }
 
                   .login-copy>p:not(.eyebrow) {
-                           max-width: 530px;
+                           max-width: 500px;
                            color: var(--muted);
-                           font-size: 17px;
-                           line-height: 1.8;
+                           font-size: 15.5px;
+                           line-height: 1.7;
                   }
 
-                  .login-note {
+                  .info-card {
                            display: flex;
-                           max-width: 510px;
-                           margin-top: 32px;
+                           max-width: 500px;
+                           margin-top: 28px;
                            padding: 16px 18px;
-                           flex-direction: column;
-                           gap: 5px;
+                           gap: 12px;
                            border: 1px solid var(--line);
-                           border-left: 3px solid var(--green);
-                           background: rgba(98, 255, 147, .07);
+                           border-left: 4px solid var(--india-green);
+                           background: #f0f7f0;
                   }
 
-                  .login-note strong {
-                           color: var(--green2);
-                           font-family: 'Manrope', sans-serif;
-                  }
-
-                  .login-note span {
-                           color: var(--muted);
+                  .info-card .icon {
+                           flex-shrink: 0;
+                           width: 20px;
+                           height: 20px;
+                           border-radius: 50%;
+                           border: 1.5px solid var(--india-green);
+                           color: var(--india-green);
                            font-size: 13px;
+                           font-weight: 700;
+                           display: flex;
+                           align-items: center;
+                           justify-content: center;
                   }
 
+                  .info-card strong {
+                           display: block;
+                           color: var(--navy);
+                           font-size: 13.5px;
+                           margin-bottom: 3px;
+                  }
+
+                  .info-card span {
+                           color: var(--muted);
+                           font-size: 12.5px;
+                           line-height: 1.6;
+                  }
+
+                  .prototype-banner {
+                           display: flex;
+                           align-items: center;
+                           gap: 8px;
+                           max-width: 500px;
+                           margin-top: 14px;
+                           padding: 10px 14px;
+                           border: 1px solid #f0c869;
+                           background: #fdf6e3;
+                           color: #7a5b00;
+                           font-size: 12px;
+                           font-weight: 600;
+                  }
+
+                  /* --- Login card --- */
                   .login-card {
-                           position: relative;
-                           padding: 34px;
+                           padding: 30px 30px 26px;
                            border: 1px solid var(--line);
-                           background: linear-gradient(145deg, rgba(19, 29, 22, .98), rgba(7, 11, 8, .98));
-                           box-shadow: 0 22px 70px rgba(0, 0, 0, .42), 0 0 48px rgba(35, 174, 83, .1);
+                           border-top: 4px solid var(--navy);
+                           background: var(--panel);
+                           box-shadow: 0 1px 3px rgba(202, 193, 16, 0.879);
                   }
 
-                  .login-card:before {
-                           position: absolute;
-                           top: 0;
-                           right: 30px;
-                           left: 30px;
-                           height: 2px;
-                           background: linear-gradient(90deg, transparent, var(--green), transparent);
-                           content: '';
-                           box-shadow: 0 0 18px var(--green);
+                  .login-card .eyebrow {
+                           color: var(--india-green);
+                           font-size: 11px;
+                           font-weight: 700;
+                           letter-spacing: .06em;
+                           text-transform: uppercase;
                   }
 
                   .login-card h2 {
-                           color: var(--white);
-                           font-family: 'Manrope', sans-serif;
-                           font-size: 28px;
+                           margin: 4px 0 6px;
+                           color: var(--navy);
+                           font-family: 'Baloo 2', sans-serif;
+                           font-size: 23px;
                   }
 
                   .card-copy {
                            color: var(--muted);
                            font-size: 13px;
-                           line-height: 1.7;
+                           line-height: 1.6;
+                           margin: 0;
                   }
 
                   .login-form {
                            display: flex;
                            flex-direction: column;
-                           gap: 10px;
-                           margin-top: 25px;
+                           gap: 4px;
+                           margin-top: 22px;
                   }
 
                   .login-form label {
-                           margin-top: 8px;
-                           color: var(--green2);
-                           font-size: 12px;
-                           font-weight: 700;
-                           letter-spacing: .04em;
+                           margin-top: 14px;
+                           color: var(--navy);
+                           font-size: 13px;
+                           font-weight: 600;
+                  }
+
+                  .required-mark {
+                           color: var(--error);
                   }
 
                   .login-form input {
                            width: 100%;
-                           padding: 13px 14px;
-                           border: 1px solid var(--line);
+                           padding: 11px 12px;
+                           border: 1px solid #b6c1cb;
                            outline: none;
-                           background: rgba(5, 8, 6, .75);
-                           color: var(--white);
+                           background: #fbfcfd;
+                           color: var(--text);
                            font: inherit;
+                           font-size: 14px;
+                           margin-top: 6px;
                   }
 
                   .login-form input:focus {
-                           border-color: var(--green);
-                           box-shadow: 0 0 18px rgba(98, 255, 147, .13);
+                           border-color: var(--navy);
+                           box-shadow: 0 0 0 3px rgba(10, 37, 64, .1);
                   }
 
                   .login-form input::placeholder {
-                           color: #607466;
+                           color: #93a2ae;
                   }
 
                   .field-help {
                            color: var(--muted);
-                           font-size: 11px;
+                           font-size: 11.5px;
+                           margin-top: 5px;
                   }
 
                   .acceptance-row {
                            display: flex;
                            align-items: flex-start;
                            gap: 9px;
-                           margin: 12px 0 3px;
+                           margin: 18px 0 4px;
                            color: var(--muted);
-                           font-size: 11px;
-                           line-height: 1.5;
+                           font-size: 12px;
+                           line-height: 1.55;
                   }
 
                   .acceptance-row input {
                            width: auto;
-                           margin-top: 3px;
-                           accent-color: var(--green);
+                           margin-top: 2px;
+                           accent-color: var(--navy);
                   }
 
                   .primary-button {
-                           border: 1px solid var(--green);
-                           background: var(--green);
-                           color: var(--black);
-                           font-family: 'Manrope', sans-serif;
-                           box-shadow: 0 0 25px rgba(98, 255, 147, .22);
+                           width: 100%;
+                           margin-top: 20px;
+                           padding: 13px 16px;
+                           border: 1px solid var(--navy);
+                           background: var(--navy);
+                           color: var(--white);
+                           font: inherit;
+                           font-weight: 600;
+                           font-size: 15px;
+                           cursor: pointer;
                   }
 
                   .primary-button:hover {
-                           background: var(--green2);
-                           box-shadow: 0 0 34px rgba(98, 255, 147, .42);
+                           background: #0d3054;
+                  }
+
+                  .primary-button:disabled {
+                           background: #9aa7b3;
+                           border-color: #9aa7b3;
+                           cursor: not-allowed;
                   }
 
                   .status-message {
-                           min-height: 22px;
+                           min-height: 20px;
                            margin-top: 12px;
-                           font-size: 12px;
+                           font-size: 12.5px;
+                           font-weight: 500;
                   }
 
                   .status-message.error {
-                           color: #ff9d91;
+                           color: var(--error);
                   }
 
                   .status-message.success {
-                           color: var(--green2);
+                           color: var(--success);
                   }
 
-                  .prototype-label {
-                           display: inline-flex;
+                  .helpdesk {
                            margin-top: 18px;
-                           padding: 5px 8px;
-                           border: 1px solid rgba(231, 212, 94, .23);
-                           background: rgba(231, 212, 94, .08);
-                           color: var(--yellow);
-                           font-size: 10px;
-                           letter-spacing: .08em;
-                           text-transform: uppercase;
+                           padding-top: 16px;
+                           border-top: 1px solid var(--line);
+                           color: var(--muted);
+                           font-size: 12px;
+                           line-height: 1.6;
+                  }
+
+                  .helpdesk a {
+                           color: var(--navy);
+                           font-weight: 600;
+                           text-decoration: none;
                   }
 
                   .footer {
-                           border-top-color: var(--line);
-                           background: var(--black);
-                           color: #6d7e70;
+                           border-top: 1px solid var(--line);
+                           background: var(--white);
+                           padding: 18px 5vw;
+                           color: var(--muted);
+                           font-size: 12px;
+                           text-align: center;
+                  }
+
+                  @media (max-width: 850px) {
+                           .login-shell {
+                                    grid-template-columns: 1fr;
+                                    gap: 34px;
+                                    padding: 40px 0 56px;
+                           }
+                  }
+
+                  @media (max-width: 600px) {
+                           .topbar {
+                                    height: auto;
+                                    min-height: 68px;
+                                    padding: 12px 5vw;
+                                    flex-wrap: wrap;
+                                    gap: 10px;
+                           }
+
+                           .login-card {
+                                    padding: 22px;
+                           }
+                  }
+         </style>
+
+         <style id="dronacharya-login-theme-override">
+                  /* DRONACHARYA login restyle: preserve markup, routes, links, controls and functions; visual override only. */
+                  :root {
+                           --navy: #050806;
+                           --navy-dark: #0b110d;
+                           --saffron: #e7c85e;
+                           --india-green: #5eeb8a;
+                           --white: #eef7f0;
+                           --bg: #050806;
+                           --panel: #111a14;
+                           --line: rgba(112, 255, 150, .16);
+                           --text: #eef7f0;
+                           --muted: #8ea297;
+                           --error: #ff9d91;
+                           --success: #5eeb8a;
+                           --ease-out: cubic-bezier(.23, 1, .32, 1)
+                  }
+
+                  * {
+                           box-sizing: border-box
+                  }
+
+                  html,
+                  body {
+                           min-height: 100%;
+                           margin: 0;
+                           background: radial-gradient(circle at 17% 14%, rgba(36, 94, 51, .16), transparent 32%), #050806;
+                           color: var(--text)
+                  }
+
+                  body {
+                           font-family: 'DM Sans', 'Noto Sans', Arial, sans-serif;
+                           -webkit-font-smoothing: antialiased
+                  }
+
+                  body:before {
+                           content: "";
+                           position: fixed;
+                           inset: 0;
+                           pointer-events: none;
+                           opacity: .04;
+                           background-image: radial-gradient(rgba(255, 255, 255, .65) .5px, transparent .5px);
+                           background-size: 5px 5px;
+                           mix-blend-mode: screen;
+                           z-index: 50
+                  }
+
+                  a {
+                           color: inherit
+                  }
+
+                  :focus-visible {
+                           outline: 2px solid var(--india-green);
+                           outline-offset: 3px
+                  }
+
+                  .tricolor-strip {
+                           height: 3px;
+                           background: linear-gradient(90deg, transparent 0 30%, var(--india-green) 30% 70%, transparent 70% 100%);
+                           box-shadow: 0 0 16px var(--india-green)
+                  }
+
+                  .topbar {
+                           height: 76px;
+                           padding: 0 6vw;
+                           background: rgba(5, 8, 6, .9);
+                           border-bottom: 1px solid var(--line);
+                           backdrop-filter: blur(16px);
+                           position: sticky;
+                           top: 0;
+                           z-index: 40
+                  }
+
+                  .brand-group {
+                           gap: 11px
+                  }
+
+                  .emblem {
+                           width: 34px;
+                           height: 34px;
+                           border-radius: 0;
+                           border: 1px solid rgba(112, 255, 150, .3);
+                           background: linear-gradient(160deg, rgba(94, 235, 138, .16), transparent);
+                           color: var(--india-green);
+                           font-family: 'Playfair Display', Georgia, serif;
+                           font-size: 17px
+                  }
+
+                  .brand {
+                           color: var(--india-green);
+                           font-family: 'Manrope', sans-serif;
+                           font-weight: 800;
+                           font-size: 15px;
+                           letter-spacing: .2em;
+                           text-shadow: 0 0 25px rgba(98, 255, 147, .3)
+                  }
+
+                  .brand-tagline {
+                           color: var(--muted);
+                           font-size: 9.5px;
+                           letter-spacing: .1em
+                  }
+
+                  .lang-select {
+                           background: var(--panel);
+                           border: 1px solid var(--line);
+                           color: var(--white);
+                           border-radius: 3px
+                  }
+
+                  .login-shell {
+                           width: min(1180px, 92vw);
+                           grid-template-columns: minmax(0, 1fr) 420px;
+                           gap: 54px;
+                           padding: 62px 0 88px
+                  }
+
+                  .login-copy .eyebrow,
+                  .login-card .eyebrow {
+                           color: var(--india-green);
+                           font-family: 'Manrope', sans-serif;
+                           letter-spacing: .2em;
+                           font-size: 10.5px
+                  }
+
+                  .login-copy h1 {
+                           max-width: 600px;
+                           margin: 0 0 18px;
+                           color: var(--white);
+                           font-family: 'Playfair Display', Georgia, serif;
+                           font-weight: 700;
+                           font-size: clamp(34px, 4.2vw, 52px);
+                           letter-spacing: -.02em;
+                           line-height: 1.08
+                  }
+
+                  .login-copy h1 em {
+                           color: var(--india-green);
+                           font-style: normal
+                  }
+
+                  .login-copy>p:not(.eyebrow) {
+                           max-width: 550px;
+                           color: var(--muted);
+                           font-size: 15px;
+                           line-height: 1.75
+                  }
+
+                  .info-card {
+                           max-width: 540px;
+                           margin-top: 28px;
+                           padding: 16px 18px;
+                           gap: 12px;
+                           border: 1px solid var(--line);
+                           border-left: 3px solid var(--india-green);
+                           background: rgba(17, 33, 21, .72)
+                  }
+
+                  .info-card .icon {
+                           border-color: var(--india-green);
+                           color: var(--india-green)
+                  }
+
+                  .info-card strong {
+                           color: var(--green2, #c8ffd6)
+                  }
+
+                  .info-card span {
+                           color: var(--muted)
+                  }
+
+                  .prototype-banner {
+                           max-width: 540px;
+                           margin-top: 14px;
+                           padding: 11px 14px;
+                           border: 1px solid rgba(231, 200, 94, .42);
+                           background: rgba(231, 200, 94, .08);
+                           color: var(--saffron);
+                           font-size: 12px
+                  }
+
+                  .login-card {
+                           position: relative;
+                           padding: 30px 30px 26px;
+                           border: 1px solid var(--line);
+                           border-top: 2px solid var(--india-green);
+                           background: linear-gradient(150deg, rgba(19, 29, 22, .92), rgba(7, 11, 8, .96));
+                           box-shadow: 0 24px 60px rgba(0, 0, 0, .38)
+                  }
+
+                  .login-card:before {
+                           position: absolute;
+                           top: 0;
+                           right: 28px;
+                           left: 28px;
+                           height: 2px;
+                           content: "";
+                           background: linear-gradient(90deg, transparent, var(--india-green), transparent);
+                           box-shadow: 0 0 18px var(--india-green)
+                  }
+
+                  .login-card h2 {
+                           margin: 4px 0 6px;
+                           color: var(--white);
+                           font-family: 'Manrope', sans-serif;
+                           font-size: 21px
+                  }
+
+                  .card-copy {
+                           color: var(--muted);
+                           font-size: 13px;
+                           line-height: 1.65
+                  }
+
+                  .login-form {
+                           gap: 4px;
+                           margin-top: 22px
+                  }
+
+                  .login-form label {
+                           margin-top: 14px;
+                           color: var(--white);
+                           font-family: 'Manrope', sans-serif;
+                           font-size: 12.5px;
+                           font-weight: 700
+                  }
+
+                  .required-mark {
+                           color: var(--error)
+                  }
+
+                  .login-form input {
+                           width: 100%;
+                           padding: 11px 12px;
+                           border: 1px solid var(--line);
+                           outline: none;
+                           background: rgba(5, 8, 6, .72);
+                           color: var(--white);
+                           font: inherit;
+                           font-size: 14px;
+                           margin-top: 6px;
+                           border-radius: 3px
+                  }
+
+                  .login-form input:focus {
+                           border-color: var(--india-green);
+                           box-shadow: 0 0 18px rgba(98, 255, 147, .13)
+                  }
+
+                  .login-form input::placeholder {
+                           color: #5f7264
+                  }
+
+                  .field-help {
+                           color: var(--muted);
+                           font-size: 11.5px;
+                           margin-top: 5px
+                  }
+
+                  .acceptance-row {
+                           color: var(--muted);
+                           font-size: 12px;
+                           line-height: 1.55
+                  }
+
+                  .acceptance-row input {
+                           accent-color: var(--india-green)
+                  }
+
+                  .primary-button {
+                           width: 100%;
+                           margin-top: 20px;
+                           padding: 13px 16px;
+                           border: 1px solid var(--india-green);
+                           background: var(--india-green);
+                           color: var(--navy);
+                           font-family: 'Manrope', sans-serif;
+                           font-weight: 700;
+                           font-size: 13.5px;
+                           cursor: pointer;
+                           border-radius: 3px;
+                           box-shadow: 0 0 22px rgba(98, 255, 147, .2);
+                           transition: all .16s var(--ease-out)
+                  }
+
+                  .primary-button:hover {
+                           background: #c8ffd6;
+                           box-shadow: 0 0 32px rgba(98, 255, 147, .38)
+                  }
+
+                  .primary-button:disabled {
+                           background: #415449;
+                           border-color: #415449;
+                           color: #9db1a3
+                  }
+
+                  .status-message.error {
+                           color: var(--error)
+                  }
+
+                  .status-message.success {
+                           color: var(--success)
+                  }
+
+                  .helpdesk {
+                           margin-top: 18px;
+                           padding-top: 16px;
+                           border-top: 1px solid var(--line);
+                           color: var(--muted);
+                           font-size: 12px;
+                           line-height: 1.6
+                  }
+
+                  .helpdesk a {
+                           color: var(--india-green);
+                           font-weight: 700
+                  }
+
+                  .footer {
+                           border-top: 1px solid var(--line);
+                           background: transparent;
+                           padding: 18px 6vw;
+                           color: #6c7d71;
+                           font-size: 10.5px;
+                           letter-spacing: .04em;
+                           text-align: center
                   }
 
                   @media(max-width:850px) {
                            .login-shell {
                                     grid-template-columns: 1fr;
-                                    gap: 38px;
-                                    padding: 58px 0
+                                    gap: 34px;
+                                    padding: 42px 0 64px
                            }
 
                            .login-copy h1 {
-                                    font-size: clamp(43px, 10vw, 70px)
+                                    font-size: clamp(34px, 8vw, 48px)
                            }
                   }
 
                   @media(max-width:600px) {
                            .topbar {
                                     height: auto;
-                                    min-height: 72px;
-                                    padding: 14px 6vw;
-                                    align-items: flex-start;
-                                    flex-direction: column;
-                                    gap: 5px
+                                    min-height: 68px;
+                                    padding: 12px 5vw;
+                                    flex-wrap: wrap;
+                                    gap: 10px
                            }
 
                            .login-card {
-                                    padding: 25px
+                                    padding: 22px
+                           }
+
+                           .login-copy>p:not(.eyebrow) {
+                                    font-size: 14px
                            }
                   }
          </style>
 </head>
 
 <body>
+         <div class="tricolor-strip"></div>
          <header class="topbar">
-                  <a class="brand" href="index.html">DRONACHARYA</a>
-                  <span class="brand-tagline">Secure field intelligence / Prototype access</span>
+                  <div class="brand-group">
+                           <div class="emblem" aria-hidden="true">D</div>
+                           <div>
+                                    <span class="brand">DRONACHARYA</span>
+                                    <span class="brand-tagline">Agricultural Field Intelligence Portal ·
+                                             Prototype</span>
+                           </div>
+                  </div>
+                  <select class="lang-select" aria-label="Select language">
+                           <option value="en">English</option>
+                           <option value="hi">हिंदी (Hindi)</option>
+                           <option value="bn">বাংলা (Bengali)</option>
+                           <option value="ta">தமிழ் (Tamil)</option>
+                           <option value="te">తెలుగు (Telugu)</option>
+                           <option value="mr">मराठी (Marathi)</option>
+                           <option value="gu">ગુજરાતી (Gujarati)</option>
+                           <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                           <option value="ml">മലയാളം (Malayalam)</option>
+                           <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+                           <option value="or">ଓଡ଼ିଆ (Odia)</option>
+                           <option value="as">অসমীয়া (Assamese)</option>
+                  </select>
          </header>
 
          <main class="login-shell">
                   <section class="login-copy">
-                           <p class="eyebrow">WELCOME TO THE FIELD INTELLIGENCE LAYER</p>
-                           <h1>Bring your field data into a <em>clearer future.</em></h1>
-                           <p>Access your DRONACHARYA workspace to inspect agriculture datasets, understand data
-                                    quality, explore harvest outlooks, and compare responsible recommendations.</p>
-                           <div class="login-note"><strong>Your identity is used only to create a
-                                             workspace.</strong><span>For this prototype, Aadhaar and phone values are
-                                             validated and stored as one-way hashes. Never use real sensitive identity
-                                             information in a public demo.</span></div>
-                           <span class="prototype-label">Development prototype · Not government authentication</span>
+                           <p class="eyebrow">Field Intelligence for Farmers</p>
+                           <h1>Register your workspace to track crop yield and soil health.</h1>
+                           <p>Access data quality checks, harvest outlook estimates, and region-based crop
+                                    recommendations built for
+                                    your field.</p>
+
+                           <div class="info-card">
+                                    <span class="icon">i</span>
+                                    <div>
+                                             <strong>Why we ask for these details</strong>
+                                             <span>Your ID is used only to create and secure your workspace. Aadhaar and
+                                                      PAN values are
+                                                      validated and stored as one-way hashes — never in plain
+                                                      text.</span>
+                                    </div>
+                           </div>
+
+                           <div class="prototype-banner">
+                                    Development prototype — not an official government authentication service. Do not
+                                    enter real
+                                    Aadhaar, PAN, or other sensitive identity details.
+                           </div>
                   </section>
 
                   <section class="login-card" aria-labelledby="loginTitle">
-                           <p class="eyebrow">WORKSPACE ACCESS</p>
-                           <h2 id="loginTitle">Enter your details</h2>
-                           <p class="card-copy">Aadhaar number and phone number are required acceptance parameters.
-                                    E-mail is optional and can help identify your workspace.</p>
+                           <p class="eyebrow">Workspace Access</p>
+                           <h2 id="loginTitle">Sign in / Register</h2>
+                           <p class="card-copy">Aadhaar and PAN are required to create your workspace. Email is optional
+                                    and helps
+                                    you recover access later.</p>
 
                            <form id="loginForm" class="login-form" autocomplete="off">
-                                    <label for="aadhaar_number">Aadhaar card number</label>
+                                    <label for="aadhaar_number">Aadhaar card number <span
+                                                      class="required-mark">*</span></label>
                                     <input id="aadhaar_number" name="aadhaar_number" type="text" inputmode="numeric"
                                              maxlength="14" placeholder="XXXX XXXX XXXX" required>
                                     <small class="field-help">Enter 12 digits. Spaces and hyphens are accepted.</small>
 
-                                    <label for="PAN_number">PAN number</label>
-                                    <input id="PAN_number" name="PAN_number" type="text" inputmode="text"
-                                             maxlength="12" placeholder="AbCXXXXX1p" required>
-                                    <small class="field-help">Use a valid 10-digit PAN number.</small>
+                                    <label for="PAN_number">PAN number <span class="required-mark">*</span></label>
+                                    <input id="PAN_number" name="PAN_number" type="text" inputmode="text" maxlength="12"
+                                             placeholder="ABCDE1234F" style="text-transform:uppercase" required>
+                                    <small class="field-help">10-character PAN, e.g. ABCDE1234F.</small>
 
-                                    <label for="email_id">Email ID <span class="optional">(optional)</span></label>
+                                    <label for="email_id">Email ID <span class="field-help"
+                                                      style="margin:0;">(optional)</span></label>
                                     <input id="email_id" name="email_id" type="email" autocomplete="email"
                                              placeholder="farmer@example.com">
 
-                                    <label class="acceptance-row" for="prototypeConsent"><input id="prototypeConsent"
-                                                      type="checkbox" required><span>I understand this is a development
-                                                      prototype and I will not submit real Aadhaar or other sensitive
-                                                      identity information.</span></label>
+                                    <label class="acceptance-row" for="prototypeConsent">
+                                             <input id="prototypeConsent" type="checkbox" required>
+                                             <span>I understand this is a development prototype and I will not submit
+                                                      real Aadhaar, PAN, or
+                                                      other sensitive identity information.</span>
+                                    </label>
 
-                                    <button class="primary-button" type="submit" id="loginButton">Enter workspace
-                                             <span>→</span></button>
-                                    <div id="loginStatus" class="status-message" role="status"></div>
+                                    <button class="primary-button" type="submit" id="loginButton">Enter
+                                             workspace</button>
+                                    <div id="loginStatus" class="status-message" role="status" aria-live="polite"></div>
                            </form>
+
+                           <div class="helpdesk">
+                                    Need help? Contact the <a href="#">DRONACHARYA support desk</a> — Mon–Sat, 9 AM–6
+                                    PM.
+                           </div>
                   </section>
          </main>
 
-         <footer class="footer">DRONACHARYA · Secure prototype access for responsible agricultural intelligence.
+         <footer class="footer">
+                  DRONACHARYA · Prototype portal for responsible agricultural intelligence. This is not affiliated with
+                  UIDAI
+                  or any government authentication system.
          </footer>
-         <script src="{{ url_for('static', filename='js/login.js' ) }}"></script>
+
+         <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 </body>
 
 </html>
