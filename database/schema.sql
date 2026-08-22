@@ -333,3 +333,34 @@ COMMIT;
 --    row locks when creating marketplace_orders.
 -- 5. Add PostgreSQL Row-Level Security policies before exposing these tables to
 --    a browser-facing API.
+
+
+
+-- DRONACHARYA — Estimate Yield-2 database schema
+-- This is created automatically by yield_backend.init_db(), included here
+-- for reference / manual setup (e.g. `sqlite3 dronacharya.db < schema.sql`).
+
+CREATE TABLE IF NOT EXISTS yield_reports (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id      TEXT NOT NULL,          -- anonymous visitor id (Flask session), or user id once auth exists
+    created_at      TEXT NOT NULL,          -- ISO 8601 UTC timestamp
+    place           TEXT NOT NULL,
+    latitude        REAL,
+    longitude       REAL,
+    crop            TEXT NOT NULL,          -- rice | wheat | maize | cotton | sugarcane | pulses
+    soil_type       TEXT NOT NULL,          -- alluvial | black | red | laterite | arid | mountain | saline
+    irrigation_type TEXT NOT NULL,          -- drip | sprinkler | canal | tubewell | rainfed
+    ph              REAL NOT NULL,
+    area_input      REAL NOT NULL,          -- raw value the user typed
+    area_unit       TEXT NOT NULL,          -- acre | hectare
+    area_acres      REAL NOT NULL,          -- normalised to acres
+    per_acre_yield  REAL NOT NULL,          -- quintals / acre
+    total_yield     REAL NOT NULL,          -- quintals, whole field
+    confidence_low  REAL NOT NULL,
+    confidence_high REAL NOT NULL,
+    rainfall_30d_mm REAL,                   -- NULL when weather lookup failed
+    weather_source  TEXT NOT NULL,
+    result_json     TEXT NOT NULL           -- full report payload, so history replays exactly
+);
+
+CREATE INDEX IF NOT EXISTS idx_yield_reports_session ON yield_reports(session_id);

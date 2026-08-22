@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+         <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <meta name="description" content="DRONACHARYA — Estimate Yield dashboard.">
+         <title>Estimate Yield | DRONACHARYA</title>
+         <link rel="preconnect" href="https://fonts.googleapis.com">
+         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Playfair+Display:wght@600;700&display=swap"
+                  rel="stylesheet">
+         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+         <style>
+                  * {
+                           box-sizing: border-box;
+                  }
+
+                  :root {
+                           --black: #050806;
+                           --black2: #0b110d;
+                           --panel: #111a14;
+                           --panel2: #0d1510;
+                           --line: rgba(112, 255, 150, .16);
+                           --line-strong: rgba(112, 255, 150, .3);
+                           --green: #5eeb8a;
+                           --green2: #c8ffd6;
+                           --amber: #e7c85e;
+                           --muted: #8ea297;
+                           --white: #eef7f0;
+                           --red-soft: #ff9d91;
+                  }
+
+                  html {
+                           scroll-behavior: smooth;
+                  }
+
+                  body {
+                           margin: 0;
+                           background: var(--black);
+                           color: var(--white);
+                           font-family: 'DM Sans', Arial, sans-serif;
+                           -webkit-font-smoothing: antialiased;
+                  }
+
+                  a {
+                           color: inherit;
+                           text-decoration: none;
+                  }
+
+                  :focus-visible {
+                           outline: 2px solid var(--green);
+                           outline-offset: 3px;
+                  }
+
+                  /* ---------- Ribbon / Navbar (shared with Home) ---------- */
+                  .ribbon {
+                           display: flex;
+                           align-items: center;
+                           justify-content: center;
+                           gap: 10px;
+                           padding: 7px 6vw;
+                           background: var(--black2);
+                           border-bottom: 1px solid var(--line);
+                           color: var(--muted);
+                           font-family: 'Manrope', sans-serif;
+                           font-size: 11px;
+                           letter-spacing: .04em;
+                           text-align: center;
+                  }
+
+                  .ribbon .dot {
+                           width: 6px;
+                           height: 6px;
+                           border-radius: 50%;
+                           background: var(--green);
+                           box-shadow: 0 0 8px var(--green);
+                           flex: none;
+                           animation: pulse 2.4s ease-in-out infinite;
+                  }
+
+                  @keyframes pulse {
+
+                           0%,
+                           100% {
+                                    opacity: 1;
+                                    transform: scale(1);
+                           }
+
+                           50% {
+                                    opacity: .45;
+                                    transform: scale(.72);
+                           }
+                  }
+
+                  .ribbon strong {
+                           color: var(--green2);
+                           font-weight: 600;
+                  }
+
+                  .topbar {
+                           position: sticky;
+                           top: 0;
+                           z-index: 40;
+                           display: flex;
+                           align-items: center;
+                           justify-content: space-between;
+                           gap: 24px;
+                           height: 76px;
+                           padding: 0 6vw;
+                           border-bottom: 1px solid var(--line);
+                           background: rgba(5, 8, 6, .88);
+                           backdrop-filter: blur(16px);
+                  }
+
+                  .brand-mark {
+                           display: flex;
+                           align-items: center;
+                           gap: 11px;
+                           flex: none;
+                  }
+
+                  .brand-glyph {
+                           display: grid;
+                           place-items: center;
+                           width: 34px;
+                           height: 34px;
+                           border: 1px solid var(--line-strong);
+                           background: linear-gradient(160deg, rgba(94, 235, 138, .16), transparent);
+                           color: var(--green);
+                           font-family: 'Playfair Display', serif;
+                           font-size: 17px;
+                           font-weight: 700;
+                  }
+
+                  .brand-text {
+                           display: flex;
+                           flex-direction: column;
+                           line-height: 1.15;
+                  }
+
+                  .brand {
+                           color: var(--green);
+                           font-family: 'Manrope', sans-serif;
+                           font-weight: 800;
+                           font-size: 15px;
+                           letter-spacing: .2em;
+                           text-shadow: 0 0 25px rgba(98, 255, 147, .3);
+                  }
+
+                  .brand-tagline {
+                           color: var(--muted);
+                           font-size: 9.5px;
+                           letter-spacing: .1em;
+                           margin-top: 2px;
+                  }
+
+                  .nav-links {
+                           display: flex;
+                           align-items: center;
+                           gap: 4px;
+                           list-style: none;
+                           margin: 0 auto;
+                           padding: 0;
+                           font-family: 'Manrope', sans-serif;
+                  }
+
+                  .nav-links a {
+                           display: inline-block;
+                           padding: 9px 16px;
+                           border-radius: 3px;
+                           color: var(--muted);
+                           font-size: 12.5px;
+                           font-weight: 700;
+                           letter-spacing: .06em;
+                           transition: color .15s ease, background .15s ease;
+                  }
+
+                  .nav-links a:hover {
+                           color: var(--white);
+                           background: rgba(112, 255, 150, .07);
+                  }
+
+                  .nav-links a.active {
+                           color: var(--black);
+                           background: var(--green);
+                  }
+
+                  .nav-controls {
+                           display: flex;
+                           align-items: center;
+                           gap: 12px;
+                           flex: none;
+                  }
+
+                  .lang-select {
+                           appearance: none;
+                           -webkit-appearance: none;
+                           padding: 8px 30px 8px 12px;
+                           border: 1px solid var(--line);
+                           background: var(--panel) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6"><path d="M0 0l5 6 5-6z" fill="%238ea297"/></svg>') no-repeat right 11px center;
+                           color: var(--white);
+                           font-family: 'DM Sans', sans-serif;
+                           font-size: 12px;
+                           border-radius: 3px;
+                           cursor: pointer;
+                  }
+
+                  .lang-select:hover {
+                           border-color: var(--line-strong);
+                  }
+
+                  .login-btn {
+                           padding: 9px 20px;
+                           border: 1px solid var(--green);
+                           background: var(--green);
+                           color: var(--black);
+                           font-family: 'Manrope', sans-serif;
+                           font-weight: 700;
+                           font-size: 12.5px;
+                           letter-spacing: .04em;
+                           border-radius: 3px;
+                           cursor: pointer;
+                           box-shadow: 0 0 20px rgba(98, 255, 147, .18);
+                           transition: box-shadow .15s ease, background .15s ease;
+                  }
+
+                  .login-btn:hover {
+                           background: var(--green2);
+                           box-shadow: 0 0 30px rgba(98, 255, 147, .34);
+                  }
+
+                  .nav-toggle {
+                           display: none;
+                           width: 36px;
+                           height: 36px;
+                           border: 1px solid var(--line);
+                           background: var(--panel);
+                           border-radius: 3px;
+                           color: var(--green);
+                           font-size: 16px;
+                           cursor: pointer;
+                  }
+
+                  /* ---------- Shell ---------- */
+                  .page-shell {
+                           width: min(1360px, 92vw);
+                           margin: 0 auto;
+                  }
+
+                  .page-head {
+                           padding: 46px 0 30px;
+                           border-bottom: 1px solid var(--line);
+                  }
+
+                  .eyebrow {
+                           display: inline-block;
+                           color: var(--green);
+                           font-family: 'Manrope', sans-serif;
+                           font-size: 10.5px;
+                           font-weight: 700;
+                           letter-spacing: .2em;
+                           margin: 0 0 12px;
+                  }
+
+                  .page-head h1 {
+                           margin: 0 0 10px;
+                           color: var(--white);
+                           font-family: 'Playfair Display', Georgia, serif;
+                           font-size: clamp(30px, 3.6vw, 44px);
+                           letter-spacing: -.02em;
+                  }
+
+                  .page-head p {
+                           margin: 0;
+                           max-width: 620px;
+                           color: var(--muted);
+                           font-size: 15px;
+                           line-height: 1.7;
+                  }
+
+                  /* ---------- Layout: workspace + sidebar ---------- */
+                  .workspace {
+                           display: grid;
+                           grid-template-columns: 1fr 320px;
+                           gap: 26px;
+                           padding: 34px 0 90px;
+                           align-items: start;
+                  }
+
+                  .main-col {
+                           display: flex;
+                           flex-direction: column;
+                           gap: 26px;
+                           min-width: 0;
+                  }
+
+                  .panel {
+                           position: relative;
+                           padding: 28px 30px;
+                           border: 1px solid var(--line);
+                           background: linear-gradient(150deg, rgba(19, 29, 22, .9), rgba(7, 11, 8, .95));
+                           box-shadow: 0 18px 50px rgba(0, 0, 0, .3);
+                  }
+
+                  .panel:before {
+                           position: absolute;
+                           top: 0;
+                           right: 28px;
+                           left: 28px;
+                           height: 2px;
+                           content: '';
+                           background: linear-gradient(90deg, transparent, var(--green), transparent);
+                           box-shadow: 0 0 18px var(--green);
+                  }
+
+                  .panel-head {
+                           display: flex;
+                           align-items: center;
+                           justify-content: space-between;
+                           gap: 10px;
+                           margin-bottom: 22px;
+                  }
+
+                  .panel-head h2 {
+                           margin: 0;
+                           color: var(--white);
+                           font-family: 'Manrope', sans-serif;
+                           font-size: 18px;
+                           letter-spacing: -.01em;
+                  }
+
+                  .panel-head .step-tag {
+                           color: var(--amber);
+                           font-family: 'Manrope', sans-serif;
+                           font-size: 10.5px;
+                           letter-spacing: .1em;
+                  }
+
+                  /* ---------- Form ---------- */
+                  .form-grid {
+                           display: grid;
+                           grid-template-columns: repeat(3, 1fr);
+                           gap: 18px 20px;
+                  }
+
+                  .field {
+                           display: flex;
+                           flex-direction: column;
+                           gap: 7px;
+                  }
+
+                  .field.span-2 {
+                           grid-column: span 2;
+                  }
+
+                  .field.span-3 {
+                           grid-column: span 3;
+                  }
+
+                  .field label {
+                           color: var(--white);
+                           font-family: 'Manrope', sans-serif;
+                           font-size: 12.5px;
+                           font-weight: 700;
+                           letter-spacing: .02em;
+                  }
+
+                  .field .hint {
+                           color: var(--muted);
+                           font-size: 11px;
+                           margin-top: -3px;
+                  }
+
+                  input[type=text],
+                  input[type=number],
+                  select {
+                           width: 100%;
+                           padding: 11px 13px;
+                           border: 1px solid var(--line);
+                           border-radius: 3px;
+                           background: rgba(5, 8, 6, .72);
+                           color: var(--white);
+                           font-family: 'DM Sans', sans-serif;
+                           font-size: 13.5px;
+                  }
+
+                  input[type=text]::placeholder,
+                  input[type=number]::placeholder {
+                           color: #5f7264;
+                  }
+
+                  input:focus,
+                  select:focus {
+                           border-color: var(--green);
+                           outline: 1px solid var(--green);
+                           box-shadow: 0 0 18px rgba(98, 255, 147, .13);
+                  }
+
+                  select {
+                           appearance: none;
+                           -webkit-appearance: none;
+                           background: rgba(5, 8, 6, .72) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6"><path d="M0 0l5 6 5-6z" fill="%238ea297"/></svg>') no-repeat right 14px center;
+                  }
+
+                  .unit-row {
+                           display: flex;
+                           gap: 8px;
+                  }
+
+                  .unit-row input {
+                           flex: 1;
+                  }
+
+                  .unit-row select {
+                           width: 92px;
+                           flex: none;
+                  }
+
+                  .ph-row {
+                           display: flex;
+                           align-items: center;
+                           gap: 12px;
+                  }
+
+                  .ph-row input[type=range] {
+                           flex: 1;
+                           accent-color: var(--green);
+                  }
+
+                  .ph-value {
+                           min-width: 46px;
+                           padding: 6px 0;
+                           text-align: center;
+                           border: 1px solid var(--line);
+                           color: var(--green2);
+                           font-family: 'Manrope', sans-serif;
+                           font-weight: 700;
+                           font-size: 13px;
+                           border-radius: 3px;
+                  }
+
+                  /* ---------- Map ---------- */
+                  .map-wrap {
+                           grid-column: span 3;
+                  }
+
+                  #stateMap {
+                           height: 260px;
+                           width: 100%;
+                           border: 1px solid var(--line);
+                           filter: saturate(.75) brightness(.9);
+                  }
+
+                  .map-caption {
+                           display: flex;
+                           align-items: center;
+                           gap: 8px;
+                           margin-top: 10px;
+                           color: var(--muted);
+                           font-size: 11.5px;
+                  }
+
+                  .map-caption .mark {
+                           color: var(--amber);
+                  }
+
+                  .form-actions {
+                           display: flex;
+                           align-items: center;
+                           gap: 14px;
+                           margin-top: 8px;
+                           grid-column: span 3;
+                  }
+
+                  .btn-primary {
+                           padding: 13px 26px;
+                           border: 1px solid var(--green);
+                           background: var(--green);
+                           color: var(--black);
+                           font-family: 'Manrope', sans-serif;
+                           font-weight: 700;
+                           font-size: 13.5px;
+                           letter-spacing: .03em;
+                           border-radius: 3px;
+                           cursor: pointer;
+                           box-shadow: 0 0 22px rgba(98, 255, 147, .2);
+                           display: inline-flex;
+                           align-items: center;
+                           gap: 9px;
+                           transition: box-shadow .15s ease, background .15s ease;
+                  }
+
+                  .btn-primary:hover {
+                           background: var(--green2);
+                           box-shadow: 0 0 32px rgba(98, 255, 147, .38);
+                  }
+
+                  .btn-primary[disabled] {
+                           opacity: .6;
+                           cursor: progress;
+                  }
+
+                  .btn-ghost {
+                           padding: 12px 20px;
+                           border: 1px solid var(--line);
+                           background: transparent;
+                           color: var(--muted);
+                           font-family: 'Manrope', sans-serif;
+                           font-weight: 700;
+                           font-size: 12.5px;
+                           letter-spacing: .03em;
+                           border-radius: 3px;
+                           cursor: pointer;
+                           transition: border-color .15s ease, color .15s ease;
+                  }
+
+                  .btn-ghost:hover {
+                           border-color: var(--line-strong);
+                           color: var(--white);
+                  }
+
+                  .btn-ghost[disabled] {
+                           opacity: .5;
+                           cursor: not-allowed;
+                  }
+
+                  .spinner {
+                           width: 14px;
+                           height: 14px;
+                           border-radius: 50%;
+                           border: 2px solid rgba(5, 8, 6, .35);
+                           border-top-color: var(--black);
+                           animation: spin .7s linear infinite;
+                           display: none;
+                  }
+
+                  .btn-primary.loading .spinner {
+                           display: inline-block;
+                  }
+
+                  .btn-primary.loading .btn-label {
+                           opacity: .75;
+                  }
+
+                  @keyframes spin {
+                           to {
+                                    transform: rotate(360deg);
+                           }
+                  }
+
+                  /* ---------- Report ---------- */
+                  #reportSection {
+                           display: none;
+                           flex-direction: column;
+                           gap: 22px;
+                           animation: reveal .5s ease;
+                  }
+
+                  #reportSection.visible {
+                           display: flex;
+                  }
+
+                  @keyframes reveal {
+                           from {
+                                    opacity: 0;
+                                    transform: translateY(10px);
+                           }
+
+                           to {
+                                    opacity: 1;
+                                    transform: translateY(0);
+                           }
+                  }
+
+                  .report-toolbar {
+                           display: flex;
+                           align-items: center;
+                           justify-content: space-between;
+                           gap: 14px;
+                           flex-wrap: wrap;
+                  }
+
+                  .report-toolbar .live-tag {
+                           display: flex;
+                           align-items: center;
+                           gap: 6px;
+                           padding: 5px 10px;
+                           border: 1px solid var(--line);
+                           border-radius: 20px;
+                           color: var(--green2);
+                           font-family: 'Manrope', sans-serif;
+                           font-size: 9.5px;
+                           letter-spacing: .08em;
+                           font-weight: 700;
+                  }
+
+                  .live-dot {
+                           width: 5px;
+                           height: 5px;
+                           border-radius: 50%;
+                           background: var(--green);
+                           box-shadow: 0 0 6px var(--green);
+                           animation: pulse 2.4s ease-in-out infinite;
+                  }
+
+                  .report-actions {
+                           display: flex;
+                           gap: 10px;
+                  }
+
+                  .stat-grid {
+                           display: grid;
+                           grid-template-columns: repeat(4, 1fr);
+                           gap: 1px;
+                           border: 1px solid var(--line);
+                           background: var(--line);
+                  }
+
+                  .stat-cell {
+                           padding: 22px 20px;
+                           background: var(--panel2);
+                  }
+
+                  .stat-cell .stat-label {
+                           color: var(--muted);
+                           font-size: 10.5px;
+                           letter-spacing: .06em;
+                           font-family: 'Manrope', sans-serif;
+                           margin-bottom: 8px;
+                  }
+
+                  .stat-cell .stat-num {
+                           color: var(--green2);
+                           font-family: 'Playfair Display', serif;
+                           font-size: 26px;
+                           letter-spacing: -.01em;
+                  }
+
+                  .stat-cell .stat-sub {
+                           margin-top: 4px;
+                           color: var(--muted);
+                           font-size: 11px;
+                  }
+
+                  .chart-grid {
+                           display: grid;
+                           grid-template-columns: 1.4fr 1fr;
+                           gap: 20px;
+                  }
+
+                  .chart-grid .chart-panel.wide {
+                           grid-column: span 2;
+                  }
+
+                  .chart-panel {
+                           padding: 22px 24px;
+                           border: 1px solid var(--line);
+                           background: var(--panel2);
+                  }
+
+                  .chart-panel h3 {
+                           margin: 0 0 4px;
+                           color: var(--white);
+                           font-family: 'Manrope', sans-serif;
+                           font-size: 14px;
+                  }
+
+                  .chart-panel .chart-note {
+                           margin: 0 0 14px;
+                           color: var(--muted);
+                           font-size: 11px;
+                  }
+
+                  .chart-panel canvas {
+                           max-height: 240px;
+                  }
+
+                  .factor-table {
+                           width: 100%;
+                           border-collapse: collapse;
+                           font-size: 12.5px;
+                  }
+
+                  .factor-table th {
+                           text-align: left;
+                           color: var(--muted);
+                           font-family: 'Manrope', sans-serif;
+                           font-size: 10.5px;
+                           letter-spacing: .05em;
+                           padding: 8px 10px;
+                           border-bottom: 1px solid var(--line);
+                  }
+
+                  .factor-table td {
+                           padding: 10px;
+                           border-bottom: 1px solid var(--line);
+                           color: var(--white);
+                  }
+
+                  .factor-table td.pos {
+                           color: var(--green2);
+                  }
+
+                  .factor-table td.neg {
+                           color: var(--red-soft);
+                  }
+
+                  .source-note {
+                           display: flex;
+                           gap: 10px;
+                           padding: 14px 18px;
+                           border: 1px solid var(--line);
+                           border-left: 3px solid var(--amber);
+                           background: linear-gradient(100deg, rgba(231, 200, 94, .07), transparent);
+                           font-size: 12px;
+                           color: var(--muted);
+                           line-height: 1.6;
+                  }
+
+                  .source-note .mark {
+                           color: var(--amber);
+                           flex: none;
+                  }
+
+                  .source-note strong {
+                           color: var(--white);
+                  }
+
+                  /* ---------- Sidebar (history) ---------- */
+                  .sidebar {
+                           position: sticky;
+                           top: 96px;
+                           display: flex;
+                           flex-direction: column;
+                           gap: 16px;
+                  }
+
+                  .history-panel {
+                           padding: 20px 20px 8px;
+                           border: 1px solid var(--line);
+                           background: var(--panel2);
+                  }
+
+                  .history-head {
+                           display: flex;
+                           align-items: center;
+                           justify-content: space-between;
+                           margin-bottom: 4px;
+                  }
+
+                  .history-head h3 {
+                           margin: 0;
+                           color: var(--white);
+                           font-family: 'Manrope', sans-serif;
+                           font-size: 13.5px;
+                  }
+
+                  .history-head span {
+                           color: var(--muted);
+                           font-size: 10.5px;
+                  }
+
+                  .history-list {
+                           display: flex;
+                           flex-direction: column;
+                           gap: 8px;
+                           margin-top: 14px;
+                           max-height: 560px;
+                           overflow-y: auto;
+                           padding-bottom: 12px;
+                  }
+
+                  .history-item {
+                           display: flex;
+                           flex-direction: column;
+                           gap: 3px;
+                           padding: 12px 13px;
+                           border: 1px solid var(--line);
+                           background: rgba(5, 8, 6, .5);
+                           border-radius: 3px;
+                           cursor: pointer;
+                           transition: border-color .15s ease, background .15s ease;
+                  }
+
+                  .history-item:hover,
+                  .history-item.active {
+                           border-color: var(--line-strong);
+                           background: rgba(98, 255, 147, .06);
+                  }
+
+                  .history-item .h-top {
+                           display: flex;
+                           align-items: center;
+                           justify-content: space-between;
+                  }
+
+                  .history-item .h-place {
+                           color: var(--white);
+                           font-family: 'Manrope', sans-serif;
+                           font-size: 12.5px;
+                           font-weight: 700;
+                  }
+
+                  .history-item .h-yield {
+                           color: var(--green2);
+                           font-family: 'Manrope', sans-serif;
+                           font-size: 12px;
+                           font-weight: 700;
+                  }
+
+                  .history-item .h-meta {
+                           color: var(--muted);
+                           font-size: 10.5px;
+                  }
+
+                  .history-empty {
+                           color: var(--muted);
+                           font-size: 12px;
+                           padding: 18px 4px 26px;
+                           text-align: center;
+                           line-height: 1.7;
+                  }
+
+                  .history-error {
+                           color: var(--red-soft);
+                           font-size: 11.5px;
+                           padding: 10px 4px;
+                  }
+
+                  .tip-panel {
+                           padding: 18px 20px;
+                           border: 1px solid var(--line);
+                           background: linear-gradient(150deg, rgba(98, 255, 147, .06), transparent);
+                           font-size: 12px;
+                           color: var(--muted);
+                           line-height: 1.7;
+                  }
+
+                  .tip-panel strong {
+                           color: var(--green2);
+                           display: block;
+                           margin-bottom: 6px;
+                           font-family: 'Manrope', sans-serif;
+                           font-size: 12.5px;
+                  }
+
+                  /* ---------- Footer ---------- */
+                  .footer {
+                           border-top: 1px solid var(--line);
+                           background: var(--black);
+                           padding: 26px 0;
+                           text-align: center;
+                           color: #6d7e70;
+                           font-size: 11.5px;
+                  }
+
+                  /* ---------- Responsive ---------- */
+                  @media (max-width: 1080px) {
+                           .workspace {
+                                    grid-template-columns: 1fr;
+                           }
+
+                           .sidebar {
+                                    position: static;
+                           }
+
+                           .chart-grid {
+                                    grid-template-columns: 1fr;
+                           }
+
+                           .chart-grid .chart-panel.wide {
+                                    grid-column: span 1;
+                           }
+
+                           .stat-grid {
+                                    grid-template-columns: repeat(2, 1fr);
+                           }
+                  }
+
+                  @media (max-width: 860px) {
+                           .nav-links {
+                                    display: none;
+                           }
+
+                           .nav-toggle {
+                                    display: block;
+                           }
+
+                           .form-grid {
+                                    grid-template-columns: repeat(2, 1fr);
+                           }
+
+                           .field.span-2,
+                           .field.span-3,
+                           .map-wrap,
+                           .form-actions {
+                                    grid-column: span 2;
+                           }
+                  }
+
+                  @media (max-width: 560px) {
+                           .form-grid {
+                                    grid-template-columns: 1fr;
+                           }
+
+                           .field.span-2,
+                           .field.span-3,
+                           .map-wrap,
+                           .form-actions {
+                                    grid-column: span 1;
+                           }
+
+                           .panel {
+                                    padding: 22px 18px;
+                           }
+
+                           .stat-grid {
+                                    grid-template-columns: 1fr 1fr;
+                           }
+                  }
+
+                  @media (prefers-reduced-motion: reduce) {
+
+                           .ribbon .dot,
+                           .live-dot,
+                           .spinner {
+                                    animation: none !important;
+                           }
+
+                           #reportSection {
+                                    animation: none !important;
+                           }
+
+                           html {
+                                    scroll-behavior: auto;
+                           }
+                  }
+         </style>
+</head>
+
+<body>
+
+         <div class="ribbon">
+                  <span class="dot" aria-hidden="true"></span>
+                  <span>Advisory tool for field decisions &mdash; <strong>always confirm with your local Krishi Vigyan
+                                    Kendra or agriculture officer</strong> before acting on any recommendation.</span>
+         </div>
+
+         <header class="topbar">
+                  <a class="brand-mark" href="{{ url_for('home') }}">
+                           <span class="brand-glyph" aria-hidden="true">D</span>
+                           <span class="brand-text">
+                                    <span class="brand">DRONACHARYA</span>
+                                    <span class="brand-tagline">Field Intelligence Network</span>
+                           </span>
+                  </a>
+                  <nav>
+                           <ul class="nav-links">
+                                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                                    <li><a href="{{ url_for('field_visit') }}">Field Visit</a></li>
+                                    <li><a class="active" href="{{ url_for('estimate_yield') }}">Estimate Yield</a></li>
+                                    <li><a href="{{ url_for('store') }}">Store</a></li>
+                           </ul>
+                  </nav>
+                  <div class="nav-controls">
+                           <select class="lang-select" aria-label="Select language">
+                                    <option value="en">English</option>
+                                    <option value="hi">हिंदी (Hindi)</option>
+                                    <option value="bn">বাংলা (Bengali)</option>
+                                    <option value="ta">தமிழ் (Tamil)</option>
+                                    <option value="te">తెలుగు (Telugu)</option>
+                                    <option value="mr">मराठी (Marathi)</option>
+                                    <option value="gu">ગુજરાતી (Gujarati)</option>
+                                    <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                                    <option value="ml">മലയാളം (Malayalam)</option>
+                                    <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+                                    <option value="or">ଓଡ଼ିଆ (Odia)</option>
+                                    <option value="as">অসমীয়া (Assamese)</option>
+                           </select>
+                           <a class="login-btn" href="{{ url_for('login') }}">Log in</a>
+                           <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+                  </div>
+         </header>
+
+         <main>
+                  <div class="page-shell page-head">
+                           <p class="eyebrow">ESTIMATE YIELD</p>
+                           <h1>Turn field conditions into a harvest outlook.</h1>
+                           <p>Enter your field's irrigation, area, soil and pH &mdash; or pick your state on the map
+                                    &mdash; and DRONACHARYA builds a confidence-ranged yield report, live, using
+                                    reference agronomy data and real-time weather.</p>
+                  </div>
+
+                  <div class="page-shell workspace">
+                           <div class="main-col">
+
+                                    <!-- ================= INPUT PANEL ================= -->
+                                    <section class="panel" id="inputPanel">
+                                             <div class="panel-head">
+                                                      <h2>Field parameters</h2>
+                                                      <span class="step-tag">STEP 01 OF 02</span>
+                                             </div>
+
+                                             <form id="yieldForm" class="form-grid" novalidate>
+                                                      <div class="field span-2">
+                                                               <label for="place">Place / district</label>
+                                                               <input type="text" id="place" name="place"
+                                                                        placeholder="e.g. Ludhiana, Punjab" required>
+                                                               <span class="hint">Type a place, or select your state on
+                                                                        the map below.</span>
+                                                      </div>
+
+                                                      <div class="field">
+                                                               <label for="crop">Primary crop</label>
+                                                               <select id="crop" name="crop" required>
+                                                                        <option value="rice">Rice</option>
+                                                                        <option value="wheat" selected>Wheat</option>
+                                                                        <option value="maize">Maize</option>
+                                                                        <option value="cotton">Cotton</option>
+                                                                        <option value="sugarcane">Sugarcane</option>
+                                                                        <option value="pulses">Pulses</option>
+                                                               </select>
+                                                      </div>
+
+                                                      <div class="field">
+                                                               <label for="area">Field area</label>
+                                                               <div class="unit-row">
+                                                                        <input type="number" id="area" name="area"
+                                                                                 min="0.1" step="0.1" value="2"
+                                                                                 required>
+                                                                        <select id="areaUnit" name="areaUnit">
+                                                                                 <option value="acre" selected>Acre
+                                                                                 </option>
+                                                                                 <option value="hectare">Hectare
+                                                                                 </option>
+                                                                        </select>
+                                                               </div>
+                                                      </div>
+
+                                                      <div class="field">
+                                                               <label for="irrigation">Irrigation type</label>
+                                                               <select id="irrigation" name="irrigation" required>
+                                                                        <option value="drip">Drip</option>
+                                                                        <option value="sprinkler">Sprinkler</option>
+                                                                        <option value="canal" selected>Canal / flood
+                                                                        </option>
+                                                                        <option value="tubewell">Groundwater / tubewell
+                                                                        </option>
+                                                                        <option value="rainfed">Rainfed (none)</option>
+                                                               </select>
+                                                      </div>
+
+                                                      <div class="field">
+                                                               <label for="soilType">Soil type</label>
+                                                               <select id="soilType" name="soilType" required>
+                                                                        <option value="alluvial" selected>Alluvial
+                                                                        </option>
+                                                                        <option value="black">Black (Regur)</option>
+                                                                        <option value="red">Red &amp; Yellow</option>
+                                                                        <option value="laterite">Laterite</option>
+                                                                        <option value="arid">Arid / Desert</option>
+                                                                        <option value="mountain">Mountain / Forest
+                                                                        </option>
+                                                                        <option value="saline">Saline / Alkaline
+                                                                        </option>
+                                                               </select>
+                                                               <span class="hint">Auto-filled when you pick a state on
+                                                                        the map.</span>
+                                                      </div>
+
+                                                      <div class="field">
+                                                               <label for="ph">Soil pH</label>
+                                                               <div class="ph-row">
+                                                                        <input type="range" id="ph" name="ph" min="3"
+                                                                                 max="10" step="0.1" value="6.5">
+                                                                        <span class="ph-value" id="phValue">6.5</span>
+                                                               </div>
+                                                      </div>
+
+                                                      <div class="field map-wrap">
+                                                               <label>Select your state <span
+                                                                                 style="font-weight:400;color:var(--muted);">(OpenStreetMap)</span></label>
+                                                               <div id="stateMap"></div>
+                                                               <p class="map-caption"><span class="mark"
+                                                                                 aria-hidden="true">&#9679;</span>Click
+                                                                        a marker to auto-fill place and soil type from
+                                                                        the reference soil map.</p>
+                                                      </div>
+
+                                                      <div class="form-actions">
+                                                               <button type="submit" class="btn-primary"
+                                                                        id="generateBtn">
+                                                                        <span class="spinner" aria-hidden="true"></span>
+                                                                        <span class="btn-label">Generate live
+                                                                                 report</span>
+                                                               </button>
+                                                               <button type="button" class="btn-ghost"
+                                                                        id="resetBtn">Reset fields</button>
+                                                               <span class="hint" id="formError"
+                                                                        style="color:var(--red-soft);"></span>
+                                                      </div>
+                                             </form>
+                                    </section>
+
+                                    <!-- ================= REPORT SECTION ================= -->
+                                    <section class="panel" id="reportSection">
+                                             <div class="report-toolbar">
+                                                      <div class="panel-head" style="margin:0;">
+                                                               <h2 id="reportTitle">Your yield report</h2>
+                                                      </div>
+                                                      <div style="display:flex;align-items:center;gap:12px;">
+                                                               <span class="live-tag"><span class="live-dot"
+                                                                                 aria-hidden="true"></span>GENERATED
+                                                                        LIVE</span>
+                                                               <div class="report-actions">
+                                                                        <button class="btn-ghost" id="downloadCsvBtn"
+                                                                                 disabled>Download CSV</button>
+                                                               </div>
+                                                      </div>
+                                             </div>
+
+                                             <div class="stat-grid" id="statGrid"></div>
+
+                                             <div class="chart-grid" style="margin-top:22px;">
+                                                      <div class="chart-panel wide">
+                                                               <h3>30-day rainfall trend</h3>
+                                                               <p class="chart-note">Live daily precipitation for the
+                                                                        selected location.</p>
+                                                               <canvas id="rainfallChart"></canvas>
+                                                      </div>
+                                                      <div class="chart-panel">
+                                                               <h3>Yield-driving factors</h3>
+                                                               <p class="chart-note">Multiplier applied by each
+                                                                        condition.</p>
+                                                               <canvas id="factorChart"></canvas>
+                                                      </div>
+                                                      <div class="chart-panel">
+                                                               <h3>Soil suitability profile</h3>
+                                                               <p class="chart-note">Reference N-P-K &amp; retention
+                                                                        index for this soil type.</p>
+                                                               <canvas id="soilRadarChart"></canvas>
+                                                      </div>
+                                                      <div class="chart-panel">
+                                                               <h3>Confidence band</h3>
+                                                               <p class="chart-note">Share of the estimate range.</p>
+                                                               <canvas id="confidenceChart"></canvas>
+                                                      </div>
+                                             </div>
+
+                                             <div class="chart-panel" style="margin-top:2px;">
+                                                      <h3>Factor breakdown</h3>
+                                                      <p class="chart-note">How each input adjusted the base yield for
+                                                               this crop and soil.</p>
+                                                      <table class="factor-table">
+                                                               <thead>
+                                                                        <tr>
+                                                                                 <th>Factor</th>
+                                                                                 <th>Your input</th>
+                                                                                 <th>Effect on yield</th>
+                                                                                 <th>Multiplier</th>
+                                                                        </tr>
+                                                               </thead>
+                                                               <tbody id="factorTableBody"></tbody>
+                                                      </table>
+                                             </div>
+
+                                             <div class="source-note">
+                                                      <span class="mark" aria-hidden="true">&#9432;</span>
+                                                      <span><strong>Data sources:</strong> rainfall is fetched live from
+                                                               the Open-Meteo weather archive for your location's
+                                                               coordinates, on the server. Soil-type-by-state and base
+                                                               crop yield figures are drawn from a static reference
+                                                               table aligned with ICAR / Soil Health Card
+                                                               classifications, refreshed periodically &mdash; not a
+                                                               live government feed. Treat this as decision support, and
+                                                               confirm with your local agriculture office before
+                                                               acting.</span>
+                                             </div>
+                                    </section>
+
+                           </div>
+
+                           <!-- ================= SIDEBAR: HISTORY ================= -->
+                           <aside class="sidebar">
+                                    <div class="history-panel">
+                                             <div class="history-head">
+                                                      <h3>Your report history</h3>
+                                                      <span id="historyCount">0</span>
+                                             </div>
+                                             <div class="history-list" id="historyList">
+                                                      <div class="history-empty" id="historyEmpty">No reports yet.
+                                                               Generate your first yield estimate to see it saved here.
+                                                      </div>
+                                             </div>
+                                    </div>
+                                    <div class="tip-panel">
+                                             <strong>Reading your report</strong>
+                                             Yield ranges widen when rainfall data can't be fetched for a location, or
+                                             when pH sits far outside the ideal range for your crop.
+                                    </div>
+                           </aside>
+                  </div>
+         </main>
+
+         <footer class="footer">&copy; 2026 DRONACHARYA &middot; Better cultivation begins with better signals.</footer>
+
+         <script>
+                  (function () {
+                           "use strict";
+
+                           /* ---------------- Reference dataset (map markers only — calculation lives on the server) ---------------- */
+                           var STATE_SOIL = [
+                                    { name: "Punjab", lat: 31.147, lng: 75.342, soil: "alluvial" },
+                                    { name: "Haryana", lat: 29.058, lng: 76.085, soil: "alluvial" },
+                                    { name: "Uttar Pradesh", lat: 26.847, lng: 80.947, soil: "alluvial" },
+                                    { name: "Bihar", lat: 25.096, lng: 85.313, soil: "alluvial" },
+                                    { name: "West Bengal", lat: 22.987, lng: 87.855, soil: "alluvial" },
+                                    { name: "Maharashtra", lat: 19.751, lng: 75.713, soil: "black" },
+                                    { name: "Madhya Pradesh", lat: 22.972, lng: 78.656, soil: "black" },
+                                    { name: "Gujarat", lat: 22.258, lng: 71.192, soil: "black" },
+                                    { name: "Karnataka", lat: 15.317, lng: 75.714, soil: "red" },
+                                    { name: "Tamil Nadu", lat: 11.127, lng: 78.657, soil: "red" },
+                                    { name: "Andhra Pradesh", lat: 15.912, lng: 79.740, soil: "red" },
+                                    { name: "Telangana", lat: 18.113, lng: 79.019, soil: "red" },
+                                    { name: "Kerala", lat: 10.850, lng: 76.271, soil: "laterite" },
+                                    { name: "Odisha", lat: 20.951, lng: 85.098, soil: "laterite" },
+                                    { name: "Rajasthan", lat: 27.023, lng: 74.219, soil: "arid" },
+                                    { name: "Himachal Pradesh", lat: 31.101, lng: 77.173, soil: "mountain" },
+                                    { name: "Uttarakhand", lat: 30.066, lng: 79.019, soil: "mountain" },
+                                    { name: "Assam", lat: 26.201, lng: 92.937, soil: "alluvial" }
+                           ];
+
+                           var CROP_LABELS = { rice: "Rice", wheat: "Wheat", maize: "Maize", cotton: "Cotton", sugarcane: "Sugarcane", pulses: "Pulses" };
+                           var SOIL_LABELS = { alluvial: "Alluvial", black: "Black (Regur)", red: "Red & Yellow", laterite: "Laterite", arid: "Arid / Desert", mountain: "Mountain / Forest", saline: "Saline / Alkaline" };
+                           var IRRIGATION_LABELS = { drip: "Drip", sprinkler: "Sprinkler", canal: "Canal / flood", tubewell: "Groundwater / tubewell", rainfed: "Rainfed (none)" };
+                           var SOIL_RADAR = { alluvial: [80, 65, 70, 85], black: [60, 55, 90, 90], red: [45, 40, 55, 50], laterite: [40, 35, 45, 60], arid: [25, 20, 20, 30], mountain: [55, 45, 60, 70], saline: [30, 25, 35, 40] };
+
+                           /* ---------------- Map ---------------- */
+                           var map = L.map('stateMap', { scrollWheelZoom: false }).setView([22.5, 79.5], 4.4);
+                           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                                    maxZoom: 8
+                           }).addTo(map);
+
+                           var lastCoords = null;
+
+                           STATE_SOIL.forEach(function (s) {
+                                    var marker = L.circleMarker([s.lat, s.lng], {
+                                             radius: 7, color: '#5eeb8a', weight: 1.5, fillColor: '#5eeb8a', fillOpacity: 0.55
+                                    }).addTo(map);
+                                    marker.bindTooltip(s.name + " — " + SOIL_LABELS[s.soil], { direction: 'top' });
+                                    marker.on('click', function () {
+                                             document.getElementById('place').value = s.name;
+                                             document.getElementById('soilType').value = s.soil;
+                                             lastCoords = { lat: s.lat, lng: s.lng };
+                                    });
+                           });
+
+                           /* ---------------- pH slider ---------------- */
+                           var phInput = document.getElementById('ph');
+                           var phValue = document.getElementById('phValue');
+                           phInput.addEventListener('input', function () { phValue.textContent = parseFloat(phInput.value).toFixed(1); });
+
+                           /* ---------------- API helpers ---------------- */
+                           function apiPost(url, body) {
+                                    return fetch(url, {
+                                             method: 'POST', credentials: 'same-origin',
+                                             headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+                                    }).then(function (r) { if (!r.ok) { throw new Error('Request failed (' + r.status + ')'); } return r.json(); });
+                           }
+                           function apiGet(url) {
+                                    return fetch(url, { credentials: 'same-origin' }).then(function (r) { if (!r.ok) { throw new Error('Request failed (' + r.status + ')'); } return r.json(); });
+                           }
+
+                           var currentReportId = null;
+
+                           /* ---------------- History (backed by Flask + SQLite) ---------------- */
+                           function refreshHistory() {
+                                    var container = document.getElementById('historyList');
+                                    var empty = document.getElementById('historyEmpty');
+                                    apiGet('/api/history').then(function (list) {
+                                             document.getElementById('historyCount').textContent = list.length;
+                                             container.querySelectorAll('.history-item, .history-error').forEach(function (el) { el.remove(); });
+                                             if (!list.length) { empty.style.display = 'block'; return; }
+                                             empty.style.display = 'none';
+                                             list.forEach(function (r) {
+                                                      var item = document.createElement('div');
+                                                      item.className = 'history-item';
+                                                      if (r.id === currentReportId) item.classList.add('active');
+                                                      item.innerHTML = '<div class="h-top"><span class="h-place">' + escapeHtml(r.place) + '</span>' +
+                                                               '<span class="h-yield">' + r.total_yield.toFixed(1) + ' qtl</span></div>' +
+                                                               '<span class="h-meta">' + (CROP_LABELS[r.crop] || r.crop) + ' &middot; ' + new Date(r.created_at).toLocaleString() + '</span>';
+                                                      item.addEventListener('click', function () {
+                                                               container.querySelectorAll('.history-item').forEach(function (el) { el.classList.remove('active'); });
+                                                               item.classList.add('active');
+                                                               loadHistoryReport(r.id);
+                                                      });
+                                                      container.appendChild(item);
+                                             });
+                                    }).catch(function () {
+                                             empty.style.display = 'none';
+                                             container.querySelectorAll('.history-item, .history-error').forEach(function (el) { el.remove(); });
+                                             var err = document.createElement('div');
+                                             err.className = 'history-error';
+                                             err.textContent = 'Could not load history from the server.';
+                                             container.appendChild(err);
+                                    });
+                           }
+
+                           function loadHistoryReport(id) {
+                                    apiGet('/api/history/' + id).then(function (report) {
+                                             currentReportId = id;
+                                             renderReport(report, false);
+                                    }).catch(function () { /* silent — history list stays usable */ });
+                           }
+
+                           function escapeHtml(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+                           /* ---------------- Chart instances ---------------- */
+                           var charts = {};
+                           function makeChart(id, config) {
+                                    var ctx = document.getElementById(id).getContext('2d');
+                                    if (charts[id]) charts[id].destroy();
+                                    charts[id] = new Chart(ctx, config);
+                           }
+
+                           var GRID_COLOR = 'rgba(112,255,150,.12)';
+                           var TEXT_COLOR = '#8ea297';
+
+                           function renderReport(report, isFresh) {
+                                    currentReportId = report.id;
+                                    document.getElementById('reportSection').classList.add('visible');
+                                    document.getElementById('reportTitle').textContent = report.place + ' \u2014 ' + (CROP_LABELS[report.crop] || report.crop) + ' yield report';
+                                    document.getElementById('downloadCsvBtn').disabled = false;
+
+                                    var statGrid = document.getElementById('statGrid');
+                                    statGrid.innerHTML =
+                                             stat('Estimated yield / acre', report.perAcre.toFixed(1) + ' qtl', 'Per-acre outlook') +
+                                             stat('Total estimated yield', report.totalYield.toFixed(1) + ' qtl', report.areaAcres.toFixed(1) + ' acre(s)') +
+                                             stat('Confidence range', report.low.toFixed(1) + '\u2013' + report.high.toFixed(1) + ' qtl', 'Per acre, reference band') +
+                                             stat('Rainfall (30d)', report.rainfallTotal !== null ? report.rainfallTotal.toFixed(0) + ' mm' : 'Unavailable', report.rainfallSource);
+
+                                    function stat(label, num, sub) {
+                                             return '<div class="stat-cell"><div class="stat-label">' + label.toUpperCase() + '</div>' +
+                                                      '<div class="stat-num">' + num + '</div><div class="stat-sub">' + sub + '</div></div>';
+                                    }
+
+                                    makeChart('rainfallChart', {
+                                             type: 'line',
+                                             data: { labels: report.rainfallDates || [], datasets: [{ label: 'Precipitation (mm)', data: report.rainfallValues || [], borderColor: '#5eeb8a', backgroundColor: 'rgba(94,235,138,.12)', fill: true, tension: 0.35, pointRadius: 0 }] },
+                                             options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: TEXT_COLOR, maxTicksLimit: 6 }, grid: { color: GRID_COLOR } }, y: { ticks: { color: TEXT_COLOR }, grid: { color: GRID_COLOR } } } }
+                                    });
+
+                                    makeChart('factorChart', {
+                                             type: 'bar',
+                                             data: { labels: ['Soil', 'Irrigation', 'pH', 'Weather'], datasets: [{ data: [report.factors.soil, report.factors.irrigation, report.factors.ph, report.factors.weather], backgroundColor: ['#5eeb8a', '#c8ffd6', '#e7c85e', '#8ea297'], borderRadius: 3 }] },
+                                             options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: TEXT_COLOR }, grid: { display: false } }, y: { ticks: { color: TEXT_COLOR }, grid: { color: GRID_COLOR }, min: 0, max: 1.3 } } }
+                                    });
+
+                                    makeChart('soilRadarChart', {
+                                             type: 'radar',
+                                             data: { labels: ['Nitrogen', 'Phosphorus', 'Potassium', 'Retention'], datasets: [{ data: SOIL_RADAR[report.soil] || [50, 50, 50, 50], backgroundColor: 'rgba(94,235,138,.18)', borderColor: '#5eeb8a', pointBackgroundColor: '#5eeb8a' }] },
+                                             options: { responsive: true, plugins: { legend: { display: false } }, scales: { r: { angleLines: { color: GRID_COLOR }, grid: { color: GRID_COLOR }, pointLabels: { color: TEXT_COLOR, font: { size: 10 } }, ticks: { display: false }, suggestedMin: 0, suggestedMax: 100 } } }
+                                    });
+
+                                    var spread = report.high - report.low;
+                                    makeChart('confidenceChart', {
+                                             type: 'doughnut',
+                                             data: { labels: ['Low', 'Expected', 'High'], datasets: [{ data: [report.perAcre - report.low, spread * 0.001 + 0.001, report.high - report.perAcre], backgroundColor: ['#8ea297', '#5eeb8a', '#c8ffd6'], borderWidth: 0 }] },
+                                             options: { responsive: true, cutout: '65%', plugins: { legend: { position: 'bottom', labels: { color: TEXT_COLOR, boxWidth: 10, font: { size: 10.5 } } } } }
+                                    });
+
+                                    var tbody = document.getElementById('factorTableBody');
+                                    tbody.innerHTML = '';
+                                    var rows = [
+                                             ['Soil type', SOIL_LABELS[report.soil] || report.soil, report.factors.soil >= 1 ? 'Boosts yield' : 'Reduces yield', report.factors.soil.toFixed(2) + '\u00d7'],
+                                             ['Irrigation', IRRIGATION_LABELS[report.irrigation] || report.irrigation, report.factors.irrigation >= 1 ? 'Boosts yield' : 'Reduces yield', report.factors.irrigation.toFixed(2) + '\u00d7'],
+                                             ['Soil pH', report.ph.toFixed(1), report.factors.ph >= 0.9 ? 'Near ideal' : 'Suboptimal for crop', report.factors.ph.toFixed(2) + '\u00d7'],
+                                             ['Weather (30d rainfall)', report.rainfallTotal !== null ? report.rainfallTotal.toFixed(0) + ' mm' : 'Not available', report.factors.weather >= 1 ? 'Favourable' : 'Below ideal', report.factors.weather.toFixed(2) + '\u00d7']
+                                    ];
+                                    rows.forEach(function (r) {
+                                             var tr = document.createElement('tr');
+                                             tr.innerHTML = '<td>' + r[0] + '</td><td>' + r[1] + '</td><td class="' + (parseFloat(r[3]) >= 1 ? 'pos' : 'neg') + '">' + r[2] + '</td><td>' + r[3] + '</td>';
+                                             tbody.appendChild(tr);
+                                    });
+
+                                    document.getElementById('downloadCsvBtn').onclick = function () {
+                                             if (report.id) { window.open('/api/history/' + report.id + '/csv', '_blank'); }
+                                    };
+
+                                    refreshHistory();
+                                    if (isFresh) { document.getElementById('reportSection').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+                           }
+
+                           /* ---------------- Form submit ---------------- */
+                           var form = document.getElementById('yieldForm');
+                           var generateBtn = document.getElementById('generateBtn');
+                           var formError = document.getElementById('formError');
+
+                           form.addEventListener('submit', function (e) {
+                                    e.preventDefault();
+                                    formError.textContent = '';
+                                    generateBtn.classList.add('loading');
+                                    generateBtn.disabled = true;
+
+                                    var payload = {
+                                             place: document.getElementById('place').value.trim() || 'Selected location',
+                                             crop: document.getElementById('crop').value,
+                                             area: parseFloat(document.getElementById('area').value) || 1,
+                                             areaUnit: document.getElementById('areaUnit').value,
+                                             irrigation: document.getElementById('irrigation').value,
+                                             soilType: document.getElementById('soilType').value,
+                                             ph: parseFloat(document.getElementById('ph').value)
+                                    };
+                                    if (lastCoords) { payload.lat = lastCoords.lat; payload.lng = lastCoords.lng; }
+
+                                    apiPost('/api/estimate', payload).then(function (report) {
+                                             renderReport(report, true);
+                                    }).catch(function (err) {
+                                             formError.textContent = 'Could not generate a report right now. Please try again.';
+                                    }).finally(function () {
+                                             generateBtn.classList.remove('loading');
+                                             generateBtn.disabled = false;
+                                    });
+                           });
+
+                           document.getElementById('resetBtn').addEventListener('click', function () {
+                                    form.reset();
+                                    phValue.textContent = '6.5';
+                                    lastCoords = null;
+                           });
+
+                           /* ---------------- Mobile nav ---------------- */
+                           var toggle = document.querySelector('.nav-toggle');
+                           var links = document.querySelector('.nav-links');
+                           if (toggle) {
+                                    toggle.addEventListener('click', function () {
+                                             var open = links.style.display === 'flex';
+                                             links.style.display = open ? 'none' : 'flex';
+                                             links.style.cssText += 'position:absolute;top:76px;left:0;right:0;flex-direction:column;align-items:stretch;background:rgba(5,8,6,.98);border-bottom:1px solid rgba(112,255,150,.16);padding:10px 6vw;gap:2px;z-index:39;';
+                                    });
+                           }
+
+                           refreshHistory();
+                  })();
+         </script>
+</body>
+
+</html>
