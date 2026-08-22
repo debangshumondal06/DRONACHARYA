@@ -16,6 +16,9 @@ from data_cleaner import analyze_csv
 from predictor import build_prediction
 from recommender import build_recommendations
 
+# Yield backend integration. Keep yield_backend.py beside this app.py.
+from yield_backend import yield_bp, init_db as init_yield_db
+
 BASE_DIR = Path(__file__).resolve().parent
 UPLOAD_DIR = BASE_DIR / "uploads"
 UPLOAD_DIR.mkdir(exist_ok=True)
@@ -28,8 +31,13 @@ app.config["SECRET_KEY"] = os.getenv(
 )
 ALLOWED_EXTENSIONS = {"csv"}
 
+# Register the supplied yield API and /estimate-yield page without modifying it.
+# The blueprint uses SQLite for saved estimates and Flask session scoping.
+app.register_blueprint(yield_bp)
+
 with app.app_context():
     init_db()
+    init_yield_db()
 
 
 def allowed_file(filename):
@@ -162,5 +170,33 @@ def request_too_large(_error):
     return jsonify({"error": "The file is too large. Please upload a CSV smaller than 10 MB."}), 413
 
 
+# The supplied estimate_yield.html already contains these endpoint names in its
+# navigation. Add only missing compatibility aliases so its links continue to
+# render in this app. Existing endpoints are never replaced.
+if "estimate_yield" not in app.view_functions:
+    @app.get("/estimate-yield", endpoint="estimate_yield")
+    def estimate_yield():
+        return render_template("estimate_yield.html")
+
+if "field_visit" not in app.view_functions:
+    @app.get("/field-visit", endpoint="field_visit")
+    def field_visit():
+        return redirect(url_for("home"))
+
+if "store" not in app.view_functions:
+    @app.get("/store", endpoint="store")
+    def store():
+        return redirect(url_for("home"))
+
+if "login" not in app.view_functions:
+    @app.get("/login", endpoint="login")
+    def login():
+        return redirect(url_for("login_page"))
+
+
 if __name__ == "__main__":
-    app.run(debug=True, host="127.0.0.1", port=5000)
+    app.run(
+        debug=os.getenv("FLASK_DEBUG", "0") == "1",
+        host=os.getenv("HOST", "127.0.0.1"),
+        port=int(os.getenv("PORT", "5000")),
+    )
