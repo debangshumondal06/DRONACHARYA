@@ -364,3 +364,123 @@ CREATE TABLE IF NOT EXISTS yield_reports (
 );
 
 CREATE INDEX IF NOT EXISTS idx_yield_reports_session ON yield_reports(session_id);
+
+
+-- DRONACHARYA field-visit booking schema
+-- PostgreSQL 15+
+BEGIN;
+
+CREATE TYPE field_visit_status AS ENUM ('draft','submitted','under_review','approved','scheduled','sample_collected','report_in_progress','completed','cancelled');
+CREATE TYPE visit_priority AS ENUM ('routine_planning','before_sowing','in_season_correction','visible_crop_stress');
+
+CREATE TABLE field_visit_test_catalog (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  code TEXT NOT NULL UNIQUE,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  category TEXT NOT NULL,
+  indicative_fee_inr NUMERIC(10,2) NOT NULL CHECK (indicative_fee_inr >= 0),
+  turnaround_min_days INTEGER NOT NULL CHECK (turnaround_min_days > 0),
+  turnaround_max_days INTEGER NOT NULL CHECK (turnaround_max_days >= turnaround_min_days),
+  active BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE field_visit_requests (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  request_code TEXT NOT NULL UNIQUE,
+  user_id UUID REFERENCES user_accounts(id) ON DELETE SET NULL,
+  field_name TEXT NOT NULL,
+  crop_name TEXT NOT NULL,
+  area_value NUMERIC(12,4) NOT NULL CHECK (area_value > 0),
+  area_unit TEXT NOT NULL CHECK (area_unit IN ('acres','hectares')),
+  soil_type TEXT,
+  irrigation_system TEXT,
+  preferred_visit_date DATE NOT NULL,
+  preferred_time_window TEXT NOT NULL,
+  contact_phone TEXT NOT NULL,
+  location_label TEXT,
+  latitude NUMERIC(9,6),
+  longitude NUMERIC(9,6),
+  location_accuracy_m NUMERIC(10,2),
+  location_capture_method TEXT NOT NULL DEFAULT 'manual' CHECK (location_capture_method IN ('manual','browser_geolocation','connector')),
+  approximate_ph NUMERIC(4,2) CHECK (approximate_ph IS NULL OR approximate_ph BETWEEN 0 AND 14),
+  last_soil_test TEXT,
+  priority visit_priority NOT NULL DEFAULT 'routine_planning',
+  agronomist_notes TEXT,
+  status field_visit_status NOT NULL DEFAULT 'submitted',
+  indicative_fee_inr NUMERIC(10,2) NOT NULL DEFAULT 0 CHECK (indicative_fee_inr >= 0),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  CHECK (latitude IS NULL OR latitude BETWEEN -90 AND 90),
+  CHECK (longitude IS NULL OR longitude BETWEEN -180 AND 180),
+  CHECK (location_accuracy_m IS NULL OR location_accuracy_m >= 0)
+);
+CREATE INDEX field_visit_requests_user_idx ON field_visit_requests (user_id, created_at DESC);
+CREATE INDEX field_visit_requests_status_date_idx ON field_visit_requests (status, preferred_visit_date);
+
+CREATE TABLE field_visit_request_tests (
+  request_id UUID NOT NULL REFERENCES field_visit_requests(id) ON DELETE CASCADE,
+  test_id UUID NOT NULL REFERENCES field_visit_test_catalog(id) ON DELETE RESTRICT,
+  fee_snapshot_inr NUMERIC(10,2) NOT NULL CHECK (fee_snapshot_inr >= 0),
+  status TEXT NOT NULL DEFAULT 'requested' CHECK (status IN ('requested','scheduled','sample_received','processing','completed','cancelled')),
+  result_summary TEXT,
+  report_uri TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  PRIMARY KEY (request_id, test_id)
+);
+
+CREATE TABLE field_visit_slots (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  request_id UUID NOT NULL REFERENCES field_visit_requests(id) ON DELETE CASCADE,
+  visit_date DATE NOT NULL,
+  time_window TEXT NOT NULL,
+  assigned_team TEXT,
+  assigned_agent TEXT,
+  confirmation_note TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX field_visit_slots_date_idx ON field_visit_slots (visit_date, time_window);
+
+CREATE TABLE field_visit_status_history (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  request_id UUID NOT NULL REFERENCES field_visit_requests(id) ON DELETE CASCADE,
+  from_status field_visit_status,
+  to_status field_visit_status NOT NULL,
+  changed_by UUID REFERENCES user_accounts(id) ON DELETE SET NULL,
+  note TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX field_visit_status_history_request_idx ON field_visit_status_history (request_id, created_at DESC);
+
+CREATE OR REPLACE FUNCTION update_field_visit_timestamp()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+BEGIN
+  NEW.updated_at = now();
+  RETURN NEW;
+END;
+$$;
+CREATE TRIGGER field_visit_requests_updated_at
+BEFORE UPDATE ON field_visit_requests
+FOR EACH ROW EXECUTE FUNCTION update_field_visit_timestamp();
+
+-- Suggested catalog rows based on the page's research-backed options.
+INSERT INTO field_visit_test_catalog (code,name,description,category,indicative_fee_inr,turnaround_min_days,turnaround_max_days) VALUES
+('routine_soil','Routine soil fertility','Texture, pH, organic matter, available N-P-K.','Soil',650,3,5),
+('salinity_sodicity','Salinity & sodicity','EC / soluble salts and sodium-structure risk.','Soil',450,3,5),
+('micronutrients','Micronutrient panel','Ca, Mg, Zn, Fe, Cu, Mn, boron and nitrate add-ons.','Soil',800,5,7),
+('soil_health','Soil health & biology','Aggregate stability, slake, infiltration and biology indicators.','Soil',950,5,8),
+('irrigation_water','Irrigation water quality','EC, pH, SAR, nitrate-N, boron, bicarbonate / chloride.','Water',700,3,5),
+('plant_tissue','Plant tissue nutrition','Crop tissue nutrient balance for in-season correction.','Plant',850,5,7),
+('nematode','Nematode screening','Composite soil screen for plant-parasitic nematode pressure.','Plant health',900,7,10),
+('disease_pest','Plant disease & pest diagnostic','Symptom review and lab referral for pathogen or pest signals.','Plant health',600,3,7),
+('contaminants','Contaminant screen','Lead and trace-element checks where risk or history warrants.','Risk',1100,7,14)
+ON CONFLICT (code) DO NOTHING;
+
+COMMIT;
+
+-- Application notes:
+-- * Treat fees as indicative snapshots, not payment authorization.
+-- * Confirm sample depth/count and chain-of-custody at the visit.
+-- * Do not store unnecessary identity documents in this schema.
+-- * Add row-level security before exposing requests through a browser API.

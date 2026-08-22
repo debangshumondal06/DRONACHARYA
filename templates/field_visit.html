@@ -1,0 +1,1144 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+         <meta charset="utf-8">
+         <meta name="viewport" content="width=device-width,initial-scale=1">
+         <meta name="description" content="DRONACHARYA field visit booking and agricultural diagnostic testing.">
+         <title>Field Visit | DRONACHARYA</title>
+         <link rel="preconnect" href="https://fonts.googleapis.com">
+         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap"
+                  rel="stylesheet">
+         <style>
+                  :root {
+                           --black: #050806;
+                           --black2: #0b110d;
+                           --panel: #111a14;
+                           --panel2: #0d1510;
+                           --line: rgba(112, 255, 150, .16);
+                           --strong: rgba(112, 255, 150, .32);
+                           --green: #5eeb8a;
+                           --green2: #c8ffd6;
+                           --amber: #e7c85e;
+                           --muted: #8ea297;
+                           --white: #eef7f0;
+                           --red: #ff9d91;
+                           --ease: cubic-bezier(.23, 1, .32, 1)
+                  }
+
+                  * {
+                           box-sizing: border-box
+                  }
+
+                  html {
+                           scroll-behavior: smooth
+                  }
+
+                  body {
+                           margin: 0;
+                           background: radial-gradient(circle at 17% 10%, rgba(36, 94, 51, .16), transparent 30%), var(--black);
+                           color: var(--white);
+                           font-family: 'DM Sans', sans-serif
+                  }
+
+                  body:before {
+                           content: "";
+                           position: fixed;
+                           inset: 0;
+                           pointer-events: none;
+                           opacity: .035;
+                           background-image: radial-gradient(rgba(255, 255, 255, .7) .5px, transparent .5px);
+                           background-size: 5px 5px;
+                           z-index: 100
+                  }
+
+                  .ribbon {
+                           display: flex;
+                           justify-content: center;
+                           align-items: center;
+                           gap: 10px;
+                           padding: 7px 6vw;
+                           background: var(--black2);
+                           border-bottom: 1px solid var(--line);
+                           color: var(--muted);
+                           font: 11px Manrope;
+                           letter-spacing: .04em;
+                           text-align: center
+                  }
+
+                  .dot,
+                  .live-dot {
+                           width: 6px;
+                           height: 6px;
+                           border-radius: 50%;
+                           background: var(--green);
+                           box-shadow: 0 0 9px var(--green);
+                           animation: pulse 2.4s ease-in-out infinite;
+                           flex: none
+                  }
+
+                  @keyframes pulse {
+                           50% {
+                                    opacity: .45;
+                                    transform: scale(.7)
+                           }
+                  }
+
+                  .ribbon strong {
+                           color: var(--green2)
+                  }
+
+                  .topbar {
+                           position: sticky;
+                           top: 0;
+                           z-index: 40;
+                           display: flex;
+                           align-items: center;
+                           justify-content: space-between;
+                           gap: 25px;
+                           height: 76px;
+                           padding: 0 6vw;
+                           border-bottom: 1px solid var(--line);
+                           background: rgba(5, 8, 6, .9);
+                           backdrop-filter: blur(16px)
+                  }
+
+                  .brand-mark {
+                           display: flex;
+                           align-items: center;
+                           gap: 11px;
+                           text-decoration: none
+                  }
+
+                  .glyph {
+                           display: grid;
+                           place-items: center;
+                           width: 34px;
+                           height: 34px;
+                           border: 1px solid var(--strong);
+                           background: linear-gradient(160deg, rgba(94, 235, 138, .16), transparent);
+                           color: var(--green);
+                           font: 700 18px 'Playfair Display'
+                  }
+
+                  .brand-text {
+                           display: flex;
+                           flex-direction: column;
+                           line-height: 1.15
+                  }
+
+                  .brand {
+                           color: var(--green);
+                           font: 800 15px Manrope;
+                           letter-spacing: .2em;
+                           text-shadow: 0 0 25px rgba(98, 255, 147, .3)
+                  }
+
+                  .tagline {
+                           color: var(--muted);
+                           font-size: 9.5px;
+                           letter-spacing: .1em
+                  }
+
+                  .nav {
+                           display: flex;
+                           gap: 4px;
+                           margin: auto
+                  }
+
+                  .nav a {
+                           padding: 9px 15px;
+                           color: var(--muted);
+                           font: 700 12px Manrope;
+                           letter-spacing: .05em;
+                           text-decoration: none;
+                           border-radius: 3px
+                  }
+
+                  .nav a:hover,
+                  .nav a.active {
+                           color: var(--black);
+                           background: var(--green)
+                  }
+
+                  .top-action {
+                           padding: 10px 18px;
+                           border: 1px solid var(--green);
+                           border-radius: 3px;
+                           background: var(--green);
+                           color: var(--black);
+                           font: 700 12px Manrope;
+                           cursor: pointer
+                  }
+
+                  .page {
+                           width: min(1360px, 92vw);
+                           margin: auto
+                  }
+
+                  .head {
+                           padding: 46px 0 30px;
+                           border-bottom: 1px solid var(--line)
+                  }
+
+                  .eyebrow {
+                           display: inline-block;
+                           margin: 0 0 11px;
+                           color: var(--green);
+                           font: 700 10.5px Manrope;
+                           letter-spacing: .2em
+                  }
+
+                  .head h1 {
+                           margin: 0 0 10px;
+                           font: 700 clamp(32px, 4vw, 48px)/1.08 'Playfair Display';
+                           letter-spacing: -.02em
+                  }
+
+                  .head h1 em {
+                           color: var(--green);
+                           font-style: normal
+                  }
+
+                  .head p {
+                           max-width: 720px;
+                           margin: 0;
+                           color: var(--muted);
+                           font-size: 15px;
+                           line-height: 1.7
+                  }
+
+                  .workspace {
+                           display: grid;
+                           grid-template-columns: minmax(0, 1fr) 320px;
+                           gap: 26px;
+                           padding: 34px 0 90px;
+                           align-items: start
+                  }
+
+                  .main {
+                           display: flex;
+                           flex-direction: column;
+                           gap: 24px;
+                           min-width: 0
+                  }
+
+                  .panel,
+                  .rail {
+                           position: relative;
+                           padding: 27px 30px;
+                           border: 1px solid var(--line);
+                           background: linear-gradient(150deg, rgba(19, 29, 22, .92), rgba(7, 11, 8, .96));
+                           box-shadow: 0 18px 50px rgba(0, 0, 0, .3)
+                  }
+
+                  .panel:before {
+                           content: "";
+                           position: absolute;
+                           top: 0;
+                           left: 28px;
+                           right: 28px;
+                           height: 2px;
+                           background: linear-gradient(90deg, transparent, var(--green), transparent);
+                           box-shadow: 0 0 18px var(--green)
+                  }
+
+                  .panel-head,
+                  .rail-head,
+                  .summary-head {
+                           display: flex;
+                           justify-content: space-between;
+                           align-items: start;
+                           gap: 14px;
+                           margin-bottom: 21px
+                  }
+
+                  .panel-head h2,
+                  .summary-head h2 {
+                           margin: 0;
+                           font: 700 19px Manrope
+                  }
+
+                  .step {
+                           color: var(--amber);
+                           font: 10px Manrope;
+                           letter-spacing: .1em
+                  }
+
+                  .section-label {
+                           margin: 24px 0 13px;
+                           color: var(--amber);
+                           font: 700 10px Manrope;
+                           letter-spacing: .14em
+                  }
+
+                  .grid {
+                           display: grid;
+                           grid-template-columns: repeat(3, 1fr);
+                           gap: 17px 19px
+                  }
+
+                  .field {
+                           display: flex;
+                           flex-direction: column;
+                           gap: 7px
+                  }
+
+                  .span2 {
+                           grid-column: span 2
+                  }
+
+                  .span3 {
+                           grid-column: span 3
+                  }
+
+                  label {
+                           color: var(--white);
+                           font: 700 12.5px Manrope
+                  }
+
+                  label small,
+                  .hint {
+                           color: var(--muted);
+                           font: 400 11px 'DM Sans';
+                           line-height: 1.4
+                  }
+
+                  input,
+                  select,
+                  textarea {
+                           width: 100%;
+                           padding: 11px 12px;
+                           border: 1px solid var(--line);
+                           border-radius: 3px;
+                           background: rgba(5, 8, 6, .75);
+                           color: var(--white);
+                           font: 13px 'DM Sans'
+                  }
+
+                  textarea {
+                           min-height: 82px;
+                           resize: vertical
+                  }
+
+                  input:focus,
+                  select:focus,
+                  textarea:focus {
+                           outline: 1px solid var(--green);
+                           border-color: var(--green);
+                           box-shadow: 0 0 18px rgba(98, 255, 147, .13)
+                  }
+
+                  .loc-row {
+                           display: grid;
+                           grid-template-columns: 1fr 1fr auto;
+                           gap: 9px
+                  }
+
+                  .loc-actions {
+                           display: flex;
+                           gap: 8px
+                  }
+
+                  .btn {
+                           padding: 11px 15px;
+                           border: 1px solid var(--line);
+                           border-radius: 3px;
+                           background: transparent;
+                           color: var(--muted);
+                           font: 700 11px Manrope;
+                           cursor: pointer;
+                           transition: all .16s var(--ease)
+                  }
+
+                  .btn:hover {
+                           border-color: var(--strong);
+                           color: var(--white)
+                  }
+
+                  .btn.primary {
+                           background: var(--green);
+                           border-color: var(--green);
+                           color: var(--black);
+                           box-shadow: 0 0 20px rgba(98, 255, 147, .18)
+                  }
+
+                  .btn.primary:hover {
+                           background: var(--green2)
+                  }
+
+                  .map {
+                           height: 225px;
+                           margin-top: 12px;
+                           overflow: hidden;
+                           border: 1px solid var(--line);
+                           background: #0d1510
+                  }
+
+                  .map iframe {
+                           width: 100%;
+                           height: 100%;
+                           border: 0;
+                           filter: saturate(.7) brightness(.8) contrast(1.12)
+                  }
+
+                  .map-foot {
+                           display: flex;
+                           justify-content: space-between;
+                           gap: 10px;
+                           margin-top: 8px;
+                           color: var(--muted);
+                           font-size: 11px
+                  }
+
+                  .map-foot a {
+                           color: var(--green);
+                           text-decoration: none
+                  }
+
+                  .test-grid {
+                           display: grid;
+                           grid-template-columns: repeat(2, 1fr);
+                           gap: 11px
+                  }
+
+                  .test-card {
+                           display: grid;
+                           grid-template-columns: auto 1fr auto;
+                           align-items: start;
+                           gap: 11px;
+                           padding: 15px;
+                           border: 1px solid var(--line);
+                           background: rgba(13, 21, 16, .72);
+                           cursor: pointer;
+                           transition: transform .16s var(--ease), border-color .16s ease, background .16s ease
+                  }
+
+                  .test-card:hover {
+                           transform: translateY(-2px);
+                           border-color: var(--strong)
+                  }
+
+                  .test-card.selected {
+                           border-color: var(--green);
+                           background: rgba(94, 235, 138, .1);
+                           box-shadow: inset 3px 0 var(--green)
+                  }
+
+                  .test-card input {
+                           width: 15px;
+                           margin-top: 2px;
+                           accent-color: var(--green)
+                  }
+
+                  .test-name {
+                           color: var(--green2);
+                           font: 700 12.5px Manrope
+                  }
+
+                  .test-desc {
+                           display: block;
+                           margin-top: 4px;
+                           color: var(--muted);
+                           font-size: 11px;
+                           line-height: 1.5
+                  }
+
+                  .pill {
+                           padding: 4px 7px;
+                           border: 1px solid var(--line);
+                           border-radius: 20px;
+                           color: var(--amber);
+                           font: 10px Manrope;
+                           white-space: nowrap
+                  }
+
+                  .sample-note {
+                           margin-top: 12px;
+                           padding: 11px 13px;
+                           border: 1px solid rgba(231, 200, 94, .25);
+                           background: rgba(231, 200, 94, .06);
+                           color: var(--muted);
+                           font-size: 11px;
+                           line-height: 1.55
+                  }
+
+                  .sample-note strong {
+                           color: var(--amber)
+                  }
+
+                  .summary {
+                           display: grid;
+                           grid-template-columns: 1fr 1fr;
+                           gap: 16px
+                  }
+
+                  .summary-box {
+                           padding: 19px;
+                           border: 1px solid var(--line);
+                           background: var(--panel2)
+                  }
+
+                  .summary-box h3 {
+                           margin: 0 0 11px;
+                           font: 700 13px Manrope
+                  }
+
+                  .summary-line {
+                           display: flex;
+                           justify-content: space-between;
+                           gap: 14px;
+                           padding: 9px 0;
+                           border-top: 1px solid var(--line);
+                           font-size: 11px
+                  }
+
+                  .summary-line span {
+                           color: var(--muted)
+                  }
+
+                  .summary-line strong {
+                           color: var(--green2);
+                           font-weight: 600;
+                           text-align: right
+                  }
+
+                  .estimate-total {
+                           color: var(--green2);
+                           font: 600 28px 'Playfair Display'
+                  }
+
+                  .form-actions {
+                           display: flex;
+                           align-items: center;
+                           gap: 13px;
+                           margin-top: 22px
+                  }
+
+                  .status-text {
+                           color: var(--muted);
+                           font-size: 11px
+                  }
+
+                  .side {
+                           position: sticky;
+                           top: 101px;
+                           display: flex;
+                           flex-direction: column;
+                           gap: 17px
+                  }
+
+                  .rail {
+                           padding: 22px
+                  }
+
+                  .rail-head {
+                           margin-bottom: 18px
+                  }
+
+                  .rail-head .eyebrow {
+                           margin: 0;
+                           font-size: 9.5px
+                  }
+
+                  .index {
+                           color: var(--amber);
+                           font: 10px Manrope
+                  }
+
+                  .status-top {
+                           display: flex;
+                           align-items: center;
+                           gap: 9px;
+                           color: var(--green2);
+                           font: 700 11px Manrope
+                  }
+
+                  .status-top .live-dot {
+                           width: 5px;
+                           height: 5px
+                  }
+
+                  .request-id {
+                           margin: 6px 0 20px;
+                           color: var(--muted);
+                           font: 11px Manrope
+                  }
+
+                  .timeline {
+                           position: relative;
+                           margin: 0 0 10px;
+                           padding-left: 23px
+                  }
+
+                  .timeline:before {
+                           content: "";
+                           position: absolute;
+                           left: 6px;
+                           top: 7px;
+                           bottom: 7px;
+                           width: 1px;
+                           background: var(--line)
+                  }
+
+                  .stage {
+                           position: relative;
+                           min-height: 57px;
+                           color: var(--muted);
+                           font-size: 11px
+                  }
+
+                  .stage:before {
+                           content: "";
+                           position: absolute;
+                           left: -21px;
+                           top: 2px;
+                           width: 10px;
+                           height: 10px;
+                           border: 1px solid var(--line-strong);
+                           border-radius: 50%;
+                           background: var(--black)
+                  }
+
+                  .stage.done,
+                  .stage.current {
+                           color: var(--white)
+                  }
+
+                  .stage.done:before {
+                           border-color: var(--green);
+                           background: var(--green);
+                           box-shadow: 0 0 9px rgba(94, 235, 138, .5)
+                  }
+
+                  .stage.current:before {
+                           border-color: var(--amber);
+                           background: var(--amber);
+                           box-shadow: 0 0 9px rgba(231, 200, 94, .4)
+                  }
+
+                  .stage strong {
+                           display: block;
+                           margin-bottom: 4px;
+                           color: inherit;
+                           font: 700 11px Manrope
+                  }
+
+                  .stage small {
+                           color: var(--muted);
+                           font-size: 10px;
+                           line-height: 1.35
+                  }
+
+                  .side-copy {
+                           margin: 0;
+                           color: var(--muted);
+                           font-size: 11.5px;
+                           line-height: 1.6
+                  }
+
+                  .source {
+                           display: flex;
+                           justify-content: space-between;
+                           gap: 10px;
+                           padding: 11px 0;
+                           border-top: 1px solid var(--line);
+                           color: var(--muted);
+                           font-size: 11px
+                  }
+
+                  .source a {
+                           color: var(--green2);
+                           font-weight: 700;
+                           text-decoration: none
+                  }
+
+                  .source small {
+                           display: block;
+                           margin-top: 3px;
+                           color: var(--muted);
+                           font-size: 10px
+                  }
+
+                  .footer {
+                           padding: 18px 6vw 25px;
+                           border-top: 1px solid var(--line);
+                           color: #6c7d71;
+                           font-size: 10.5px;
+                           text-align: center
+                  }
+
+                  .toast {
+                           position: fixed;
+                           right: 24px;
+                           bottom: 24px;
+                           z-index: 90;
+                           max-width: 340px;
+                           padding: 13px 16px;
+                           border: 1px solid var(--green);
+                           background: rgba(13, 25, 16, .96);
+                           color: var(--green2);
+                           font-size: 12px;
+                           box-shadow: 0 15px 40px rgba(0, 0, 0, .4);
+                           transform: translateY(20px);
+                           opacity: 0;
+                           pointer-events: none;
+                           transition: all .2s var(--ease)
+                  }
+
+                  .toast.show {
+                           transform: translateY(0);
+                           opacity: 1
+                  }
+
+                  .error {
+                           color: var(--red);
+                           font-size: 11px;
+                           min-height: 16px
+                  }
+
+                  @media(max-width:1020px) {
+                           .workspace {
+                                    grid-template-columns: 1fr
+                           }
+
+                           .side {
+                                    position: static;
+                                    display: grid;
+                                    grid-template-columns: 1fr 1fr
+                           }
+
+                           .side .rail:last-child {
+                                    grid-column: span 2
+                           }
+                  }
+
+                  @media(max-width:720px) {
+                           .nav {
+                                    display: none
+                           }
+
+                           .topbar {
+                                    height: 67px;
+                                    padding: 0 4vw
+                           }
+
+                           .page {
+                                    width: 92vw
+                           }
+
+                           .head {
+                                    padding-top: 34px
+                           }
+
+                           .head h1 {
+                                    font-size: 35px
+                           }
+
+                           .panel {
+                                    padding: 22px 18px
+                           }
+
+                           .grid,
+                           .summary {
+                                    grid-template-columns: 1fr
+                           }
+
+                           .span2,
+                           .span3 {
+                                    grid-column: span 1
+                           }
+
+                           .test-grid {
+                                    grid-template-columns: 1fr
+                           }
+
+                           .loc-row {
+                                    grid-template-columns: 1fr 1fr
+                           }
+
+                           .loc-actions {
+                                    grid-column: span 2
+                           }
+
+                           .loc-actions .btn {
+                                    flex: 1
+                           }
+
+                           .side {
+                                    display: flex
+                           }
+
+                           .side .rail:last-child {
+                                    grid-column: auto
+                           }
+
+                           .form-actions {
+                                    align-items: stretch;
+                                    flex-direction: column
+                           }
+
+                           .form-actions .btn {
+                                    width: 100%
+                           }
+
+                           .map-foot {
+                                    flex-direction: column
+                           }
+
+                           .ribbon {
+                                    font-size: 9px;
+                                    line-height: 1.4
+                           }
+                  }
+         </style>
+</head>
+
+<body>
+         <div class="ribbon"><span class="dot"></span><strong>FIELD VISIT / DIAGNOSTIC DESK</strong><span>Book a field
+                           scientist for evidence-led yield improvement.</span></div>
+         <header class="topbar"><a class="brand-mark" href="index.html"><span class="glyph">D</span><span
+                                    class="brand-text"><span class="brand">DRONACHARYA</span><span
+                                             class="tagline">AGRICULTURE INTELLIGENCE</span></span></a>
+                  <nav class="nav"><a href="index.html">Home</a><a class="active"
+                                    href="field_visit.html">Field visit</a><a
+                                    href="yield.html">Estimate yield</a><a
+                                    href="store.html">Store</a></nav><a class="top-action"
+                           href="login.html">Log in</a>
+         </header>
+         <main class="page">
+                  <section class="head">
+                           <p class="eyebrow">REQUEST / 02 — ON-FIELD DIAGNOSTICS</p>
+                           <h1>Bring the lab<br><em>to your field.</em></h1>
+                           <p>Choose the tests that matter, anchor the visit to your live location, and share the field
+                                    signals that will help our agronomy team prepare a focused diagnostic report.</p>
+                  </section>
+                  <div class="workspace">
+                           <div class="main">
+                                    <form id="visitForm" class="panel" novalidate>
+                                             <div class="panel-head">
+                                                      <div><span class="eyebrow">VISIT PROFILE</span>
+                                                               <h2>Configure your field visit</h2>
+                                                      </div><span class="step">BOOKING / 04</span>
+                                             </div>
+                                             <div class="grid">
+                                                      <div class="field span2"><label for="fieldName">Field or farm
+                                                                        name</label><input id="fieldName" required
+                                                                        placeholder="e.g. North block / pilot field"><span
+                                                                        class="hint">Used on your visit confirmation and
+                                                                        lab report.</span></div>
+                                                      <div class="field"><label for="crop">Primary crop</label><select
+                                                                        id="crop">
+                                                                        <option>Wheat</option>
+                                                                        <option>Rice</option>
+                                                                        <option>Maize</option>
+                                                                        <option>Cotton</option>
+                                                                        <option>Soybean</option>
+                                                                        <option>Chickpea</option>
+                                                                        <option>Other / mixed</option>
+                                                               </select></div>
+                                                      <div class="field"><label for="area">Approximate field
+                                                                        area</label>
+                                                               <div class="loc-row"><input id="area" type="number"
+                                                                                 min="0.1" step="0.1" value="1"><select
+                                                                                 id="areaUnit">
+                                                                                 <option>acres</option>
+                                                                                 <option>hectares</option>
+                                                                        </select></div>
+                                                      </div>
+                                                      <div class="field"><label for="soilType">Observed soil
+                                                                        type</label><select id="soilType">
+                                                                        <option>Not sure</option>
+                                                                        <option>Alluvial</option>
+                                                                        <option>Black / regur</option>
+                                                                        <option>Red & yellow</option>
+                                                                        <option>Laterite</option>
+                                                                        <option>Arid / sandy</option>
+                                                                        <option>Saline / alkaline</option>
+                                                               </select></div>
+                                                      <div class="field"><label for="irrigation">Irrigation
+                                                                        system</label><select id="irrigation">
+                                                                        <option>Rainfed</option>
+                                                                        <option>Canal / flood</option>
+                                                                        <option>Groundwater / tubewell</option>
+                                                                        <option>Drip</option>
+                                                                        <option>Sprinkler</option>
+                                                               </select></div>
+                                                      <div class="field"><label for="visitDate">Preferred visit
+                                                                        date</label><input id="visitDate" type="date"
+                                                                        required><span class="hint">Choose a date at
+                                                                        least 48 hours ahead.</span></div>
+                                                      <div class="field"><label for="slot">Preferred time
+                                                                        window</label><select id="slot">
+                                                                        <option>Morning · 08:00–11:00</option>
+                                                                        <option>Midday · 11:00–14:00</option>
+                                                                        <option>Afternoon · 14:00–17:00</option>
+                                                               </select></div>
+                                                      <div class="field"><label for="phone">Contact number</label><input
+                                                                        id="phone" type="tel"
+                                                                        placeholder="+91 00000 00000" required></div>
+                                             </div>
+                                             <div class="section-label">FIELD LOCATION / LIVE CONTEXT</div>
+                                             <div class="field"><label for="place">Location label <small>district,
+                                                                        village, or landmark</small></label><input
+                                                               id="place" placeholder="e.g. Baramati, Pune district">
+                                                      <div class="loc-row"><input id="lat" type="number" step="any"
+                                                                        placeholder="Latitude"><input id="lng"
+                                                                        type="number" step="any"
+                                                                        placeholder="Longitude">
+                                                               <div class="loc-actions"><button class="btn"
+                                                                                 type="button" id="locateBtn">⌖ Use live
+                                                                                 location</button></div>
+                                                      </div>
+                                                      <div id="locationStatus" class="hint">Location access is optional.
+                                                               You can use a village, district, or manual coordinates.
+                                                      </div>
+                                             </div>
+                                             <div class="map" id="mapWrap"><iframe id="mapFrame"
+                                                               title="Selected field map" loading="lazy"></iframe></div>
+                                             <div class="map-foot"><span id="mapCaption">Map preview will update when
+                                                               coordinates are available.</span><a id="mapLink"
+                                                               href="https://www.openstreetmap.org/" target="_blank"
+                                                               rel="noreferrer">Open OpenStreetMap ↗</a></div>
+                                             <div class="section-label">DIAGNOSTIC MENU / SELECT WHAT TO TEST</div>
+                                             <div class="test-grid" id="testGrid">
+                                                      <label class="test-card selected"><input type="checkbox"
+                                                                        value="routine_soil"
+                                                                        data-name="Routine soil fertility"
+                                                                        data-turn="3–5 days" data-price="650"
+                                                                        checked><span><span class="test-name">Routine
+                                                                                 soil fertility</span><span
+                                                                                 class="test-desc">Texture, pH, organic
+                                                                                 matter, available
+                                                                                 N–P–K.</span></span><span
+                                                                        class="pill">CORE</span></label>
+                                                      <label class="test-card"><input type="checkbox"
+                                                                        value="salinity_sodicity"
+                                                                        data-name="Salinity & sodicity"
+                                                                        data-turn="3–5 days"
+                                                                        data-price="450"><span><span
+                                                                                 class="test-name">Salinity &
+                                                                                 sodicity</span><span
+                                                                                 class="test-desc">EC / soluble salts
+                                                                                 and sodium-structure
+                                                                                 risk.</span></span><span
+                                                                        class="pill">EC · SAR</span></label>
+                                                      <label class="test-card"><input type="checkbox"
+                                                                        value="micronutrients"
+                                                                        data-name="Micronutrient panel"
+                                                                        data-turn="5–7 days"
+                                                                        data-price="800"><span><span
+                                                                                 class="test-name">Micronutrient
+                                                                                 panel</span><span class="test-desc">Ca,
+                                                                                 Mg, Zn, Fe, Cu, Mn, boron and nitrate
+                                                                                 add-ons.</span></span><span
+                                                                        class="pill">TRACE</span></label>
+                                                      <label class="test-card"><input type="checkbox"
+                                                                        value="soil_health"
+                                                                        data-name="Soil health & biology"
+                                                                        data-turn="5–8 days"
+                                                                        data-price="950"><span><span
+                                                                                 class="test-name">Soil health &
+                                                                                 biology</span><span
+                                                                                 class="test-desc">Aggregate stability,
+                                                                                 slake, infiltration and biology
+                                                                                 indicators.</span></span><span
+                                                                        class="pill">STRUCTURE</span></label>
+                                                      <label class="test-card"><input type="checkbox"
+                                                                        value="irrigation_water"
+                                                                        data-name="Irrigation water quality"
+                                                                        data-turn="3–5 days"
+                                                                        data-price="700"><span><span
+                                                                                 class="test-name">Irrigation water
+                                                                                 quality</span><span
+                                                                                 class="test-desc">EC, pH, SAR,
+                                                                                 nitrate-N, boron, bicarbonate /
+                                                                                 chloride.</span></span><span
+                                                                        class="pill">WATER</span></label>
+                                                      <label class="test-card"><input type="checkbox"
+                                                                        value="plant_tissue"
+                                                                        data-name="Plant tissue nutrition"
+                                                                        data-turn="5–7 days"
+                                                                        data-price="850"><span><span
+                                                                                 class="test-name">Plant tissue
+                                                                                 nutrition</span><span
+                                                                                 class="test-desc">Crop tissue nutrient
+                                                                                 balance for in-season
+                                                                                 correction.</span></span><span
+                                                                        class="pill">CROP</span></label>
+                                                      <label class="test-card"><input type="checkbox" value="nematode"
+                                                                        data-name="Nematode screening"
+                                                                        data-turn="7–10 days"
+                                                                        data-price="900"><span><span
+                                                                                 class="test-name">Nematode
+                                                                                 screening</span><span
+                                                                                 class="test-desc">Composite soil screen
+                                                                                 for plant-parasitic nematode
+                                                                                 pressure.</span></span><span
+                                                                        class="pill">ROOT ZONE</span></label>
+                                                      <label class="test-card"><input type="checkbox"
+                                                                        value="disease_pest"
+                                                                        data-name="Plant disease & pest diagnostic"
+                                                                        data-turn="3–7 days"
+                                                                        data-price="600"><span><span
+                                                                                 class="test-name">Disease & pest
+                                                                                 diagnostic</span><span
+                                                                                 class="test-desc">Symptom review and
+                                                                                 lab referral for pathogen or pest
+                                                                                 signals.</span></span><span
+                                                                        class="pill">HEALTH</span></label>
+                                                      <label class="test-card"><input type="checkbox"
+                                                                        value="contaminants"
+                                                                        data-name="Contaminant screen"
+                                                                        data-turn="7–14 days"
+                                                                        data-price="1100"><span><span
+                                                                                 class="test-name">Contaminant
+                                                                                 screen</span><span
+                                                                                 class="test-desc">Lead and
+                                                                                 trace-element checks where risk or
+                                                                                 history warrants.</span></span><span
+                                                                        class="pill">RISK</span></label>
+                                             </div>
+                                             <div class="sample-note"><strong>Sampling note.</strong> Final sample count
+                                                      and collection depth are confirmed by the field scientist. A
+                                                      nematode screen typically uses a composite root-zone soil sample;
+                                                      bring recent plant symptoms or leaf samples when requesting
+                                                      disease or tissue diagnostics.</div>
+                                             <div class="section-label">FIELD SIGNALS FOR PREPARATION</div>
+                                             <div class="grid">
+                                                      <div class="field"><label for="ph">Approx. soil pH</label><input
+                                                                        id="ph" type="number" min="3" max="10"
+                                                                        step="0.1" placeholder="e.g. 6.7"></div>
+                                                      <div class="field"><label for="lastTest">Last soil
+                                                                        test</label><select id="lastTest">
+                                                                        <option>Never tested</option>
+                                                                        <option>Within 12 months</option>
+                                                                        <option>1–3 years ago</option>
+                                                                        <option>More than 3 years ago</option>
+                                                               </select></div>
+                                                      <div class="field"><label for="urgency">Visit
+                                                                        priority</label><select id="urgency">
+                                                                        <option>Routine planning</option>
+                                                                        <option>Before sowing</option>
+                                                                        <option>In-season correction</option>
+                                                                        <option>Visible crop stress</option>
+                                                               </select></div>
+                                                      <div class="field span3"><label for="notes">What should the
+                                                                        agronomist look for?</label><textarea id="notes"
+                                                                        placeholder="Describe yield decline, yellowing, waterlogging, salinity marks, pest pressure, or a specific goal."></textarea>
+                                                      </div>
+                                             </div>
+                                             <div id="formError" class="error"></div>
+                                             <div class="form-actions"><button type="submit" class="btn primary">Request
+                                                               field visit ↗</button><button type="button" class="btn"
+                                                               id="clearBtn">Clear form</button><span
+                                                               class="status-text">No payment is taken at request
+                                                               stage.</span></div>
+                                    </form>
+                                    <section class="panel" id="summaryPanel">
+                                             <div class="summary-head">
+                                                      <div><span class="eyebrow">REQUEST PREVIEW</span>
+                                                               <h2>Prepared diagnostic scope</h2>
+                                                      </div><span class="step" id="testCount">1 test selected</span>
+                                             </div>
+                                             <div class="summary">
+                                                      <div class="summary-box">
+                                                               <h3>Selected lab work</h3>
+                                                               <div id="selectedTests"></div>
+                                                      </div>
+                                                      <div class="summary-box">
+                                                               <h3>Planning estimate</h3>
+                                                               <div class="estimate-total" id="estimateTotal">₹650</div>
+                                                               <div class="summary-line"><span>Indicative visit + lab
+                                                                                 fee</span><strong>Reviewed after
+                                                                                 booking</strong></div>
+                                                               <div class="summary-line"><span>Longest likely
+                                                                                 turnaround</span><strong
+                                                                                 id="turnaround">3–5 days</strong></div>
+                                                               <div class="summary-line"><span>Location
+                                                                                 status</span><strong
+                                                                                 id="summaryLocation">Not
+                                                                                 anchored</strong></div>
+                                                      </div>
+                                             </div>
+                                    </section>
+                           </div>
+                           <aside class="side">
+                                    <section class="rail">
+                                             <div class="rail-head"><span class="eyebrow">REQUEST STATUS</span><span
+                                                               class="index">01</span></div>
+                                             <div class="status-top"><span class="live-dot"></span><span
+                                                               id="statusHeadline">READY TO BOOK</span></div>
+                                             <div class="request-id" id="requestId">Draft request · not submitted</div>
+                                             <div class="timeline">
+                                                      <div class="stage current" id="stage1"><strong>Request
+                                                                        prepared</strong><small>Choose tests, location,
+                                                                        and preferred slot.</small></div>
+                                                      <div class="stage" id="stage2"><strong>Team
+                                                                        review</strong><small>We confirm coverage,
+                                                                        sample plan, and availability.</small></div>
+                                                      <div class="stage" id="stage3"><strong>Visit
+                                                                        approved</strong><small>Confirmed slot and
+                                                                        field-scientist details appear here.</small>
+                                                      </div>
+                                                      <div class="stage" id="stage4"><strong>Report in
+                                                                        progress</strong><small>Lab outputs and action
+                                                                        plan are assembled.</small></div>
+                                             </div><button class="btn" id="resetStatus" type="button"
+                                                      style="width:100%">Start a new request</button>
+                                    </section>
+                                    <section class="rail">
+                                             <div class="rail-head"><span class="eyebrow">WHY THESE TESTS</span><span
+                                                               class="index">02</span></div>
+                                             <p class="side-copy">Routine fertility establishes the nutrient baseline.
+                                                      Add water, salinity, tissue, biology, pest, nematode, or
+                                                      contaminant diagnostics when the field history or crop symptoms
+                                                      justify a closer look.</p>
+                                             <div class="summary-line"><span>Source method</span><strong>Field + lab
+                                                               evidence</strong></div>
+                                             <div class="summary-line"><span>Report style</span><strong>Prioritized
+                                                               actions</strong></div>
+                                    </section>
+                                    <section class="rail">
+                                             <div class="rail-head"><span class="eyebrow">RESEARCH DESK</span><span
+                                                               class="index">03</span></div>
+                                             <div class="source"><span><a
+                                                                        href="https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/soil-testing-for-lawns-and-gardens"
+                                                                        target="_blank" rel="noreferrer">UMN
+                                                                        Extension</a><small>Routine soil + physical
+                                                                        tests</small></span><span>↗</span></div>
+                                             <div class="source"><span><a
+                                                                        href="https://extension.oregonstate.edu/catalog/em-9522-irrigation-water-quality"
+                                                                        target="_blank" rel="noreferrer">OSU
+                                                                        Extension</a><small>EC, SAR, nitrate-N,
+                                                                        boron</small></span><span>↗</span></div>
+                                             <div class="source"><span><a
+                                                                        href="https://pnwhandbooks.org/plantdisease/diagnosis-testing/testing-services/nematode-testing"
+                                                                        target="_blank" rel="noreferrer">PNW
+                                                                        Handbook</a><small>Composite nematode
+                                                                        sampling</small></span><span>↗</span></div>
+                                    </section>
+                           </aside>
+                  </div>
+         </main>
+         <footer class="footer"> 2026 DRONACHARYA / evidence-led agriculture intelligence · Indicative scope only;
+                  final sampling and pricing are confirmed by the field team.</footer>
+         <div class="toast" id="toast" role="status"></div>
+         <script>
+                  const $ = id => document.getElementById(id), tests = [...document.querySelectorAll('#testGrid input')]; let booking = null;
+                  const money = n => '₹' + n.toLocaleString('en-IN');
+                  function selected() { return tests.filter(t => t.checked) }
+                  function refresh() { const chosen = selected(); document.querySelectorAll('.test-card').forEach(c => c.classList.toggle('selected', c.querySelector('input').checked)); $('testCount').textContent = chosen.length + ' test' + (chosen.length === 1 ? '' : 's') + ' selected'; let total = chosen.reduce((n, t) => n + Number(t.dataset.price), 0) + 550; $('estimateTotal').textContent = money(total); $('selectedTests').innerHTML = chosen.length ? chosen.map(t => '<div class="summary-line"><span>' + t.dataset.name + '</span><strong>' + money(Number(t.dataset.price)) + '</strong></div>').join('') : '<div class="summary-line"><span>No test selected</span><strong>Choose at least one</strong></div>'; let turns = chosen.map(t => t.dataset.turn); $('turnaround').textContent = turns.length ? turns.sort((a, b) => parseInt(b) - parseInt(a))[0] : '—'; $('summaryLocation').textContent = $('lat').value && $('lng').value ? 'Coordinates anchored' : 'Not anchored'; updateMap() }
+                  function updateMap() { const lat = parseFloat($('lat').value), lng = parseFloat($('lng').value); if (!Number.isFinite(lat) || !Number.isFinite(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) { $('mapCaption').textContent = 'Map preview will update when coordinates are available.'; return } const bbox = [lng - 0.02, lat - 0.015, lng + 0.02, lat + 0.015].join('%2C'); $('mapFrame').src = 'https://www.openstreetmap.org/export/embed.html?bbox=' + bbox + '&layer=mapnik&marker=' + lat + '%2C' + lng; $('mapLink').href = 'https://www.openstreetmap.org/?mlat=' + lat + '&mlon=' + lng + '#map=16/' + lat + '/' + lng; $('mapCaption').textContent = 'Field anchor: ' + lat.toFixed(5) + ', ' + lng.toFixed(5) }
+                  function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3600) }
+                  $('locateBtn').onclick = () => { if (!navigator.geolocation) { $('locationStatus').textContent = 'Live location is not supported; enter coordinates manually.'; return } $('locationStatus').textContent = 'Requesting browser location permission…'; navigator.geolocation.getCurrentPosition(pos => { $('lat').value = pos.coords.latitude.toFixed(6); $('lng').value = pos.coords.longitude.toFixed(6); $('locationStatus').textContent = 'Live location captured. Accuracy ±' + Math.round(pos.coords.accuracy) + ' m; review before submitting.'; refresh() }, () => { $('locationStatus').textContent = 'Location permission was not granted. You can enter coordinates manually.' }) };
+                  ['lat', 'lng', 'place'].forEach(id => $(id).addEventListener('input', refresh)); tests.forEach(t => t.addEventListener('change', refresh));
+                  $('visitDate').min = new Date(Date.now() + 172800000).toISOString().slice(0, 10); $('visitDate').value = $('visitDate').min;
+                  $('visitForm').onsubmit = e => { e.preventDefault(); $('formError').textContent = ''; const chosen = selected(); if (!$('fieldName').value.trim() || !$('phone').value.trim() || !$('visitDate').value) { $('formError').textContent = 'Add the field name, contact number, and preferred visit date.'; return } if (!chosen.length) { $('formError').textContent = 'Select at least one diagnostic test.'; return } const id = 'DRV-' + new Date().getFullYear() + '-' + Math.random().toString(36).slice(2, 8).toUpperCase(); booking = { id, createdAt: new Date().toISOString(), fieldName: $('fieldName').value.trim(), crop: $('crop').value, tests: chosen.map(t => t.value), date: $('visitDate').value, slot: $('slot').value, place: $('place').value.trim(), lat: $('lat').value || null, lng: $('lng').value || null }; localStorage.setItem('dronacharyaFieldVisit', JSON.stringify(booking)); $('requestId').textContent = id + ' · submitted just now'; $('statusHeadline').textContent = 'PENDING REVIEW'; $('stage1').className = 'stage done'; $('stage2').className = 'stage current'; toast('Request saved. The field team can now review your diagnostic scope.'); $('summaryPanel').scrollIntoView({ behavior: 'smooth', block: 'start' }) };
+                  $('clearBtn').onclick = () => { $('visitForm').reset(); $('visitDate').value = $('visitDate').min; tests[0].checked = true; booking = null; refresh(); $('locationStatus').textContent = 'Location access is optional. You can use a village, district, or manual coordinates.' }; $('resetStatus').onclick = () => { localStorage.removeItem('dronacharyaFieldVisit'); $('requestId').textContent = 'Draft request · not submitted'; $('statusHeadline').textContent = 'READY TO BOOK';['stage1', 'stage2', 'stage3', 'stage4'].forEach((id, i) => $(id).className = 'stage ' + (i === 0 ? 'current' : '')); toast('New request workspace ready.') };
+                  const saved = localStorage.getItem('dronacharyaFieldVisit'); if (saved) { try { booking = JSON.parse(saved); $('requestId').textContent = booking.id + ' · saved request'; $('statusHeadline').textContent = 'PENDING REVIEW'; $('stage1').className = 'stage done'; $('stage2').className = 'stage current' } catch (e) { } } refresh();
+         </script>
+</body>
+
+</html>

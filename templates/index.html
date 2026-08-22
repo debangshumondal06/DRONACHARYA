@@ -905,6 +905,128 @@
                            }
                   }
          </style>
+
+         <style id="dronacharya-ai-help-style">
+                  .dronacharya-ai-help {
+                           position: fixed;
+                           right: 24px;
+                           bottom: 24px;
+                           z-index: 80;
+                           display: flex;
+                           align-items: center;
+                           gap: 10px;
+                           padding: 10px 14px 10px 11px;
+                           border: 1px solid rgba(94, 235, 138, .72);
+                           border-radius: 4px;
+                           background: rgba(13, 25, 16, .94);
+                           color: #c8ffd6;
+                           font: 700 11px/1.2 Manrope, Arial, sans-serif;
+                           letter-spacing: .03em;
+                           box-shadow: 0 0 0 1px rgba(94, 235, 138, .08), 0 12px 32px rgba(0, 0, 0, .42), 0 0 22px rgba(94, 235, 138, .12);
+                           backdrop-filter: blur(14px);
+                           cursor: pointer;
+                           transition: transform .18s cubic-bezier(.23, 1, .32, 1), background .18s ease, box-shadow .18s ease
+                  }
+
+                  .dronacharya-ai-help:hover {
+                           transform: translateY(-3px);
+                           background: #14291a;
+                           box-shadow: 0 18px 42px rgba(0, 0, 0, .46), 0 0 28px rgba(94, 235, 138, .22)
+                  }
+
+                  .dronacharya-ai-help:active {
+                           transform: translateY(-1px) scale(.97)
+                  }
+
+                  .dronacharya-ai-help:focus-visible {
+                           outline: 2px solid #5eeb8a;
+                           outline-offset: 3px
+                  }
+
+                  .dronacharya-ai-help-mark {
+                           display: grid;
+                           place-items: center;
+                           width: 25px;
+                           height: 25px;
+                           border: 1px solid rgba(231, 200, 94, .72);
+                           color: #e7c85e;
+                           font: 700 13px/1 'Playfair Display', Georgia, serif
+                  }
+
+                  .dronacharya-ai-help-copy {
+                           display: flex;
+                           flex-direction: column;
+                           gap: 3px;
+                           text-align: left
+                  }
+
+                  .dronacharya-ai-help-copy strong {
+                           color: #eef7f0;
+                           font: 700 11px Manrope, Arial, sans-serif
+                  }
+
+                  .dronacharya-ai-help-copy span {
+                           color: #8ea297;
+                           font: 400 10px 'DM Sans', Arial, sans-serif
+                  }
+
+                  .dronacharya-ai-help-panel {
+                           position: fixed;
+                           right: 24px;
+                           bottom: 78px;
+                           z-index: 79;
+                           width: min(290px, calc(100vw - 32px));
+                           padding: 16px;
+                           border: 1px solid rgba(112, 255, 150, .28);
+                           background: rgba(13, 21, 16, .97);
+                           color: #eef7f0;
+                           box-shadow: 0 20px 50px rgba(0, 0, 0, .48);
+                           backdrop-filter: blur(16px);
+                           opacity: 0;
+                           transform: translateY(10px);
+                           pointer-events: none;
+                           transition: opacity .18s ease, transform .18s cubic-bezier(.23, 1, .32, 1)
+                  }
+
+                  .dronacharya-ai-help-panel.is-open {
+                           opacity: 1;
+                           transform: translateY(0);
+                           pointer-events: auto
+                  }
+
+                  .dronacharya-ai-help-panel strong {
+                           display: block;
+                           margin-bottom: 6px;
+                           color: #c8ffd6;
+                           font: 700 12px Manrope, Arial, sans-serif
+                  }
+
+                  .dronacharya-ai-help-panel p {
+                           margin: 0;
+                           color: #8ea297;
+                           font: 400 11px/1.55 'DM Sans', Arial, sans-serif
+                  }
+
+                  @media(max-width:600px) {
+                           .dronacharya-ai-help {
+                                    right: 16px;
+                                    bottom: 16px
+                           }
+
+                           .dronacharya-ai-help-panel {
+                                    right: 16px;
+                                    bottom: 70px
+                           }
+                  }
+
+                  @media(prefers-reduced-motion:reduce) {
+
+                           .dronacharya-ai-help,
+                           .dronacharya-ai-help-panel {
+                                    transition: none
+                           }
+                  }
+         </style>
 </head>
 
 <body>
@@ -916,7 +1038,7 @@
          </div>
 
          <header class="topbar">
-                  <a class="brand-mark" href="dashboard.html">
+                  <a class="brand-mark" href="index.html">
                            <span class="brand-glyph" aria-hidden="true">D</span>
                            <span class="brand-text">
                                     <span class="brand">DRONACHARYA</span>
@@ -926,8 +1048,8 @@
 
                   <nav>
                            <ul class="nav-links">
-                                    <li><a class="active" href="dashboard.html">Home</a></li>
-                                    <li><a href="{{ url_for('field_visit') }}">Field Visit</a></li>
+                                    <li><a class="active" href="index.html">Home</a></li>
+                                    <li><a href="field_visit.html">Field Visit</a></li>
                                     <li><a href="yield.html">Estimate Yield</a></li>
                                     <li><a href="store.html">Store</a></li>
                            </ul>
@@ -971,7 +1093,7 @@
                                                       farmer or planner remains in control.</span>
                                     </div>
 
-                                    <div class="journey" aria-label="How DRONACHARYA is used">
+                                    <div class="journey" aria-label="How DRONACHARYA is used?">
                                              <div class="journey-step"><b>STEP 01</b><strong>Field
                                                                Visit</strong><span>Log soil, crop stage and conditions
                                                                on-site</span></div>
@@ -998,7 +1120,7 @@
                                     </div>
 
                                     <div class="quick-tiles">
-                                             <a class="quick-tile" href="{{ url_for('field_visit') }}">
+                                             <a class="quick-tile" href="field_visit.html">
                                                       <span class="tile-icon" aria-hidden="true">&#128205;</span>
                                                       <span class="tile-copy">
                                                                <strong>Log a Field Visit</strong>
@@ -1107,7 +1229,7 @@
                                                       <p>Record soil condition, crop stage, irrigation and any visible
                                                                stress directly from your field, even without a network
                                                                connection.</p>
-                                                      <a class="service-link" href="{{ url_for('field_visit') }}">Start
+                                                      <a class="service-link" href="field_visit.html">Start
                                                                a field visit <span>&rarr;</span></a>
                                              </div>
                                              <div class="service-card">
@@ -1116,8 +1238,7 @@
                                                       <p>Combine your field visit data with regional weather and
                                                                historical yield patterns to get a harvest range, not a
                                                                single number.</p>
-                                                      <a class="service-link"
-                                                               href="yield.html">Estimate my yield
+                                                      <a class="service-link" href="yield.html">Estimate my yield
                                                                <span>&rarr;</span></a>
                                              </div>
                                              <div class="service-card">
@@ -1161,7 +1282,7 @@
                            <div class="footer-col">
                                     <h4>PLATFORM</h4>
                                     <ul>
-                                             <li><a href="{{ url_for('field_visit') }}">Field Visit</a></li>
+                                             <li><a href="field_visit.html">Field Visit</a></li>
                                              <li><a href="yield.html">Estimate Yield</a></li>
                                              <li><a href="store.html">Store</a></li>
                                     </ul>
@@ -1207,6 +1328,26 @@
                            });
                   }
          </script>
+
+         <div class="dronacharya-ai-help-panel" id="dronacharyaAiHelpPanel" role="status" aria-live="polite"
+                  aria-hidden="true">
+                  <strong>Need Help?</strong>
+                  <p>Dronacharya A.I. can guide you through field intelligence, crop yield, and soil-health tools.</p>
+         </div>
+         <button class="dronacharya-ai-help" id="dronacharyaAiHelpButton" type="button" aria-expanded="false"
+                  aria-controls="dronacharyaAiHelpPanel" aria-label="Need Help? Ask Dronacharya A.I.">
+                  <span class="dronacharya-ai-help-mark" aria-hidden="true">⌁</span>
+                  <span class="dronacharya-ai-help-copy"><strong>Ask Dronacharya A.I.</strong><span>Need
+                                    Help?</span></span>
+         </button>
+         <script>
+                  document
+                           .getElementById('dronacharyaAiHelpButton')
+                           .addEventListener('click', function () {
+                                    window.location.href = 'assistant.html';
+                           });
+         </script>
+
 </body>
 
 </html>

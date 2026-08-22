@@ -1271,18 +1271,269 @@
                            }
                   }
          </style>
+
+         <style id="dronacharya-marketplace-telemetry-style">
+                  .market-pulse {
+                           width: min(1200px, 92vw);
+                           margin: 26px auto 0;
+                           display: grid;
+                           grid-template-columns: 1.2fr .8fr;
+                           gap: 16px
+                  }
+
+                  .market-pulse-card {
+                           position: relative;
+                           padding: 20px;
+                           border: 1px solid rgba(112, 255, 150, .16);
+                           background: linear-gradient(145deg, rgba(18, 29, 21, .96), rgba(7, 12, 8, .96));
+                           box-shadow: 0 16px 36px rgba(0, 0, 0, .24)
+                  }
+
+                  .market-pulse-card:before {
+                           content: "";
+                           position: absolute;
+                           top: 0;
+                           left: 20px;
+                           right: 20px;
+                           height: 2px;
+                           background: linear-gradient(90deg, transparent, #5eeb8a, transparent);
+                           box-shadow: 0 0 16px rgba(94, 235, 138, .55)
+                  }
+
+                  .market-pulse-kicker {
+                           display: flex;
+                           align-items: center;
+                           justify-content: space-between;
+                           gap: 10px;
+                           margin-bottom: 13px;
+                           color: #5eeb8a;
+                           font: 700 10px Manrope, Arial, sans-serif;
+                           letter-spacing: .16em;
+                           text-transform: uppercase
+                  }
+
+                  .market-pulse-live {
+                           display: inline-flex;
+                           align-items: center;
+                           gap: 6px;
+                           color: #8ea297;
+                           font: 600 10px 'DM Sans', Arial, sans-serif;
+                           letter-spacing: 0;
+                           text-transform: none
+                  }
+
+                  .market-pulse-live i {
+                           width: 6px;
+                           height: 6px;
+                           border-radius: 50%;
+                           background: #5eeb8a;
+                           box-shadow: 0 0 9px #5eeb8a;
+                           animation: droneMarketPulse 2.2s ease-in-out infinite
+                  }
+
+                  @keyframes droneMarketPulse {
+                           50% {
+                                    opacity: .45;
+                                    transform: scale(.72)
+                           }
+                  }
+
+                  .market-pulse-card h2 {
+                           margin: 0;
+                           color: #eef7f0;
+                           font: 700 18px 'Playfair Display', Georgia, serif
+                  }
+
+                  .market-pulse-card p {
+                           margin: 7px 0 0;
+                           color: #8ea297;
+                           font: 400 11px/1.5 'DM Sans', Arial, sans-serif
+                  }
+
+                  .market-pulse-grid {
+                           display: grid;
+                           grid-template-columns: repeat(4, 1fr);
+                           gap: 1px;
+                           margin-top: 17px;
+                           background: rgba(112, 255, 150, .14)
+                  }
+
+                  .market-metric {
+                           min-height: 85px;
+                           padding: 12px;
+                           background: #0d1510
+                  }
+
+                  .market-metric b {
+                           display: block;
+                           color: #c8ffd6;
+                           font: 700 20px 'Playfair Display', Georgia, serif
+                  }
+
+                  .market-metric span {
+                           display: block;
+                           margin-top: 4px;
+                           color: #8ea297;
+                           font: 600 10px Manrope, Arial, sans-serif;
+                           line-height: 1.3
+                  }
+
+                  .market-pulse-side {
+                           display: flex;
+                           flex-direction: column;
+                           gap: 10px;
+                           margin-top: 17px
+                  }
+
+                  .market-event {
+                           display: flex;
+                           align-items: flex-start;
+                           gap: 9px;
+                           padding: 9px 0;
+                           border-top: 1px solid rgba(112, 255, 150, .13);
+                           color: #8ea297;
+                           font: 400 11px/1.45 'DM Sans', Arial, sans-serif
+                  }
+
+                  .market-event:first-child {
+                           border-top: 0;
+                           padding-top: 0
+                  }
+
+                  .market-event strong {
+                           display: block;
+                           color: #c8ffd6;
+                           font: 700 11px Manrope, Arial, sans-serif
+                  }
+
+                  .market-event em {
+                           display: block;
+                           margin-top: 2px;
+                           color: #6f8174;
+                           font-style: normal;
+                           font-size: 10px
+                  }
+
+                  .market-event-mark {
+                           display: grid;
+                           place-items: center;
+                           width: 22px;
+                           height: 22px;
+                           border: 1px solid rgba(231, 200, 94, .45);
+                           color: #e7c85e;
+                           font: 700 11px Manrope, Arial, sans-serif;
+                           flex: none
+                  }
+
+                  .market-trust {
+                           display: flex;
+                           align-items: center;
+                           justify-content: space-between;
+                           gap: 12px;
+                           margin-top: 14px;
+                           padding-top: 12px;
+                           border-top: 1px solid rgba(112, 255, 150, .13);
+                           color: #6f8174;
+                           font: 400 10px/1.4 'DM Sans', Arial, sans-serif
+                  }
+
+                  .market-trust strong {
+                           color: #e7c85e;
+                           font: 700 10px Manrope, Arial, sans-serif
+                  }
+
+                  .market-activity {
+                           width: min(1200px, 92vw);
+                           margin: 0 auto 26px;
+                           padding: 14px 17px;
+                           border: 1px solid rgba(112, 255, 150, .13);
+                           background: rgba(10, 17, 12, .82);
+                           color: #8ea297;
+                           font: 400 11px 'DM Sans', Arial, sans-serif
+                  }
+
+                  .market-activity strong {
+                           color: #c8ffd6;
+                           font: 700 11px Manrope, Arial, sans-serif
+                  }
+
+                  .market-activity button {
+                           float: right;
+                           padding: 4px 8px;
+                           border: 1px solid rgba(112, 255, 150, .2);
+                           background: transparent;
+                           color: #8ea297;
+                           font: 600 10px Manrope;
+                           cursor: pointer
+                  }
+
+                  .market-activity button:hover {
+                           color: #c8ffd6;
+                           border-color: #5eeb8a
+                  }
+
+                  @media(max-width:850px) {
+                           .market-pulse {
+                                    grid-template-columns: 1fr
+                           }
+
+                           .market-pulse-grid {
+                                    grid-template-columns: repeat(2, 1fr)
+                           }
+                  }
+
+                  @media(max-width:520px) {
+
+                           .market-pulse,
+                           .market-activity {
+                                    width: 92vw
+                           }
+
+                           .market-pulse-card {
+                                    padding: 16px
+                           }
+
+                           .market-pulse-grid {
+                                    grid-template-columns: repeat(2, 1fr)
+                           }
+                  }
+
+                  @media(prefers-reduced-motion:reduce) {
+                           .market-pulse-live i {
+                                    animation: none
+                           }
+                  }
+         </style>
+         <style id="dronacharya-brand-home-style">
+                  .brand-home-link {
+                           color: inherit;
+                           text-decoration: none;
+                           border-radius: 4px;
+                           transition: filter .16s ease, transform .16s cubic-bezier(.23, 1, .32, 1)
+                  }
+
+                  .brand-home-link:hover {
+                           filter: brightness(1.12);
+                           transform: translateY(-1px)
+                  }
+
+                  .brand-home-link:focus-visible {
+                           outline: 2px solid var(--green);
+                           outline-offset: 4px
+                  }
+         </style>
 </head>
 
 <body>
          <div class="tricolor-strip"></div>
          <header class="topbar">
-                  <div class="brand-group">
+                  <a class="brand-group brand-home-link" href="index.html" aria-label="DRONACHARYA home">
                            <div class="emblem" aria-hidden="true">D</div>
                            <div>
                                     <span class="brand">DRONACHARYA</span>
 
                            </div>
-                  </div>
+                  </a>
                   <div class="topbar-right">
                            <select class="lang-select" aria-label="Select language">
                                     <option value="en">English</option>
@@ -1331,6 +1582,52 @@
                            </button>
                   </div>
          </section>
+
+
+         <section class="market-pulse" id="marketPulse" aria-label="Marketplace activity overview">
+                  <div class="market-pulse-card">
+                           <div class="market-pulse-kicker"><span>MARKETPLACE PULSE</span><span
+                                             class="market-pulse-live"><i></i> Current page telemetry</span></div>
+                           <h2>Know what is moving before you list.</h2>
+                           <p>These indicators are calculated from the catalog, listings, cart, and orders available in
+                                    this session. Connect your marketplace API to replace page telemetry with
+                                    platform-wide aggregates.</p>
+                           <div class="market-pulse-grid">
+                                    <div class="market-metric"><b id="pulseListings">—</b><span>visible listings</span>
+                                    </div>
+                                    <div class="market-metric"><b id="pulseCategories">—</b><span>active
+                                                      categories</span></div>
+                                    <div class="market-metric"><b id="pulseQuantity">—</b><span>quantity in view</span>
+                                    </div>
+                                    <div class="market-metric"><b id="pulseCart">0</b><span>buyer cart items</span>
+                                    </div>
+                           </div>
+                           <div class="market-trust"><span>Seller + buyer signals</span><strong id="pulseSync">WAITING
+                                             FOR CATALOG SYNC</strong></div>
+                  </div>
+                  <div class="market-pulse-card">
+                           <div class="market-pulse-kicker"><span>ACTIVITY PANEL</span><span
+                                             class="market-pulse-live">session-aware</span></div>
+                           <h2>What is happening now.</h2>
+                           <div class="market-pulse-side" id="marketActivityFeed">
+                                    <div class="market-event"><span
+                                                      class="market-event-mark">01</span><span><strong>Catalog awaiting
+                                                               sync</strong><em>Existing listings will appear here as
+                                                               the store loads.</em></span></div>
+                                    <div class="market-event"><span
+                                                      class="market-event-mark">02</span><span><strong>Buyer intent is
+                                                               private</strong><em>Cart and checkout signals are
+                                                               calculated only from this session.</em></span></div>
+                                    <div class="market-event"><span class="market-event-mark">03</span><span><strong>No
+                                                               fabricated reviews</strong><em>Seller identity, ratings,
+                                                               and fulfillment history require verified backend
+                                                               data.</em></span></div>
+                           </div>
+                  </div>
+         </section>
+         <div class="market-activity" id="marketActivity" role="status" aria-live="polite"><strong>Marketplace
+                           desk:</strong> Choose a Buyer or Seller view to begin. <button id="marketActivityClear"
+                           type="button">Clear activity</button></div>
 
          <!-- ================= BUYER PANEL ================= -->
          <section class="panel" id="buyerPanel">
@@ -1582,6 +1879,34 @@
          <div id="toast" role="status" aria-live="polite"></div>
 
          <script src="{{ url_for('static', filename='js/store.js') }}"></script>
+
+         <script id="dronacharya-marketplace-telemetry-script">
+                  (function () {
+                           var pulseListings = document.getElementById('pulseListings'), pulseCategories = document.getElementById('pulseCategories'), pulseQuantity = document.getElementById('pulseQuantity'), pulseCart = document.getElementById('pulseCart'), pulseSync = document.getElementById('pulseSync'), feed = document.getElementById('marketActivityFeed'), activity = document.getElementById('marketActivity'), clear = document.getElementById('marketActivityClear');
+                           if (!pulseListings) return;
+                           var events = [];
+                           function addEvent(title, detail, mark) { events.unshift({ title: title, detail: detail, mark: mark || '•' }); events = events.slice(0, 4); feed.innerHTML = events.map(function (e) { return '<div class="market-event"><span class="market-event-mark">' + e.mark + '</span><span><strong>' + e.title + '</strong><em>' + e.detail + '</em></span></div>'; }).join(''); activity.innerHTML = '<strong>Marketplace desk:</strong> ' + titleCase(title) + ' <button id="marketActivityClear" type="button">Clear activity</button>'; document.getElementById('marketActivityClear').onclick = clearEvents }
+                           function clearEvents() { events = []; feed.innerHTML = '<div class="market-event"><span class="market-event-mark">OK</span><span><strong>Activity cleared</strong><em>New seller and buyer actions will appear here.</em></span></div>'; activity.innerHTML = '<strong>Marketplace desk:</strong> Ready for the next action. <button id="marketActivityClear" type="button">Clear activity</button>'; document.getElementById('marketActivityClear').onclick = clearEvents }
+                           function titleCase(s) { return String(s || '').charAt(0).toUpperCase() + String(s || '').slice(1) }
+                           function textNum(value) { var n = Number(value || 0); return n.toLocaleString('en-IN', { maximumFractionDigits: 2 }) }
+                           function sync() {
+                                    var cards = [].slice.call(document.querySelectorAll('#productGrid [data-category],#productGrid .product-card,#productGrid .product-item,.product-card'));
+                                    var visible = cards.filter(function (el) { return getComputedStyle(el).display !== 'none' });
+                                    var cats = {}; visible.forEach(function (el) { var c = el.dataset.category || (el.querySelector('.category') || {}).textContent || ''; if (c.trim()) cats[c.trim()] = 1 });
+                                    var qty = 0; visible.forEach(function (el) { var q = el.dataset.quantity || (el.querySelector('.quantity') || {}).textContent || ''; var m = String(q).replace(/,/g, '').match(/[0-9]+(?:\.[0-9]+)?/); if (m) qty += Number(m[0]) });
+                                    var cart = document.querySelectorAll('#cartItems [data-product-id],#cartItems .cart-item,#cartItems li');
+                                    pulseListings.textContent = visible.length ? textNum(visible.length) : '—'; pulseCategories.textContent = Object.keys(cats).length ? textNum(Object.keys(cats).length) : '—'; pulseQuantity.textContent = qty ? textNum(qty) : '—'; pulseCart.textContent = textNum(cart.length);
+                                    pulseSync.textContent = visible.length ? 'CATALOG SYNCED' : 'WAITING FOR CATALOG SYNC';
+                           }
+                           document.querySelectorAll('.role-card,.switch-role').forEach(function (el) { el.addEventListener('click', function () { var role = el.dataset.role || el.dataset.target || 'marketplace'; addEvent('Switched to ' + role + ' view', 'The interaction panel is now following your ' + role + ' workspace.', '↗'); setTimeout(sync, 50) }) });
+                           document.querySelectorAll('.chip').forEach(function (el) { el.addEventListener('click', function () { addEvent('Category filter changed', el.textContent.trim() + ' is now in focus.', '⌕'); setTimeout(sync, 50) }) });
+                           var search = document.getElementById('searchInput'); if (search) search.addEventListener('input', function () { if (search.value.trim().length > 2) addEvent('Search signal captured', 'Looking for “' + search.value.trim() + '”.', '⌕'); setTimeout(sync, 50) });
+                           var sort = document.getElementById('sortSelect'); if (sort) sort.addEventListener('change', function () { addEvent('Sort order changed', sort.options[sort.selectedIndex].text, '↕'); setTimeout(sync, 50) });
+                           document.addEventListener('click', function (event) { var el = event.target.closest && event.target.closest('button'); if (!el) return; var txt = (el.textContent || '').trim(); if (/add to cart|buy|remove/i.test(txt)) { addEvent('Buyer cart updated', txt.replace(/\s+/g, ' ').slice(0, 70), 'B'); setTimeout(sync, 80) } if (/publish listing|edit listing|delete/i.test(txt)) { addEvent('Seller workspace updated', txt.replace(/\s+/g, ' ').slice(0, 70), 'S'); setTimeout(sync, 80) } if (/place order|checkout/i.test(txt)) { addEvent('Order action submitted', 'The existing checkout flow remains responsible for order handling.', '✓'); setTimeout(sync, 80) } });
+                           if (clear) clear.onclick = clearEvents;
+                           sync(); var productRoot = document.getElementById('productGrid'); var cartRoot = document.getElementById('cartItems'); var observer = new MutationObserver(function () { sync() }); if (productRoot) observer.observe(productRoot, { subtree: true, childList: true }); if (cartRoot) observer.observe(cartRoot, { subtree: true, childList: true });
+                  })();
+         </script>
 </body>
 
 </html>

@@ -702,7 +702,7 @@
          </div>
 
          <header class="topbar">
-                  <a class="brand-mark" href="{{ url_for('home') }}">
+                  <a class="brand-mark" href="index.html">
                            <span class="brand-glyph" aria-hidden="true">D</span>
                            <span class="brand-text">
                                     <span class="brand">DRONACHARYA</span>
@@ -711,13 +711,13 @@
                   </a>
                   <nav>
                            <ul class="nav-links">
-                                    <li><a href="{{ url_for('field_visit') }}">Field Visit</a></li>
-                                    <li><a href="{{ url_for('estimate_yield') }}">Estimate Yield</a></li>
-                                    <li><a href="{{ url_for('store') }}">Store</a></li>
+                                    <li><a href="field_visit.html">Field Visit</a></li>
+                                    <li><a href="yield.html">Estimate Yield</a></li>
+                                    <li><a href="store.html">Store</a></li>
                            </ul>
                   </nav>
                   <div class="nav-controls">
-                           <a class="home-btn" href="{{ url_for('home') }}"><span aria-hidden="true">&larr;</span>
+                           <a class="home-btn" href="index.html"><span aria-hidden="true">&larr;</span>
                                     Return to HOME</a>
                            <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
                   </div>
@@ -904,27 +904,27 @@
                                     {
                                              keywords: ['yield', 'harvest', 'estimate', 'production', 'quintal'],
                                              reply: "The Estimate Yield page turns your irrigation type, field area, place, soil type, and pH into a live, confidence-ranged harvest report, with charts and a downloadable CSV. You can also pick your state on the map to auto-fill soil type.",
-                                             chips: [{ label: 'Open Estimate Yield', href: "{{ url_for('estimate_yield') }}" }]
+                                             chips: [{ label: 'Open Estimate Yield', href: "yield.html" }]
                                     },
                                     {
                                              keywords: ['field visit', 'visit', 'log field', 'inspect', 'site visit'],
                                              reply: "Field Visit is where you record what you see on-site — soil condition, crop stage, irrigation status, and any visible stress — even without a network connection.",
-                                             chips: [{ label: 'Open Field Visit', href: "{{ url_for('field_visit') }}" }]
+                                             chips: [{ label: 'Open Field Visit', href: "field_visit.html" }]
                                     },
                                     {
                                              keywords: ['store', 'seed', 'fertiliser', 'fertilizer', 'buy', 'equipment', 'input'],
                                              reply: "The Store lets you browse seeds, fertiliser, and equipment matched to your crop and yield outlook, from verified sellers near you.",
-                                             chips: [{ label: 'Open Store', href: "{{ url_for('store') }}" }]
+                                             chips: [{ label: 'Open Store', href: "store.html" }]
                                     },
                                     {
                                              keywords: ['login', 'log in', 'sign in', 'account', 'register'],
                                              reply: "You can log in from the button in the top-right corner of any DRONACHARYA page. If you don't have an account yet, that same page usually has a link to register.",
-                                             chips: [{ label: 'Go to Login', href: "{{ url_for('login') }}" }]
+                                             chips: [{ label: 'Go to Login', href: "login.html" }]
                                     },
                                     {
                                              keywords: ['soil', 'alluvial', 'black soil', 'laterite', 'red soil', 'arid'],
                                              reply: "Soil type strongly affects yield. Alluvial soil tends to suit wheat and rice well, black soil suits cotton, and red or laterite soils generally need more irrigation support. On Estimate Yield, you can pick your state on the map and I'll fill in the matching soil type for you.",
-                                             chips: [{ label: 'Estimate my yield', href: "{{ url_for('estimate_yield') }}" }]
+                                             chips: [{ label: 'Estimate my yield', href: "yield.html" }]
                                     },
                                     {
                                              keywords: ['ph', 'acidic', 'alkaline'],
@@ -934,12 +934,12 @@
                                     {
                                              keywords: ['irrigation', 'drip', 'sprinkler', 'canal', 'rainfed', 'tubewell', 'water'],
                                              reply: "Drip irrigation is the most efficient, followed by sprinkler, canal or flood, then groundwater/tubewell, with rainfed fields carrying the most weather risk. Estimate Yield factors this in directly.",
-                                             chips: [{ label: 'Compare on Estimate Yield', href: "{{ url_for('estimate_yield') }}" }]
+                                             chips: [{ label: 'Compare on Estimate Yield', href: "yield.html" }]
                                     },
                                     {
                                              keywords: ['history', 'past report', 'previous', 'download', 'csv'],
                                              reply: "Every yield report you generate is saved automatically. Look for the report history panel on the right side of the Estimate Yield page — click any past entry to reload it, or use the Download CSV button to export it.",
-                                             chips: [{ label: 'View my reports', href: "{{ url_for('estimate_yield') }}" }]
+                                             chips: [{ label: 'View my reports', href: "yield.html" }]
                                     },
                                     {
                                              keywords: ['language', 'hindi', 'bengali', 'tamil', 'telugu', 'marathi'],
@@ -1026,8 +1026,8 @@
 
                            function greet(attemptSpeak) {
                                     addMessage('assistant', GREETING, [
-                                             { label: 'Open Estimate Yield', href: "{{ url_for('estimate_yield') }}" },
-                                             { label: 'Open Field Visit', href: "{{ url_for('field_visit') }}" }
+                                             { label: 'Open Estimate Yield', href: "yield.html" },
+                                             { label: 'Open Field Visit', href: "field_visit.html" }
                                     ]);
                                     if (attemptSpeak && synth) {
                                              window.setTimeout(function () {
