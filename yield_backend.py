@@ -316,11 +316,6 @@ def save_report(session_id, report):
 # ---------------------------------------------------------------------------
 
 @yield_bp.route("/api/estimate", methods=["POST"])
-@yield_bp.route("/api/history")
-@yield_bp.route("/api/history/<int:report_id>")
-@yield_bp.route("/api/history/<int:report_id>/csv")
-
-@yield_bp.route("/api/estimate", methods=["POST"])
 def api_estimate():
     payload = request.get_json(silent=True) or {}
     try:

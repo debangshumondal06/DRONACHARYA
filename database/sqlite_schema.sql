@@ -59,3 +59,42 @@ CREATE TABLE IF NOT EXISTS field_visits (
 
 CREATE INDEX IF NOT EXISTS idx_field_visits_user_id
     ON field_visits(user_id);
+
+CREATE TABLE IF NOT EXISTS products (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    seller_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    seller_name TEXT NOT NULL,
+    seller_contact TEXT NOT NULL,
+    crop_name TEXT NOT NULL,
+    category TEXT NOT NULL,
+    quantity REAL NOT NULL CHECK (quantity > 0),
+    unit TEXT NOT NULL,
+    price_per_unit REAL NOT NULL CHECK (price_per_unit >= 0),
+    harvest_date TEXT,
+    location TEXT NOT NULL,
+    description TEXT,
+    status TEXT NOT NULL DEFAULT 'active',
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    buyer_id INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    buyer_name TEXT NOT NULL,
+    buyer_contact TEXT NOT NULL,
+    buyer_address TEXT NOT NULL,
+    total_amount REAL NOT NULL CHECK (total_amount >= 0),
+    status TEXT NOT NULL DEFAULT 'pending',
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS order_items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_id INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+    product_id INTEGER REFERENCES products(id) ON DELETE SET NULL,
+    seller_id INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    quantity REAL NOT NULL CHECK (quantity > 0),
+    unit_price REAL NOT NULL CHECK (unit_price >= 0),
+    line_total REAL NOT NULL CHECK (line_total >= 0)
+);

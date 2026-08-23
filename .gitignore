@@ -6,3 +6,6 @@ venv/
 uploads/*
 !uploads/.gitkeep
 database/*.db
+*.db
+cookies.txt
+sample.csv

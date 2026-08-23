@@ -20,6 +20,7 @@ from predictor import build_prediction
 from recommender import build_recommendations
 from yield_backend import init_db as init_yield_db
 from yield_backend import yield_bp
+from marketplace_backend import marketplace_bp
 
 BASE_DIR = Path(__file__).resolve().parent
 UPLOAD_DIR = BASE_DIR / "uploads"
@@ -27,16 +28,19 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
-app.config["SECRET_KEY"] = os.getenv(
-    "DRONACHARYA_SECRET_KEY",
-    "development-only-change-this-secret-key",
-)
+secret_key = os.getenv("DRONACHARYA_SECRET_KEY")
+if not secret_key:
+    raise RuntimeError(
+        "DRONACHARYA_SECRET_KEY must be set before starting the application."
+    )
+app.config["SECRET_KEY"] = secret_key
 
 ALLOWED_EXTENSIONS = {"csv"}
 
 # The yield blueprint supplies /api/estimate and /api/history routes.
 # Its duplicate page route is removed in Section 5 below.
 app.register_blueprint(yield_bp)
+app.register_blueprint(marketplace_bp)
 
 with app.app_context():
     init_db()
@@ -132,11 +136,13 @@ def estimate_yield_page():
 
 
 @app.get("/field-visit", endpoint="field_visit")
+@login_required
 def field_visit_page():
     return render_template("field_visit.html")
 
 
 @app.get("/store", endpoint="store")
+@login_required
 def store_page():
     return render_template("store.html")
 
