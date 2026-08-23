@@ -42,11 +42,11 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 
 import requests
-from flask import Blueprint, Response, jsonify, render_template, request, session
+from flask import Blueprint, Response, jsonify, request, session
 
 yield_bp = Blueprint("yield_bp", __name__)
 
-DB_PATH = Path(__file__).resolve().parent / "dronacharya.db"
+DB_PATH = Path(__file__).resolve().parent / "database" / "dronacharya.db"
 
 # ---------------------------------------------------------------------------
 # Reference agronomy data (static — mirrors the JS copy used for map labels).
@@ -133,12 +133,13 @@ def init_db():
 
 
 def get_session_id():
-    """Anonymous per-visitor id, stored in the Flask session cookie.
-    Once your login system exists, prefer the logged-in user's id here instead."""
+    if session.get("user_id") is not None:
+        return f"user:{session['user_id']}"
+
     if "yield_session_id" not in session:
         session["yield_session_id"] = uuid.uuid4().hex
-    return session["yield_session_id"]
 
+    return f"visitor:{session['yield_session_id']}"
 
 # ---------------------------------------------------------------------------
 # External data: geocoding + rainfall (Open-Meteo — free, keyless, CORS-friendly)
@@ -314,10 +315,10 @@ def save_report(session_id, report):
 # Routes
 # ---------------------------------------------------------------------------
 
-@yield_bp.route("/estimate-yield")
-def estimate_yield_page():
-    return render_template("estimate_yield.html")
-
+@yield_bp.route("/api/estimate", methods=["POST"])
+@yield_bp.route("/api/history")
+@yield_bp.route("/api/history/<int:report_id>")
+@yield_bp.route("/api/history/<int:report_id>/csv")
 
 @yield_bp.route("/api/estimate", methods=["POST"])
 def api_estimate():

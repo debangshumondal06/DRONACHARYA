@@ -1135,9 +1135,58 @@
                   $('locateBtn').onclick = () => { if (!navigator.geolocation) { $('locationStatus').textContent = 'Live location is not supported; enter coordinates manually.'; return } $('locationStatus').textContent = 'Requesting browser location permission…'; navigator.geolocation.getCurrentPosition(pos => { $('lat').value = pos.coords.latitude.toFixed(6); $('lng').value = pos.coords.longitude.toFixed(6); $('locationStatus').textContent = 'Live location captured. Accuracy ±' + Math.round(pos.coords.accuracy) + ' m; review before submitting.'; refresh() }, () => { $('locationStatus').textContent = 'Location permission was not granted. You can enter coordinates manually.' }) };
                   ['lat', 'lng', 'place'].forEach(id => $(id).addEventListener('input', refresh)); tests.forEach(t => t.addEventListener('change', refresh));
                   $('visitDate').min = new Date(Date.now() + 172800000).toISOString().slice(0, 10); $('visitDate').value = $('visitDate').min;
-                  $('visitForm').onsubmit = e => { e.preventDefault(); $('formError').textContent = ''; const chosen = selected(); if (!$('fieldName').value.trim() || !$('phone').value.trim() || !$('visitDate').value) { $('formError').textContent = 'Add the field name, contact number, and preferred visit date.'; return } if (!chosen.length) { $('formError').textContent = 'Select at least one diagnostic test.'; return } const id = 'DRV-' + new Date().getFullYear() + '-' + Math.random().toString(36).slice(2, 8).toUpperCase(); booking = { id, createdAt: new Date().toISOString(), fieldName: $('fieldName').value.trim(), crop: $('crop').value, tests: chosen.map(t => t.value), date: $('visitDate').value, slot: $('slot').value, place: $('place').value.trim(), lat: $('lat').value || null, lng: $('lng').value || null }; localStorage.setItem('dronacharyaFieldVisit', JSON.stringify(booking)); $('requestId').textContent = id + ' · submitted just now'; $('statusHeadline').textContent = 'PENDING REVIEW'; $('stage1').className = 'stage done'; $('stage2').className = 'stage current'; toast('Request saved. The field team can now review your diagnostic scope.'); $('summaryPanel').scrollIntoView({ behavior: 'smooth', block: 'start' }) };
-                  $('clearBtn').onclick = () => { $('visitForm').reset(); $('visitDate').value = $('visitDate').min; tests[0].checked = true; booking = null; refresh(); $('locationStatus').textContent = 'Location access is optional. You can use a village, district, or manual coordinates.' }; $('resetStatus').onclick = () => { localStorage.removeItem('dronacharyaFieldVisit'); $('requestId').textContent = 'Draft request · not submitted'; $('statusHeadline').textContent = 'READY TO BOOK';['stage1', 'stage2', 'stage3', 'stage4'].forEach((id, i) => $(id).className = 'stage ' + (i === 0 ? 'current' : '')); toast('New request workspace ready.') };
-                  const saved = localStorage.getItem('dronacharyaFieldVisit'); if (saved) { try { booking = JSON.parse(saved); $('requestId').textContent = booking.id + ' · saved request'; $('statusHeadline').textContent = 'PENDING REVIEW'; $('stage1').className = 'stage done'; $('stage2').className = 'stage current' } catch (e) { } } refresh();
+                  async function submitVisit(event) {
+                                    event.preventDefault();
+                                    document.getElementById("formError").textContent = "";
+
+                                    const selectedTests = [...document.querySelectorAll("#testGrid input:checked")]
+                                             .map((input) => input.value);
+
+                                    const payload = {
+                                             fieldName: document.getElementById("fieldName").value.trim(),
+                                             crop: document.getElementById("crop").value,
+                                             area: Number(document.getElementById("area").value),
+                                             areaUnit: document.getElementById("areaUnit").value,
+                                             soilType: document.getElementById("soilType").value,
+                                             irrigation: document.getElementById("irrigation").value,
+                                             visitDate: document.getElementById("visitDate").value,
+                                             slot: document.getElementById("slot").value,
+                                             phone: document.getElementById("phone").value.trim(),
+                                             place: document.getElementById("place").value.trim(),
+                                             lat: document.getElementById("lat").value || null,
+                                             lng: document.getElementById("lng").value || null,
+                                             ph: document.getElementById("ph").value || null,
+                                             lastTest: document.getElementById("lastTest").value,
+                                             priority: document.getElementById("urgency").value,
+                                             notes: document.getElementById("notes").value.trim(),
+                                             tests: selectedTests,
+                                    };
+
+                                    try {
+                                             const response = await fetch("/api/field-visits", {
+                                                      method: "POST",
+                                                      credentials: "same-origin",
+                                                      headers: { "Content-Type": "application/json" },
+                                                      body: JSON.stringify(payload),
+                                             });
+                                             const result = await response.json();
+
+                                             if (!response.ok) {
+                                                      throw new Error(result.error || "Could not submit request.");
+                                             }
+
+                                             document.getElementById("requestId").textContent =
+                                                      `${result.request_code} · submitted just now`;
+                                             document.getElementById("statusHeadline").textContent = "PENDING REVIEW";
+                                             document.getElementById("stage1").className = "stage done";
+                                             document.getElementById("stage2").className = "stage current";
+                                             toast("Request submitted. The field team can now review your diagnostic scope.");
+                                    } catch (error) {
+                                             document.getElementById("formError").textContent = error.message;
+                                    }
+                           }
+
+                           document.getElementById("visitForm").addEventListener("submit", submitVisit);
          </script>
 </body>
 

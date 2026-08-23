@@ -800,10 +800,10 @@
                                              maxlength="14" placeholder="XXXX XXXX XXXX" required>
                                     <small class="field-help">Enter 12 digits. Spaces and hyphens are accepted.</small>
 
-                                    <label for="PAN_number">PAN number <span class="required-mark">*</span></label>
-                                    <input id="PAN_number" name="PAN_number" type="text" inputmode="text" maxlength="12"
-                                             placeholder="ABCDE1234F" style="text-transform:uppercase" required>
-                                    <small class="field-help">10-character PAN, e.g. ABCDE1234F.</small>
+                                    <label for="phone_number">Phone number <span class="required-mark">*</span></label>
+                                    <input id="phone_number" name="phone_number" type="tel" inputmode="numeric" maxlength="16" placeholder="+91 00000 00000"
+                                             required>
+                                    <small class="field-help">Enter a valid 10-digit Indian mobile number.</small>
 
                                     <label for="email_id">Email ID <span class="field-help"
                                                       style="margin:0;">(optional)</span></label>
@@ -811,10 +811,9 @@
                                              placeholder="farmer@example.com">
 
                                     <label class="acceptance-row" for="prototypeConsent">
-                                             <input id="prototypeConsent" type="checkbox" required>
-                                             <span>I understand this is a development prototype and I will not submit
-                                                      real Aadhaar, PAN, or
-                                                      other sensitive identity information.</span>
+                                             <input id="prototypeConsent" name="prototype_consent" type="checkbox" value="true" required>
+                                             <span>I understand this is a development prototype and I will not submit real Aadhaar, PAN, or other sensitive
+                                                      identity information.</span>
                                     </label>
 
                                     <button class="primary-button" type="submit" id="loginButton">Enter
@@ -835,6 +834,7 @@
                   or any government authentication system.
          </footer>
 
+         <script src="{{ url_for('static', filename='js/api.js') }}"></script>
          <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 </body>
 

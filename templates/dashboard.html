@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+         <meta charset="utf-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1">
+         <title>Analysis Dashboard | DRONACHARYA</title>
+         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+         <style>
+                  body {
+                           padding: 32px;
+                  }
+
+                  main {
+                           max-width: 1100px;
+                           margin: 0 auto;
+                  }
+
+                  pre {
+                           overflow: auto;
+                           white-space: pre-wrap;
+                           padding: 20px;
+                  }
+         </style>
+</head>
+
+<body data-analysis-id="{{ analysis_id }}">
+         <main>
+                  <p><a href="{{ url_for('home') }}">Back to home</a></p>
+                  <h1 id="title">Analysis dashboard</h1>
+                  <p id="status">Loading analysis…</p>
+                  <pre id="result" aria-live="polite"></pre>
+         </main>
+
+         <script>
+                  const analysisId = document.body.dataset.analysisId || "";
+                  const statusEl = document.getElementById("status");
+                  const resultEl = document.getElementById("result");
+
+                  if (!analysisId) {
+                           statusEl.textContent = "No analysis was selected.";
+                  } else {
+                           fetch(`/api/analysis/${encodeURIComponent(analysisId)}`, {
+                                    credentials: "same-origin",
+                           })
+                                    .then(async (response) => {
+                                             const body = await response.json().catch(() => ({}));
+                                             if (!response.ok) {
+                                                      throw new Error(body.error || "Could not load analysis.");
+                                             }
+                                             return body;
+                                    })
+                                    .then((analysis) => {
+                                             statusEl.textContent = `Loaded ${analysis.filename}`;
+                                             resultEl.textContent = JSON.stringify(analysis, null, 2);
+                                    })
+                                    .catch((error) => {
+                                             statusEl.textContent = error.message;
+                                    });
+                  }
+         </script>
+</body>
+
+</html>
