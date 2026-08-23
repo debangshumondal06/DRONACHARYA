@@ -9,3 +9,4 @@ database/*.db
 *.db
 cookies.txt
 sample.csv
+*.py[cod]

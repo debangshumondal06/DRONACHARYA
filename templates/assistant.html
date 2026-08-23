@@ -712,7 +712,7 @@
                   <nav>
                            <ul class="nav-links">
                                     <li><a href="field_visit.html">Field Visit</a></li>
-                                    <li><a href="yield.html">Estimate Yield</a></li>
+                                    <li><a href="estimate_yield.html">Estimate Yield</a></li>
                                     <li><a href="store.html">Store</a></li>
                            </ul>
                   </nav>
@@ -904,7 +904,7 @@
                                     {
                                              keywords: ['yield', 'harvest', 'estimate', 'production', 'quintal'],
                                              reply: "The Estimate Yield page turns your irrigation type, field area, place, soil type, and pH into a live, confidence-ranged harvest report, with charts and a downloadable CSV. You can also pick your state on the map to auto-fill soil type.",
-                                             chips: [{ label: 'Open Estimate Yield', href: "yield.html" }]
+                                             chips: [{ label: 'Open Estimate Yield', href: "estimate_yield.html" }]
                                     },
                                     {
                                              keywords: ['field visit', 'visit', 'log field', 'inspect', 'site visit'],
@@ -924,7 +924,7 @@
                                     {
                                              keywords: ['soil', 'alluvial', 'black soil', 'laterite', 'red soil', 'arid'],
                                              reply: "Soil type strongly affects yield. Alluvial soil tends to suit wheat and rice well, black soil suits cotton, and red or laterite soils generally need more irrigation support. On Estimate Yield, you can pick your state on the map and I'll fill in the matching soil type for you.",
-                                             chips: [{ label: 'Estimate my yield', href: "yield.html" }]
+                                             chips: [{ label: 'Estimate my yield', href: "estimate_yield.html" }]
                                     },
                                     {
                                              keywords: ['ph', 'acidic', 'alkaline'],
@@ -934,12 +934,12 @@
                                     {
                                              keywords: ['irrigation', 'drip', 'sprinkler', 'canal', 'rainfed', 'tubewell', 'water'],
                                              reply: "Drip irrigation is the most efficient, followed by sprinkler, canal or flood, then groundwater/tubewell, with rainfed fields carrying the most weather risk. Estimate Yield factors this in directly.",
-                                             chips: [{ label: 'Compare on Estimate Yield', href: "yield.html" }]
+                                             chips: [{ label: 'Compare on Estimate Yield', href: "estimate_yield.html" }]
                                     },
                                     {
                                              keywords: ['history', 'past report', 'previous', 'download', 'csv'],
                                              reply: "Every yield report you generate is saved automatically. Look for the report history panel on the right side of the Estimate Yield page — click any past entry to reload it, or use the Download CSV button to export it.",
-                                             chips: [{ label: 'View my reports', href: "yield.html" }]
+                                             chips: [{ label: 'View my reports', href: "estimate_yield.html" }]
                                     },
                                     {
                                              keywords: ['language', 'hindi', 'bengali', 'tamil', 'telugu', 'marathi'],
@@ -1026,7 +1026,7 @@
 
                            function greet(attemptSpeak) {
                                     addMessage('assistant', GREETING, [
-                                             { label: 'Open Estimate Yield', href: "yield.html" },
+                                             { label: 'Open Estimate Yield', href: "estimate_yield.html" },
                                              { label: 'Open Field Visit', href: "field_visit.html" }
                                     ]);
                                     if (attemptSpeak && synth) {
