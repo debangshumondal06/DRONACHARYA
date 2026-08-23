@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+         <meta charset="utf-8" />
+         <meta name="viewport" content="width=device-width, initial-scale=1" />
+         <meta name="description"
+                  content="DRONACHARYA climate, crop calendar, mandi price and farm intelligence dashboard." />
+         <title>Climate Intelligence | DRONACHARYA</title>
+         <link rel="preconnect" href="https://fonts.googleapis.com">
+         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Playfair+Display:wght@600;700&display=swap"
+                  rel="stylesheet">
+         <style>
+                  :root {
+                           --bg: #07100a;
+                           --bg2: #0b1610;
+                           --panel: #101c13;
+                           --panel2: #0d1710;
+                           --line: rgba(151, 255, 177, .16);
+                           --line2: rgba(151, 255, 177, .28);
+                           --ink: #edf8ef;
+                           --muted: #8da396;
+                           --soft: #b6c9bb;
+                           --green: #5eeb8a;
+                           --green2: #a9ffc0;
+                           --amber: #e7c85e;
+                           --red: #f17d72;
+                           --blue: #87c8ff;
+                           --shadow: 0 22px 55px rgba(0, 0, 0, .3)
+                  }
+
+                  * {
+                           box-sizing: border-box
+                  }
+
+                  html {
+                           background: var(--bg);
+                           scroll-behavior: smooth
+                  }
+
+                  body {
+                           margin: 0;
+                           background: radial-gradient(circle at 13% 0%, rgba(58, 142, 77, .18), transparent 28rem), linear-gradient(180deg, #07100a 0%, #0b140e 54%, #07100a 100%);
+                           color: var(--ink);
+                           font-family: 'DM Sans', system-ui, sans-serif;
+                           min-height: 100vh
+                  }
+
+                  a {
+                           color: inherit
+                  }
+
+                  .container {
+                           width: min(1220px, 92vw);
+                           margin: 0 auto
+                  }
+
+                  .eyebrow {
+                           color: var(--green);
+                           font: 800 10px Manrope, sans-serif;
+                           letter-spacing: .17em;
+                           text-transform: uppercase
+                  }
+
+                  .muted {
+                           color: var(--muted)
+                  }
+
+                  button,
+                  input,
+                  select {
+                           font: inherit
+                  }
+
+                  button {
+                           cursor: pointer
+                  }
+
+                  .topline {
+                           height: 4px;
+                           background: linear-gradient(90deg, transparent, #5eeb8a 30%, #e7c85e 70%, transparent)
+                  }
+
+                  .topbar {
+                           height: 76px;
+                           border-bottom: 1px solid var(--line);
+                           background: rgba(6, 14, 9, .8);
+                           backdrop-filter: blur(18px);
+                           display: flex;
+                           align-items: center;
+                           justify-content: space-between;
+                           padding: 0 4vw;
+                           position: sticky;
+                           top: 0;
+                           z-index: 20
+                  }
+
+                  .brand {
+                           display: flex;
+                           align-items: center;
+                           gap: 12px;
+                           text-decoration: none
+                  }
+
+                  .mark {
+                           width: 40px;
+                           height: 40px;
+                           border: 1px solid var(--green);
+                           display: grid;
+                           place-items: center;
+                           color: var(--green);
+                           font: 800 18px Manrope, sans-serif;
+                           box-shadow: 0 0 22px rgba(94, 235, 138, .16)
+                  }
+
+                  .wordmark {
+                           font: 800 15px Manrope, sans-serif;
+                           letter-spacing: .18em
+                  }
+
+                  .brand small {
+                           display: block;
+                           color: var(--muted);
+                           font-size: 10px;
+                           letter-spacing: .04em;
+                           margin-top: 3px
+                  }
+
+                  .top-actions {
+                           display: flex;
+                           align-items: center;
+                           gap: 10px
+                  }
+
+                  .top-actions a,
+                  .top-actions button {
+                           border: 1px solid var(--line);
+                           background: transparent;
+                           color: var(--soft);
+                           padding: 9px 12px;
+                           text-decoration: none;
+                           font-size: 11px
+                  }
+
+                  .top-actions a:hover,
+                  .top-actions button:hover {
+                           border-color: var(--green);
+                           color: var(--green2)
+                  }
+
+                  .hero {
+                           padding: 54px 0 34px;
+                           display: grid;
+                           grid-template-columns: 1.15fr .85fr;
+                           gap: 35px;
+                           align-items: end
+                  }
+
+                  .hero h1 {
+                           font: 700 clamp(38px, 6vw, 78px)/.98 'Playfair Display', Georgia, serif;
+                           letter-spacing: -.05em;
+                           margin: 10px 0 18px;
+                           max-width: 720px
+                  }
+
+                  .hero h1 em {
+                           color: var(--green);
+                           font-style: normal
+                  }
+
+                  .hero p {
+                           max-width: 650px;
+                           color: var(--muted);
+                           font-size: 15px;
+                           line-height: 1.7;
+                           margin: 0
+                  }
+
+                  .hero-card {
+                           border: 1px solid var(--line);
+                           background: linear-gradient(145deg, rgba(18, 34, 23, .9), rgba(7, 14, 9, .94));
+                           padding: 22px;
+                           box-shadow: var(--shadow);
+                           position: relative
+                  }
+
+                  .hero-card:before {
+                           content: "";
+                           height: 2px;
+                           background: linear-gradient(90deg, transparent, var(--green), transparent);
+                           position: absolute;
+                           top: 0;
+                           left: 22px;
+                           right: 22px
+                  }
+
+                  .hero-card h2 {
+                           font: 700 21px 'Playfair Display', Georgia, serif;
+                           margin: 7px 0 8px
+                  }
+
+                  .hero-card p {
+                           font-size: 12px
+                  }
+
+                  .source-row {
+                           display: flex;
+                           gap: 8px;
+                           flex-wrap: wrap;
+                           margin-top: 18px
+                  }
+
+                  .source-pill {
+                           padding: 7px 9px;
+                           border: 1px solid var(--line);
+                           color: var(--soft);
+                           font: 700 10px Manrope, sans-serif;
+                           text-decoration: none
+                  }
+
+                  .source-pill:hover {
+                           color: var(--green2);
+                           border-color: var(--green)
+                  }
+
+                  .controls {
+                           display: grid;
+                           grid-template-columns: 1.2fr .8fr .8fr 1fr auto;
+                           gap: 10px;
+                           padding: 18px;
+                           border: 1px solid var(--line);
+                           background: rgba(13, 24, 15, .9);
+                           box-shadow: var(--shadow)
+                  }
+
+                  .field label {
+                           display: block;
+                           color: var(--muted);
+                           font: 700 10px Manrope, sans-serif;
+                           letter-spacing: .1em;
+                           text-transform: uppercase;
+                           margin: 0 0 7px
+                  }
+
+                  .field input,
+                  .field select {
+                           width: 100%;
+                           background: #09130c;
+                           border: 1px solid var(--line);
+                           color: var(--ink);
+                           padding: 11px 12px;
+                           outline: none
+                  }
+
+                  .field input:focus,
+                  .field select:focus {
+                           border-color: var(--green);
+                           box-shadow: 0 0 0 3px rgba(94, 235, 138, .1)
+                  }
+
+                  .primary {
+                           align-self: end;
+                           border: 1px solid var(--green);
+                           background: var(--green);
+                           color: #061109;
+                           padding: 11px 15px;
+                           font: 800 11px Manrope, sans-serif
+                  }
+
+                  .primary:hover {
+                           background: var(--green2)
+                  }
+
+                  .grid {
+                           display: grid;
+                           grid-template-columns: 1.12fr .88fr;
+                           gap: 16px;
+                           margin-top: 16px
+                  }
+
+                  .card {
+                           border: 1px solid var(--line);
+                           background: linear-gradient(145deg, rgba(16, 29, 19, .95), rgba(8, 15, 10, .95));
+                           box-shadow: var(--shadow);
+                           padding: 20px
+                  }
+
+                  .card-head {
+                           display: flex;
+                           align-items: flex-start;
+                           justify-content: space-between;
+                           gap: 15px;
+                           margin-bottom: 16px
+                  }
+
+                  .card h2,
+                  .card h3 {
+                           font: 700 21px 'Playfair Display', Georgia, serif;
+                           margin: 5px 0 0
+                  }
+
+                  .card h3 {
+                           font-size: 17px
+                  }
+
+                  .status {
+                           font: 800 10px Manrope, sans-serif;
+                           letter-spacing: .08em;
+                           text-transform: uppercase;
+                           color: var(--amber);
+                           white-space: nowrap
+                  }
+
+                  .status.live {
+                           color: var(--green)
+                  }
+
+                  .weather-summary {
+                           display: grid;
+                           grid-template-columns: repeat(4, 1fr);
+                           gap: 1px;
+                           background: var(--line);
+                           margin-top: 15px
+                  }
+
+                  .weather-stat {
+                           padding: 14px;
+                           background: #0c1810
+                  }
+
+                  .weather-stat b {
+                           display: block;
+                           color: var(--green2);
+                           font: 700 24px 'Playfair Display', serif
+                  }
+
+                  .weather-stat span {
+                           color: var(--muted);
+                           display: block;
+                           font-size: 10px;
+                           margin-top: 5px
+                  }
+
+                  .chart {
+                           height: 235px;
+                           display: flex;
+                           align-items: end;
+                           gap: 7px;
+                           border-bottom: 1px solid var(--line);
+                           border-left: 1px solid var(--line);
+                           padding: 18px 8px 0;
+                           background: repeating-linear-gradient(0deg, transparent 0 43px, rgba(151, 255, 177, .06) 44px 45px)
+                  }
+
+                  .bar-wrap {
+                           flex: 1;
+                           height: 100%;
+                           display: flex;
+                           flex-direction: column;
+                           align-items: center;
+                           justify-content: end;
+                           gap: 6px
+                  }
+
+                  .bar {
+                           width: 100%;
+                           max-width: 28px;
+                           border: 1px solid rgba(94, 235, 138, .4);
+                           background: linear-gradient(180deg, var(--green), rgba(94, 235, 138, .22));
+                           min-height: 8px;
+                           transition: height .25s ease
+                  }
+
+                  .bar.rain {
+                           background: linear-gradient(180deg, #87c8ff, rgba(135, 200, 255, .2));
+                           border-color: rgba(135, 200, 255, .4)
+                  }
+
+                  .bar-label {
+                           color: var(--muted);
+                           font-size: 9px
+                  }
+
+                  .chart-legend {
+                           display: flex;
+                           gap: 14px;
+                           color: var(--muted);
+                           font-size: 10px;
+                           margin-top: 12px
+                  }
+
+                  .legend-dot {
+                           display: inline-block;
+                           width: 8px;
+                           height: 8px;
+                           margin-right: 5px;
+                           background: var(--green);
+                           border-radius: 50%
+                  }
+
+                  .legend-dot.blue {
+                           background: var(--blue)
+                  }
+
+                  .year-grid {
+                           display: grid;
+                           grid-template-columns: repeat(12, 1fr);
+                           gap: 4px;
+                           margin-top: 18px
+                  }
+
+                  .month {
+                           border: 1px solid var(--line);
+                           padding: 8px 4px;
+                           min-height: 82px;
+                           background: #0b160e
+                  }
+
+                  .month strong {
+                           display: block;
+                           color: var(--soft);
+                           font: 800 10px Manrope, sans-serif
+                  }
+
+                  .month .heat {
+                           height: 27px;
+                           margin: 8px 0;
+                           background: linear-gradient(180deg, rgba(231, 200, 94, .75), rgba(94, 235, 138, .22));
+                           border: 1px solid rgba(231, 200, 94, .25)
+                  }
+
+                  .month small {
+                           display: block;
+                           color: var(--muted);
+                           font-size: 9px;
+                           line-height: 1.25
+                  }
+
+                  .crop-table {
+                           width: 100%;
+                           border-collapse: collapse;
+                           margin-top: 12px
+                  }
+
+                  .crop-table th,
+                  .crop-table td {
+                           text-align: left;
+                           padding: 10px 8px;
+                           border-bottom: 1px solid var(--line);
+                           font-size: 11px
+                  }
+
+                  .crop-table th {
+                           color: var(--green);
+                           font: 800 10px Manrope, sans-serif;
+                           letter-spacing: .08em;
+                           text-transform: uppercase
+                  }
+
+                  .crop-table td {
+                           color: var(--soft)
+                  }
+
+                  .crop-table tr.active td {
+                           color: var(--green2);
+                           background: rgba(94, 235, 138, .06)
+                  }
+
+                  .tag {
+                           display: inline-block;
+                           padding: 4px 6px;
+                           border: 1px solid rgba(94, 235, 138, .3);
+                           color: var(--green);
+                           font-size: 9px
+                  }
+
+                  .price-toolbar {
+                           display: flex;
+                           gap: 8px;
+                           align-items: center;
+                           flex-wrap: wrap;
+                           margin: 14px 0
+                  }
+
+                  .price-toolbar select,
+                  .price-toolbar input {
+                           background: #09130c;
+                           color: var(--ink);
+                           border: 1px solid var(--line);
+                           padding: 9px
+                  }
+
+                  .price-card {
+                           display: grid;
+                           grid-template-columns: 1fr 1.35fr;
+                           gap: 15px;
+                           align-items: center
+                  }
+
+                  .price-value {
+                           font: 700 33px 'Playfair Display', serif;
+                           color: var(--green2)
+                  }
+
+                  .price-change {
+                           color: var(--green);
+                           font: 800 11px Manrope, sans-serif
+                  }
+
+                  .price-change.down {
+                           color: var(--red)
+                  }
+
+                  .sparkline {
+                           height: 84px;
+                           display: flex;
+                           align-items: end;
+                           gap: 4px;
+                           border-bottom: 1px solid var(--line);
+                           padding: 8px
+                  }
+
+                  .spark {
+                           flex: 1;
+                           background: var(--green);
+                           opacity: .7;
+                           min-height: 5px
+                  }
+
+                  .feed {
+                           display: grid;
+                           gap: 10px
+                  }
+
+                  .news {
+                           display: flex;
+                           gap: 12px;
+                           padding: 12px 0;
+                           border-top: 1px solid var(--line)
+                  }
+
+                  .news:first-child {
+                           border-top: 0
+                  }
+
+                  .news-mark {
+                           width: 28px;
+                           height: 28px;
+                           border: 1px solid rgba(231, 200, 94, .45);
+                           display: grid;
+                           place-items: center;
+                           color: var(--amber);
+                           font: 800 10px Manrope, sans-serif;
+                           flex: none
+                  }
+
+                  .news h4 {
+                           font: 700 12px Manrope, sans-serif;
+                           margin: 0 0 4px;
+                           color: var(--soft)
+                  }
+
+                  .news p {
+                           font-size: 11px;
+                           line-height: 1.45;
+                           color: var(--muted);
+                           margin: 0
+                  }
+
+                  .news a {
+                           font-size: 10px;
+                           color: var(--green);
+                           text-decoration: none
+                  }
+
+                  .disclaimer {
+                           margin: 16px 0 40px;
+                           padding: 14px;
+                           border: 1px solid rgba(231, 200, 94, .25);
+                           background: rgba(231, 200, 94, .05);
+                           color: var(--muted);
+                           font-size: 11px;
+                           line-height: 1.55
+                  }
+
+                  .disclaimer strong {
+                           color: var(--amber)
+                  }
+
+                  .foot {
+                           border-top: 1px solid var(--line);
+                           padding: 22px 0 40px;
+                           color: #6f8174;
+                           font-size: 11px;
+                           display: flex;
+                           justify-content: space-between;
+                           gap: 12px;
+                           flex-wrap: wrap
+                  }
+
+                  .empty {
+                           color: var(--muted);
+                           font-size: 12px;
+                           border: 1px dashed var(--line);
+                           padding: 14px
+                  }
+
+                  .toast {
+                           position: fixed;
+                           right: 20px;
+                           bottom: 20px;
+                           max-width: 320px;
+                           padding: 12px 14px;
+                           border: 1px solid var(--green);
+                           background: #0c1b11;
+                           color: var(--green2);
+                           font-size: 11px;
+                           transform: translateY(20px);
+                           opacity: 0;
+                           pointer-events: none;
+                           transition: .2s;
+                           z-index: 30
+                  }
+
+                  .toast.show {
+                           transform: translateY(0);
+                           opacity: 1
+                  }
+
+                  .error {
+                           color: var(--red)
+                  }
+
+                  @media(max-width:980px) {
+
+                           .hero,
+                           .grid {
+                                    grid-template-columns: 1fr
+                           }
+
+                           .controls {
+                                    grid-template-columns: repeat(2, 1fr)
+                           }
+
+                           .controls .primary {
+                                    grid-column: span 2
+                           }
+
+                           .year-grid {
+                                    grid-template-columns: repeat(6, 1fr)
+                           }
+                  }
+
+                  @media(max-width:640px) {
+                           .topbar {
+                                    height: auto;
+                                    min-height: 70px;
+                                    padding: 12px 4vw;
+                                    gap: 14px
+                           }
+
+                           .top-actions a,
+                           .top-actions button {
+                                    padding: 8px
+                           }
+
+                           .wordmark {
+                                    font-size: 12px
+                           }
+
+                           .hero {
+                                    padding-top: 36px
+                           }
+
+                           .controls {
+                                    grid-template-columns: 1fr
+                           }
+
+                           .controls .primary {
+                                    grid-column: auto
+                           }
+
+                           .weather-summary {
+                                    grid-template-columns: repeat(2, 1fr)
+                           }
+
+                           .price-card {
+                                    grid-template-columns: 1fr
+                           }
+
+                           .year-grid {
+                                    grid-template-columns: repeat(4, 1fr)
+                           }
+
+                           .card {
+                                    padding: 15px
+                           }
+                  }
+
+                  @media(prefers-reduced-motion:reduce) {
+                           * {
+                                    scroll-behavior: auto !important;
+                                    transition: none !important
+                           }
+                  }
+         </style>
+</head>
+
+<body>
+         <div class="topline"></div>
+         <header class="topbar">
+                  <a class="brand" href="index.html" aria-label="DRONACHARYA home"><span
+                                    class="mark">D</span><span><span class="wordmark">DRONACHARYA</span><small>climate +
+                                             market intelligence</small></span></a>
+                  <div class="top-actions"><a href="yield.html">Yield estimator</a><a
+                                    href="store.html">Marketplace</a><a href="field_visit.html">Field visit</a>
+                  </div>
+         </header>
+         <main class="container">
+                  <section class="hero">
+                           <div>
+                                    <div class="eyebrow">FIELD SIGNALS / 2026</div>
+                                    <h1>Read the season.<br><em>Move with the market.</em></h1>
+                                    <p>One working surface for weather indications, crop timing, mandi-price movement,
+                                             and climate news. Select a field location and crop to turn public data into
+                                             a practical planning view.</p>
+                                    <div class="source-row"><a class="source-pill"
+                                                      href="https://mausam.imd.gov.in/responsive/agromet_adv_ser_state_current.php"
+                                                      target="_blank" rel="noopener">IMD agromet</a><a
+                                                      class="source-pill" href="https://agmarknet.gov.in/"
+                                                      target="_blank" rel="noopener">Agmarknet</a><a class="source-pill"
+                                                      href="https://data.gov.in/resource/current-daily-price-various-commodities-various-markets-mandi"
+                                                      target="_blank" rel="noopener">data.gov.in</a></div>
+                           </div>
+                           <aside class="hero-card">
+                                    <div class="eyebrow">INTELLIGENCE NOTE</div>
+                                    <h2 id="briefTitle">Choose a crop and location.</h2>
+                                    <p id="briefText">Weather is live only after a location is supplied. Crop timing is
+                                             an indicative planning baseline; confirm district advisories before making
+                                             field decisions.</p>
+                                    <div class="source-row"><span class="source-pill" id="weatherState">WEATHER
+                                                      DISCONNECTED</span><span class="source-pill"
+                                                      id="marketState">MARKET FEED READY</span></div>
+                           </aside>
+                  </section>
+                  <section class="controls" aria-label="Dashboard controls">
+                           <div class="field"><label for="locationInput">Field location</label><input id="locationInput"
+                                             placeholder="Latitude, longitude or village name" value="19.9975, 73.7898">
+                           </div>
+                           <div class="field"><label for="stateSelect">State profile</label><select id="stateSelect">
+                                             <option value="MH">Maharashtra</option>
+                                             <option value="KA">Karnataka</option>
+                                             <option value="PB">Punjab</option>
+                                             <option value="WB">West Bengal</option>
+                                             <option value="RJ">Rajasthan</option>
+                                             <option value="TN">Tamil Nadu</option>
+                                    </select></div>
+                           <div class="field"><label for="cropSelect">Crop watch</label><select id="cropSelect">
+                                             <option value="wheat">Wheat</option>
+                                             <option value="rice">Rice</option>
+                                             <option value="cotton">Cotton</option>
+                                             <option value="onion">Onion</option>
+                                             <option value="tomato">Tomato</option>
+                                             <option value="chickpea">Chickpea</option>
+                                    </select></div>
+                           <div class="field"><label for="marketEndpoint">Market API endpoint</label><input
+                                             id="marketEndpoint" placeholder="/api/market-prices (optional)"></div>
+                           <button class="primary" id="refreshBtn" type="button">Refresh signals</button>
+                  </section>
+                  <section class="grid">
+                           <article class="card">
+                                    <div class="card-head">
+                                             <div>
+                                                      <div class="eyebrow">SHORT HORIZON</div>
+                                                      <h2>Weather indications</h2>
+                                             </div>
+                                             <div class="status" id="weatherStatus">READY FOR LOCATION</div>
+                                    </div>
+                                    <div class="muted" id="weatherLocation" style="font-size:12px">Nashik profile
+                                             selected · add coordinates or a village to load live forecast.</div>
+                                    <div class="weather-summary">
+                                             <div class="weather-stat"><b id="tempStat">—</b><span>current
+                                                               temperature</span></div>
+                                             <div class="weather-stat"><b id="rainStat">—</b><span>next 7-day
+                                                               rain</span></div>
+                                             <div class="weather-stat"><b id="windStat">—</b><span>wind now</span></div>
+                                             <div class="weather-stat"><b id="updatedStat">—</b><span>data age</span>
+                                             </div>
+                                    </div>
+                                    <div class="chart" id="weatherChart" aria-label="14 day forecast chart"></div>
+                                    <div class="chart-legend"><span><i class="legend-dot"></i>temperature</span><span><i
+                                                               class="legend-dot blue"></i>precipitation</span></div>
+                           </article>
+                           <article class="card">
+                                    <div class="card-head">
+                                             <div>
+                                                      <div class="eyebrow">LONG HORIZON</div>
+                                                      <h2>Year compass</h2>
+                                             </div>
+                                             <div class="status">PLANNING BASELINE</div>
+                                    </div>
+                                    <p class="muted" style="font-size:12px;line-height:1.6;margin:0">Indicative seasonal
+                                             rhythm for the selected crop and state. It is not a live annual forecast.
+                                    </p>
+                                    <div class="year-grid" id="yearGrid"></div>
+                                    <div class="disclaimer" style="margin:15px 0 0"><strong>Read this
+                                                      correctly.</strong> Use the annual view for planning windows; use
+                                             the short-horizon chart and IMD advisories for operational decisions.</div>
+                           </article>
+                  </section>
+                  <section class="grid">
+                           <article class="card">
+                                    <div class="card-head">
+                                             <div>
+                                                      <div class="eyebrow">CROP WINDOW</div>
+                                                      <h2 id="cropWindowTitle">Wheat timing report</h2>
+                                             </div>
+                                             <div class="status live">FIELD PLANNING</div>
+                                    </div>
+                                    <p class="muted" id="cropWindowCopy"
+                                             style="font-size:12px;line-height:1.6;margin:0">Seasonal guidance changes
+                                             with crop and state profile.</p>
+                                    <table class="crop-table">
+                                             <thead>
+                                                      <tr>
+                                                               <th>Window</th>
+                                                               <th>Field action</th>
+                                                               <th>Signal</th>
+                                                      </tr>
+                                             </thead>
+                                             <tbody id="cropTable"></tbody>
+                                    </table>
+                           </article>
+                           <article class="card">
+                                    <div class="card-head">
+                                             <div>
+                                                      <div class="eyebrow">MARKET WATCH</div>
+                                                      <h2>Crop price movement</h2>
+                                             </div>
+                                             <div class="status" id="priceStatus">NO LIVE FEED</div>
+                                    </div>
+                                    <div class="price-toolbar"><select id="marketSelect">
+                                                      <option>APMC / mandi feed</option>
+                                                      <option>State average</option>
+                                                      <option>District average</option>
+                                             </select><button class="source-pill" id="watchBtn" type="button">Add to
+                                                      watchlist</button></div>
+                                    <div class="price-card">
+                                             <div>
+                                                      <div class="price-value" id="priceValue">—</div>
+                                                      <div class="price-change" id="priceChange">Connect a backend
+                                                               market feed</div>
+                                                      <div class="muted" id="priceMeta"
+                                                               style="font-size:10px;margin-top:7px">No price value is
+                                                               fabricated in this standalone page.</div>
+                                             </div>
+                                             <div class="sparkline" id="priceChart" aria-label="price trend chart">
+                                             </div>
+                                    </div>
+                           </article>
+                  </section>
+                  <section class="grid">
+                           <article class="card">
+                                    <div class="card-head">
+                                             <div>
+                                                      <div class="eyebrow">CLIMATE DESK</div>
+                                                      <h2>Crop + climate news</h2>
+                                             </div>
+                                             <div class="status" id="newsStatus">SOURCE LINKS READY</div>
+                                    </div>
+                                    <div class="feed" id="newsFeed">
+                                             <div class="news"><span class="news-mark">01</span>
+                                                      <div>
+                                                               <h4>IMD Agromet Advisory Services</h4>
+                                                               <p>State bulletins and crop advisories are available
+                                                                        through the official IMD portal.</p><a
+                                                                        href="https://mausam.imd.gov.in/responsive/agromet_adv_ser_state_current.php"
+                                                                        target="_blank" rel="noopener">Read official
+                                                                        bulletin ↗</a>
+                                                      </div>
+                                             </div>
+                                             <div class="news"><span class="news-mark">02</span>
+                                                      <div>
+                                                               <h4>Weather and climate services for agriculture</h4>
+                                                               <p>IMD's Agricultural Meteorology Division publishes
+                                                                        farmer awareness and climate-resilience
+                                                                        material.</p><a
+                                                                        href="https://imdagrimet.gov.in/"
+                                                                        target="_blank" rel="noopener">Open agriculture
+                                                                        meteorology desk ↗</a>
+                                                      </div>
+                                             </div>
+                                             <div class="news"><span class="news-mark">03</span>
+                                                      <div>
+                                                               <h4>Mandi price intelligence</h4>
+                                                               <p>Use Agmarknet and the official data.gov.in resource as
+                                                                        the source layer for latest commodity
+                                                                        observations.</p><a
+                                                                        href="https://agmarknet.gov.in/" target="_blank"
+                                                                        rel="noopener">Open Agmarknet ↗</a>
+                                                      </div>
+                                             </div>
+                                    </div>
+                           </article>
+                           <article class="card">
+                                    <div class="card-head">
+                                             <div>
+                                                      <div class="eyebrow">DATA PIPELINE</div>
+                                                      <h2>Connection status</h2>
+                                             </div>
+                                             <div class="status live">TRANSPARENT BY DESIGN</div>
+                                    </div>
+                                    <div class="feed">
+                                             <div class="news"><span class="news-mark">W</span>
+                                                      <div>
+                                                               <h4>Weather</h4>
+                                                               <p id="weatherPipeline">Open-Meteo adapter is available
+                                                                        for coordinate-based forecast retrieval.</p>
+                                                      </div>
+                                             </div>
+                                             <div class="news"><span class="news-mark">₹</span>
+                                                      <div>
+                                                               <h4>Prices</h4>
+                                                               <p id="marketPipeline">Set a backend endpoint that
+                                                                        proxies Agmarknet/data.gov.in and returns
+                                                                        normalized price observations.</p>
+                                                      </div>
+                                             </div>
+                                             <div class="news"><span class="news-mark">N</span>
+                                                      <div>
+                                                               <h4>News</h4>
+                                                               <p id="newsPipeline">Connect a server-side RSS/API
+                                                                        adapter to normalize crop and climate headlines
+                                                                        without exposing keys in the browser.</p>
+                                                      </div>
+                                             </div>
+                                    </div>
+                           </article>
+                  </section>
+                  <div class="disclaimer"><strong>Important:</strong> Live prices, market availability, and weather
+                           values depend on connected services, their update time, location resolution, and source
+                           licensing. This dashboard is an information surface, not a guaranteed forecast, agronomic
+                           prescription, or price promise. Confirm decisions with local IMD/KVK/agromet advisories and
+                           current mandi records.</div>
+                  <footer class="foot"><span>DRONACHARYA · climate + market intelligence</span><span><a
+                                             href="index.html">Home</a> · <a href="yield.html">Yield
+                                             estimator</a> · <a href="store.html">Store</a></span></footer>
+         </main>
+         <div class="toast" id="toast" role="status" aria-live="polite"></div>
+         <script>
+                  const crops = { wheat: { name: 'Wheat', months: [10, 11, 12, 1, 2, 3], sow: 'Oct–Nov', care: 'Dec–Jan', harvest: 'Feb–Mar', copy: 'Cool-season planning baseline: sow after monsoon moisture has receded, protect flowering from heat, and watch harvest rain risk.', rows: [['Oct–Nov', 'Prepare seedbed + sow', 'PRIMARY'], ['Dec–Jan', 'Irrigation + nutrient check', 'WATCH'], ['Feb–Mar', 'Harvest readiness + dry window', 'HARVEST']] }, rice: { name: 'Rice', months: [5, 6, 7, 8, 9, 10], sow: 'Jun–Jul', care: 'Jul–Sep', harvest: 'Oct–Nov', copy: 'Warm, water-sensitive baseline: align establishment with dependable rainfall or irrigation and watch humidity-related disease pressure.', rows: [['Jun–Jul', 'Nursery / transplanting', 'PRIMARY'], ['Aug–Sep', 'Water + disease watch', 'WATCH'], ['Oct–Nov', 'Drainage + harvest', 'HARVEST']] }, cotton: { name: 'Cotton', months: [6, 7, 8, 9, 10, 11], sow: 'Jun–Jul', care: 'Aug–Oct', harvest: 'Nov–Jan', copy: 'Long-duration crop baseline: monitor rainfall breaks, boll development, and pest pressure through the reproductive window.', rows: [['Jun–Jul', 'Sow with moisture window', 'PRIMARY'], ['Aug–Oct', 'Boll + pest monitoring', 'WATCH'], ['Nov–Jan', 'Pick in dry conditions', 'HARVEST']] }, onion: { name: 'Onion', months: [9, 10, 11, 12, 1, 2], sow: 'Sep–Nov', care: 'Dec–Jan', harvest: 'Feb–Mar', copy: 'Market-sensitive crop baseline: plan planting and curing around temperature, storage, and local price behavior.', rows: [['Sep–Nov', 'Nursery / transplanting', 'PRIMARY'], ['Dec–Jan', 'Bulb sizing + irrigation', 'WATCH'], ['Feb–Mar', 'Cure + grade + sell', 'HARVEST']] }, tomato: { name: 'Tomato', months: [8, 9, 10, 11, 12, 1], sow: 'Aug–Oct', care: 'Oct–Dec', harvest: 'Nov–Feb', copy: 'High-variability crop baseline: use protected cultivation or staggered planting where heat, rain, or disease risk is elevated.', rows: [['Aug–Oct', 'Nursery + transplanting', 'PRIMARY'], ['Oct–Dec', 'Canopy + disease watch', 'WATCH'], ['Nov–Feb', 'Stagger harvest + market', 'HARVEST']] }, chickpea: { name: 'Chickpea', months: [10, 11, 12, 1, 2, 3], sow: 'Oct–Nov', care: 'Dec–Jan', harvest: 'Feb–Mar', copy: 'Cool-season pulse baseline: use residual moisture carefully, watch flowering temperatures, and avoid excess irrigation.', rows: [['Oct–Nov', 'Sow on residual moisture', 'PRIMARY'], ['Dec–Jan', 'Flowering + irrigation watch', 'WATCH'], ['Feb–Mar', 'Dry harvest window', 'HARVEST']] } };
+                  const stateProfiles = { MH: { name: 'Maharashtra', rain: [2, 1, 1, 2, 3, 6, 12, 10, 7, 4, 2, 1] }, KA: { name: 'Karnataka', rain: [1, 1, 1, 3, 7, 10, 12, 10, 8, 5, 3, 1] }, PB: { name: 'Punjab', rain: [1, 1, 2, 3, 6, 11, 14, 11, 5, 2, 1, 1] }, WB: { name: 'West Bengal', rain: [2, 1, 2, 4, 9, 15, 18, 16, 10, 5, 3, 2] }, RJ: { name: 'Rajasthan', rain: [1, 1, 1, 2, 4, 9, 12, 10, 5, 2, 1, 1] }, TN: { name: 'Tamil Nadu', rain: [3, 2, 2, 2, 2, 3, 5, 5, 8, 14, 15, 8] } };
+                  const el = id => document.getElementById(id); let lastWeather = null;
+                  function toast(text) { const t = el('toast'); t.textContent = text; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000) }
+                  function parseLocation(value) { const m = value.match(/(-?\d+(?:\.\d+)?)\s*[, ]\s*(-?\d+(?:\.\d+)?)/); return m ? { lat: Number(m[1]), lon: Number(m[2]) } : null }
+                  function renderYear() { const c = crops[el('cropSelect').value], profile = stateProfiles[el('stateSelect').value]; el('yearGrid').innerHTML = Array.from({ length: 12 }, (_, i) => { const active = c.months.includes(i + 1), r = profile.rain[i]; return `<div class="month" title="${active ? 'Recommended crop window' : 'Outside primary window'}"><strong>${['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'][i]}</strong><div class="heat" style="opacity:${Math.min(.95, .22 + r / 20)}"></div><small>${active ? 'crop window' : 'seasonal baseline'}</small></div>` }).join('') }
+                  function renderCrop() { const c = crops[el('cropSelect').value]; el('cropWindowTitle').textContent = `${c.name} timing report`; el('cropWindowCopy').textContent = c.copy; el('cropTable').innerHTML = c.rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td><span class="tag">${r[2]}</span></td></tr>`).join(''); el('briefTitle').textContent = `${c.name} / ${stateProfiles[el('stateSelect').value].name}`; el('briefText').textContent = c.copy + ' Confirm the district-level advisory before acting.'; renderYear() }
+                  function renderChart(days = [], temps = [], rain = []) { const maxT = Math.max(...temps, 35), maxR = Math.max(...rain, 10); el('weatherChart').innerHTML = days.map((d, i) => `<div class="bar-wrap"><div class="bar" title="${temps[i] ?? '—'}°C" style="height:${Math.max(8, (temps[i] || 0) / maxT * 150)}px"></div><div class="bar rain" title="${rain[i] ?? 0}mm" style="height:${Math.max(5, (rain[i] || 0) / maxR * 72)}px"></div><span class="bar-label">${d}</span></div>`).join('') || '<div class="empty">Enter coordinates to load the live 14-day forecast.</div>' }
+                  async function loadWeather() { const loc = parseLocation(el('locationInput').value.trim()); if (!loc) { el('weatherStatus').textContent = 'LOCATION NEEDED'; el('weatherState').textContent = 'WEATHER WAITING'; renderChart(); toast('Use latitude, longitude to load weather.'); return } if (Math.abs(loc.lat) > 90 || Math.abs(loc.lon) > 180) { toast('Coordinates are outside valid ranges.'); return } el('weatherStatus').textContent = 'FETCHING'; el('weatherState').textContent = 'WEATHER FETCHING'; try { const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,wind_speed_10m&daily=temperature_2m_max,precipitation_sum&forecast_days=14&timezone=auto`; const res = await fetch(url); if (!res.ok) throw new Error('Weather request failed'); const d = await res.json(); lastWeather = d; const days = d.daily.time.map(x => x.slice(5)); renderChart(days, d.daily.temperature_2m_max, d.daily.precipitation_sum); el('tempStat').textContent = `${Math.round(d.current.temperature_2m)}°`; el('rainStat').textContent = `${Math.round(d.daily.precipitation_sum.slice(0, 7).reduce((a, b) => a + b, 0))}mm`; el('windStat').textContent = `${Math.round(d.current.wind_speed_10m)} km/h`; el('updatedStat').textContent = 'now'; el('weatherLocation').textContent = `${loc.lat.toFixed(4)}, ${loc.lon.toFixed(4)} · ${d.timezone || 'local timezone'}`; el('weatherStatus').textContent = 'LIVE FORECAST'; el('weatherStatus').className = 'status live'; el('weatherState').textContent = 'WEATHER LIVE'; toast('Live weather forecast refreshed.') } catch (e) { el('weatherStatus').textContent = 'WEATHER ERROR'; el('weatherState').textContent = 'WEATHER ERROR'; toast('Weather feed could not be reached. Check the location or network.') } }
+                  async function loadMarket() { const endpoint = el('marketEndpoint').value.trim(); if (!endpoint) { el('priceStatus').textContent = 'NO LIVE FEED'; el('marketState').textContent = 'MARKET FEED READY'; return } el('priceStatus').textContent = 'FETCHING'; try { const url = new URL(endpoint, location.href); url.searchParams.set('crop', el('cropSelect').value); url.searchParams.set('state', el('stateSelect').value); const res = await fetch(url); if (!res.ok) throw new Error('Market request failed'); const d = await res.json(); el('priceValue').textContent = d.latest_price != null ? `₹${Number(d.latest_price).toLocaleString('en-IN')}` : '—'; const delta = Number(d.change_percent || 0); el('priceChange').textContent = `${delta >= 0 ? '+' : ''}${delta.toFixed(1)}% vs previous observation`; el('priceChange').className = 'price-change' + (delta < 0 ? ' down' : ''); el('priceMeta').textContent = `${d.market || 'Configured feed'} · ${d.observed_at || 'timestamp unavailable'}`; el('priceStatus').textContent = 'LIVE PRICE'; el('priceStatus').className = 'status live'; el('marketPipeline').textContent = 'Connected to ' + endpoint; const values = Array.isArray(d.series) ? d.series : []; el('priceChart').innerHTML = values.map(v => `<span class="spark" style="height:${Math.max(8, Math.min(76, Number(v) || 0))}px"></span>`).join('') || '<span class="empty">No trend series returned.</span>'; toast('Market feed refreshed.') } catch (e) { el('priceStatus').textContent = 'FEED ERROR'; el('priceMeta').textContent = 'The endpoint did not return the expected normalized JSON.'; toast('Market feed unavailable. Check your backend endpoint.') } }
+                  function renderNews() { const endpoint = localStorage.getItem('dronacharyaNewsEndpoint'); if (!endpoint) return; el('newsStatus').textContent = 'FETCHING'; fetch(endpoint).then(r => r.json()).then(d => { const items = Array.isArray(d.items) ? d.items : []; if (!items.length) return; el('newsFeed').innerHTML = items.slice(0, 6).map((n, i) => `<div class="news"><span class="news-mark">${String(i + 1).padStart(2, '0')}</span><div><h4>${n.title || 'Untitled headline'}</h4><p>${n.summary || 'No summary supplied.'}</p><a href="${n.url || '#'}" target="_blank" rel="noopener">Read source ↗</a></div></div>`).join(''); el('newsStatus').textContent = 'LIVE NEWS'; el('newsStatus').className = 'status live'; el('newsPipeline').textContent = 'Connected to the configured server-side news adapter.' }).catch(() => { el('newsStatus').textContent = 'SOURCE LINKS READY' }) }
+                  function refresh() { renderCrop(); loadWeather(); loadMarket(); renderNews() }
+                  ['stateSelect', 'cropSelect'].forEach(id => el(id).addEventListener('change', renderCrop)); el('refreshBtn').addEventListener('click', refresh); el('locationInput').addEventListener('keydown', e => { if (e.key === 'Enter') loadWeather() }); el('marketEndpoint').addEventListener('change', loadMarket); el('watchBtn').addEventListener('click', () => { const key = 'dronacharyaWatchlist'; const list = JSON.parse(localStorage.getItem(key) || '[]'); const item = { crop: el('cropSelect').value, state: el('stateSelect').value }; if (!list.some(x => x.crop === item.crop && x.state === item.state)) list.push(item); localStorage.setItem(key, JSON.stringify(list)); toast(`${crops[item.crop].name} added to your local watchlist.`) }); renderCrop(); renderChart();
+         </script>
+</body>
+
+</html>

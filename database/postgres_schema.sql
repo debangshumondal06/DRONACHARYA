@@ -484,3 +484,180 @@ COMMIT;
 -- * Confirm sample depth/count and chain-of-custody at the visit.
 -- * Do not store unnecessary identity documents in this schema.
 -- * Add row-level security before exposing requests through a browser API.
+
+
+-- DRONACHARYA climate + market intelligence schema
+-- PostgreSQL 14+
+-- Store API keys and provider credentials in server-side secrets, never in this table.
+
+begin;
+
+create extension if not exists pgcrypto;
+
+create type climate_source_kind as enum ('imd','open_meteo','weather_api','manual');
+create type market_source_kind as enum ('agmarknet','data_gov_in','enam','state_apmc','manual');
+create type feed_status as enum ('healthy','degraded','failed');
+
+create table if not exists farm_locations (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid null,
+  label text not null,
+  village text,
+  district text,
+  state_code text,
+  latitude numeric(9,6) not null check (latitude between -90 and 90),
+  longitude numeric(9,6) not null check (longitude between -180 and 180),
+  timezone text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists crop_profiles (
+  id uuid primary key default gen_random_uuid(),
+  crop_code text not null unique,
+  crop_name text not null,
+  indicative_sowing_start smallint check (indicative_sowing_start between 1 and 12),
+  indicative_sowing_end smallint check (indicative_sowing_end between 1 and 12),
+  indicative_care_start smallint check (indicative_care_start between 1 and 12),
+  indicative_care_end smallint check (indicative_care_end between 1 and 12),
+  indicative_harvest_start smallint check (indicative_harvest_start between 1 and 12),
+  indicative_harvest_end smallint check (indicative_harvest_end between 1 and 12),
+  guidance_text text,
+  is_active boolean not null default true,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists location_crop_watchlists (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  location_id uuid not null references farm_locations(id) on delete cascade,
+  crop_id uuid not null references crop_profiles(id) on delete restrict,
+  created_at timestamptz not null default now(),
+  unique(user_id, location_id, crop_id)
+);
+
+create table if not exists weather_observations (
+  id bigserial primary key,
+  location_id uuid not null references farm_locations(id) on delete cascade,
+  source climate_source_kind not null,
+  observed_at timestamptz not null,
+  valid_until timestamptz,
+  temperature_c numeric(5,2),
+  apparent_temperature_c numeric(5,2),
+  precipitation_mm numeric(8,2),
+  humidity_percent numeric(5,2),
+  wind_speed_kmh numeric(7,2),
+  weather_code integer,
+  raw_payload jsonb not null default '{}'::jsonb,
+  fetched_at timestamptz not null default now(),
+  unique(location_id, source, observed_at)
+);
+
+create table if not exists weather_forecast_days (
+  id bigserial primary key,
+  location_id uuid not null references farm_locations(id) on delete cascade,
+  source climate_source_kind not null,
+  forecast_date date not null,
+  temperature_max_c numeric(5,2),
+  temperature_min_c numeric(5,2),
+  precipitation_sum_mm numeric(8,2),
+  precipitation_probability_percent numeric(5,2),
+  wind_max_kmh numeric(7,2),
+  weather_code integer,
+  fetched_at timestamptz not null default now(),
+  unique(location_id, source, forecast_date, fetched_at)
+);
+
+create table if not exists market_sources (
+  id uuid primary key default gen_random_uuid(),
+  source_code market_source_kind not null,
+  display_name text not null,
+  endpoint_url text,
+  is_active boolean not null default true,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists market_observations (
+  id bigserial primary key,
+  source_id uuid not null references market_sources(id) on delete restrict,
+  crop_id uuid references crop_profiles(id) on delete set null,
+  commodity_name text not null,
+  state_code text,
+  district text,
+  mandi_name text,
+  variety text,
+  grade text,
+  unit text not null default 'quintal',
+  min_price numeric(14,2),
+  modal_price numeric(14,2),
+  max_price numeric(14,2),
+  arrival_quantity numeric(14,3),
+  currency text not null default 'INR',
+  observed_at timestamptz not null,
+  raw_payload jsonb not null default '{}'::jsonb,
+  fetched_at timestamptz not null default now(),
+  unique(source_id, commodity_name, state_code, district, mandi_name, observed_at, variety, grade)
+);
+
+create table if not exists agriculture_news_items (
+  id uuid primary key default gen_random_uuid(),
+  crop_id uuid references crop_profiles(id) on delete set null,
+  source_name text not null,
+  source_url text not null,
+  title text not null,
+  summary text,
+  published_at timestamptz,
+  fetched_at timestamptz not null default now(),
+  content_hash text not null unique,
+  is_active boolean not null default true
+);
+
+create table if not exists feed_refresh_logs (
+  id bigserial primary key,
+  feed_name text not null check (feed_name in ('weather','market','news')),
+  source_name text not null,
+  status feed_status not null,
+  requested_at timestamptz not null default now(),
+  completed_at timestamptz,
+  records_written integer not null default 0,
+  error_message text,
+  metadata jsonb not null default '{}'::jsonb
+);
+
+create index if not exists idx_weather_location_observed on weather_observations(location_id, observed_at desc);
+create index if not exists idx_weather_forecast_location_date on weather_forecast_days(location_id, forecast_date);
+create index if not exists idx_market_crop_time on market_observations(crop_id, observed_at desc);
+create index if not exists idx_market_lookup on market_observations(commodity_name, state_code, district, mandi_name, observed_at desc);
+create index if not exists idx_news_crop_published on agriculture_news_items(crop_id, published_at desc);
+create index if not exists idx_feed_refresh_recent on feed_refresh_logs(feed_name, requested_at desc);
+
+create or replace view climate_market_latest_prices as
+select distinct on (coalesce(mandi_name,'') , commodity_name, coalesce(state_code,''), coalesce(district,''))
+  m.id, m.commodity_name, m.state_code, m.district, m.mandi_name, m.variety, m.grade,
+  m.unit, m.min_price, m.modal_price, m.max_price, m.arrival_quantity, m.currency,
+  m.observed_at, s.display_name as source_name
+from market_observations m
+join market_sources s on s.id = m.source_id
+order by coalesce(mandi_name,''), commodity_name, coalesce(state_code,''), coalesce(district,''), m.observed_at desc;
+
+create or replace view climate_market_latest_weather as
+select distinct on (location_id)
+  w.location_id, w.source, w.observed_at, w.temperature_c, w.apparent_temperature_c,
+  w.precipitation_mm, w.humidity_percent, w.wind_speed_kmh, w.weather_code, w.fetched_at
+from weather_observations w
+order by location_id, observed_at desc;
+
+create or replace function set_updated_at() returns trigger language plpgsql as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$;
+
+drop trigger if exists farm_locations_updated_at on farm_locations;
+create trigger farm_locations_updated_at before update on farm_locations for each row execute function set_updated_at();
+drop trigger if exists crop_profiles_updated_at on crop_profiles;
+create trigger crop_profiles_updated_at before update on crop_profiles for each row execute function set_updated_at();
+
+commit;

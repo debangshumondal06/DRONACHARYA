@@ -1006,8 +1006,8 @@
                            color: #8ea297;
                            font: 400 11px/1.55 'DM Sans', Arial, sans-serif
                   }
-                  
-                  
+
+
 
                   @media(max-width:600px) {
                            .dronacharya-ai-help {
@@ -1053,6 +1053,9 @@
                                     <li><a class="active" href="index.html">Home</a></li>
                                     <li><a href="field_visit.html">Field Visit</a></li>
                                     <li><a href="yield.html">Estimate Yield</a></li>
+                                    <li><a class="login-btn climate-market-link"
+                                                      href="climate.html">Climate &amp; Market</a>
+                                    </li>
                                     <li><a href="store.html">Store</a></li>
                            </ul>
                   </nav>
@@ -1157,28 +1160,32 @@
                                     </div>
                            </aside>
                   </section>
-<section class="section" aria-labelledby="dataset-upload-title">
-         <div class="page-shell">
-                  <div class="quick-panel">
-                           <p class="eyebrow">DATA WORKSPACE</p>
-                           <h2 id="dataset-upload-title">Analyze a historical CSV</h2>
-                           <p class="hero-text">Upload a small historical dataset to generate a data-quality report,
-                                    trend baseline, and recommendations.</p>
+                  <section class="section" aria-labelledby="dataset-upload-title">
+                           <div class="page-shell">
+                                    <div class="quick-panel">
+                                             <p class="eyebrow">DATA WORKSPACE</p>
+                                             <h2 id="dataset-upload-title">Analyze a historical CSV</h2>
+                                             <p class="hero-text">Upload a small historical dataset to generate a
+                                                      data-quality report,
+                                                      trend baseline, and recommendations.</p>
 
-                           <form id="uploadForm" enctype="multipart/form-data">
-                                    <label for="dataset">CSV file</label>
-                                    <input id="dataset" name="dataset" type="file" accept=".csv,text/csv" required>
-                                    <span id="fileLabel">Choose a CSV file</span>
+                                             <form id="uploadForm" enctype="multipart/form-data">
+                                                      <label for="dataset">CSV file</label>
+                                                      <input id="dataset" name="dataset" type="file"
+                                                               accept=".csv,text/csv" required>
+                                                      <span id="fileLabel">Choose a CSV file</span>
 
-                                    <label for="target_column">Target column (optional)</label>
-                                    <input id="target_column" name="target_column" type="text" placeholder="e.g. yield">
+                                                      <label for="target_column">Target column (optional)</label>
+                                                      <input id="target_column" name="target_column" type="text"
+                                                               placeholder="e.g. yield">
 
-                                    <button id="uploadButton" type="submit">Analyze dataset</button>
-                                    <p id="uploadStatus" class="status-message" role="status" aria-live="polite"></p>
-                           </form>
-                  </div>
-         </div>
-</section>
+                                                      <button id="uploadButton" type="submit">Analyze dataset</button>
+                                                      <p id="uploadStatus" class="status-message" role="status"
+                                                               aria-live="polite"></p>
+                                             </form>
+                                    </div>
+                           </div>
+                  </section>
                   <section class="section">
                            <div class="page-shell">
                                     <div class="section-head">
@@ -1352,7 +1359,7 @@
                   }
          </script>
 
-         
+
          <button class="dronacharya-ai-help" id="dronacharyaAiHelpButton" type="button" aria-expanded="false"
                   aria-controls="dronacharyaAiHelpPanel" aria-label="Need Help? Ask Dronacharya A.I.">
                   <span class="dronacharya-ai-help-mark" aria-hidden="true">?</span>
@@ -1366,7 +1373,7 @@
                                     window.location.href = 'assistant.html';
                            });
          </script>
-<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+         <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 
 </html>
