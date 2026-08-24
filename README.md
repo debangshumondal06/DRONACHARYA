@@ -1,4 +1,4 @@
-DRONACHARYA
+##### DRONACHARYA #####
 
 Agricultural Intelligence and Farmer Services Assistance
 
@@ -7,7 +7,7 @@ DRONACHARYA is a Flask-based agricultural intelligence prototype that brings tog
 The project is intentionally designed as a prototype. It demonstrates the frontend-to-backend flow, persistence, validation, recommendation generation, and service integration patterns required for a larger agricultural platform. It is not an official agricultural advisory system, identity-verification service, financial marketplace, or production-ready machine-learning platform.
 
 
-Features:
+# Features:
 
 Prototype login
 Creates or retrieves a local development user using Aadhaar and phone-number fields.
@@ -46,7 +46,7 @@ Provides the prototype assistant interface and links to application services.
 Page present; responses are currently prototype-level.
 
 
-Technology stack
+# Technology stack used
 
 The prototype uses Flask for server-side routing, Jinja templates for page rendering, vanilla JavaScript for browser interactions, SQLite for local persistence, and the Python requests package for selected external data requests.
 
@@ -69,7 +69,7 @@ Flask and requests
 
 
 
-Architecture
+# Architecture
 
 The application uses a single Flask process and a local SQLite database. Jinja renders HTML templates on the server. Browser-side JavaScript submits forms and JSON requests to Flask endpoints. Flask validates the request, runs the relevant application logic, and returns either an HTML page or a JSON response.
 
@@ -99,7 +99,7 @@ SQLite database: database/dronacharya.db
 The yield blueprint can also request public geocoding and rainfall data from Open-Meteo. If those requests fail, the estimator falls back to a local calculation without live rainfall data.
 
 
-Repository structure:
+# Repository structure:
 
 
 DRONACHARYA-main/
