@@ -1,8 +1,10 @@
 DRONACHARYA
 
-Agricultural Intelligence and Farmer Services Prototype
+Agricultural Intelligence and Farmer Services Assistance
 
-DRONACHARYA is a beginner-friendly agricultural intelligence prototype that combines a Flask backend, SQLite persistence, server-rendered Jinja templates, and vanilla JavaScript frontend controllers. It is designed to demonstrate how farmers could receive basic data analysis, yield estimates, field-visit assistance, and marketplace services from one web application.
+DRONACHARYA is a Flask-based agricultural intelligence prototype that brings together dataset analysis, illustrative yield estimation, field-visit requests, marketplace services, climate data adapters, and a browser-based field assistant in one web application.
+
+The project is intentionally designed as a prototype. It demonstrates the frontend-to-backend flow, persistence, validation, recommendation generation, and service integration patterns required for a larger agricultural platform. It is not an official agricultural advisory system, identity-verification service, financial marketplace, or production-ready machine-learning platform.
 
 
 Features:
@@ -44,6 +46,27 @@ Provides the prototype assistant interface and links to application services.
 Page present; responses are currently prototype-level.
 
 
+Technology stack
+
+The prototype uses Flask for server-side routing, Jinja templates for page rendering, vanilla JavaScript for browser interactions, SQLite for local persistence, and the Python requests package for selected external data requests.
+
+
+Python 3.10+ and Flask 3.x
+
+HTML, CSS, Jinja templates, and vanilla JavaScript
+
+SQLite 3
+
+External weather data:
+Open-Meteo geocoding, forecast, and archive endpoints
+Browser speech:
+Web Speech API / SpeechSynthesisUtterance
+
+Dependencies:
+Flask and requests
+
+
+
 
 
 Architecture
@@ -74,3 +97,44 @@ SQLite database: database/dronacharya.db
 
 
 The yield blueprint can also request public geocoding and rainfall data from Open-Meteo. If those requests fail, the estimator falls back to a local calculation without live rainfall data.
+
+
+Repository structure:
+
+
+DRONACHARYA-main/
+├── app.py                         # Main Flask application and page/API routes
+├── database.py                    # Shared SQLite connection, users, and analyses
+├── data_cleaner.py                # CSV validation and quality analysis
+├── predictor.py                   # Transparent trend-baseline prediction
+├── recommender.py                 # Prototype recommendation cards
+├── yield_backend.py               # Yield blueprint, calculation engine, history, CSV export
+├── marketplace_backend.py         # Product and order marketplace blueprint
+├── climate_backend.py             # Optional climate, market, news, and watchlist blueprint
+├── api.js                         # Shared API helper kept in the project root
+├── database/
+│   ├── sqlite_schema.sql          # Main SQLite schema
+│   └── postgres_schema.sql        # Reference PostgreSQL schema
+├── templates/
+│   ├── index.html                 # Protected home/dashboard landing page
+│   ├── login.html                 # Prototype login form
+│   ├── dashboard.html             # Uploaded dataset analysis result
+│   ├── estimate_yield.html        # Connected yield estimator
+│   ├── yield.html                 # Legacy yield page retained for compatibility
+│   ├── field_visit.html            # Field-visit request form
+│   ├── store.html                 # Marketplace interface
+│   ├── climate.html               # Climate/market/news interface
+│   └── assistant.html             # Voice-enabled field assistant
+├── static/
+│   ├── css/style.css              # Shared stylesheet
+│   └── js/
+│       ├── app.js                 # CSV upload controller
+│       ├── login.js               # Login controller
+│       └── store.js               # Marketplace controller
+├── uploads/.gitkeep               # Runtime upload directory placeholder
+├── requirements.txt               # Python dependencies
+├── test_integration.py            # Main end-to-end smoke test
+└── test_climate_backend.py        # Climate blueprint tests
+
+
+
