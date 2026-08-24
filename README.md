@@ -1,4 +1,4 @@
-##### DRONACHARYA #####
+# DRONACHARYA 
 
 Agricultural Intelligence and Farmer Services Assistance
 
