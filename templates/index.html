@@ -2,1390 +2,1474 @@
 <html lang="en">
 
 <head>
-         <meta charset="UTF-8">
-         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-         <meta name="description" content="DRONACHARYA agriculture predictive intelligence platform.">
-         <title>DRONACHARYA | Field Intelligence</title>
-         <link rel="preconnect" href="https://fonts.googleapis.com">
-         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Playfair+Display:wght@600;700&display=swap"
-                  rel="stylesheet">
-         <style>
-                  * {
-                           box-sizing: border-box;
-                  }
-
-                  :root {
-                           --black: #050806;
-                           --black2: #0b110d;
-                           --panel: #111a14;
-                           --panel2: #0d1510;
-                           --line: rgba(112, 255, 150, .16);
-                           --line-strong: rgba(112, 255, 150, .3);
-                           --green: #5eeb8a;
-                           --green2: #c8ffd6;
-                           --amber: #e7c85e;
-                           --muted: #8ea297;
-                           --white: #eef7f0;
-                           --red-soft: #ff9d91;
-                  }
-
-                  html {
-                           scroll-behavior: smooth;
-                  }
-
-                  body {
-                           margin: 0;
-                           background: var(--black);
-                           color: var(--white);
-                           font-family: 'DM Sans', Arial, sans-serif;
-                           -webkit-font-smoothing: antialiased;
-                  }
-
-                  a {
-                           color: inherit;
-                           text-decoration: none;
-                  }
-
-                  :focus-visible {
-                           outline: 2px solid var(--green);
-                           outline-offset: 3px;
-                  }
-
-                  /* ---------- Status ribbon ---------- */
-                  .ribbon {
-                           display: flex;
-                           align-items: center;
-                           justify-content: center;
-                           gap: 10px;
-                           padding: 7px 6vw;
-                           background: var(--black2);
-                           border-bottom: 1px solid var(--line);
-                           color: var(--muted);
-                           font-family: 'Manrope', sans-serif;
-                           font-size: 11px;
-                           letter-spacing: .04em;
-                           text-align: center;
-                  }
-
-                  .ribbon .dot {
-                           width: 6px;
-                           height: 6px;
-                           border-radius: 50%;
-                           background: var(--green);
-                           box-shadow: 0 0 8px var(--green);
-                           flex: none;
-                           animation: pulse 2.4s ease-in-out infinite;
-                  }
-
-                  @keyframes pulse {
-
-                           0%,
-                           100% {
-                                    opacity: 1;
-                                    transform: scale(1);
-                           }
-
-                           50% {
-                                    opacity: .45;
-                                    transform: scale(.72);
-                           }
-                  }
-
-                  .ribbon strong {
-                           color: var(--green2);
-                           font-weight: 600;
-                  }
-
-                  /* ---------- Navbar ---------- */
-                  .topbar {
-                           position: sticky;
-                           top: 0;
-                           z-index: 40;
-                           display: flex;
-                           align-items: center;
-                           justify-content: space-between;
-                           gap: 24px;
-                           height: 76px;
-                           padding: 0 6vw;
-                           border-bottom: 1px solid var(--line);
-                           background: rgba(5, 8, 6, .88);
-                           backdrop-filter: blur(16px);
-                  }
-
-                  .brand-mark {
-                           display: flex;
-                           align-items: center;
-                           gap: 11px;
-                           flex: none;
-                  }
-
-                  .brand-glyph {
-                           display: grid;
-                           place-items: center;
-                           width: 34px;
-                           height: 34px;
-                           border: 1px solid var(--line-strong);
-                           background: linear-gradient(160deg, rgba(94, 235, 138, .16), transparent);
-                           color: var(--green);
-                           font-family: 'Playfair Display', serif;
-                           font-size: 17px;
-                           font-weight: 700;
-                  }
-
-                  .brand-text {
-                           display: flex;
-                           flex-direction: column;
-                           line-height: 1.15;
-                  }
-
-                  .brand {
-                           color: var(--green);
-                           font-family: 'Manrope', sans-serif;
-                           font-weight: 800;
-                           font-size: 15px;
-                           letter-spacing: .2em;
-                           text-shadow: 0 0 25px rgba(98, 255, 147, .3);
-                  }
-
-                  .brand-tagline {
-                           color: var(--muted);
-                           font-size: 9.5px;
-                           letter-spacing: .1em;
-                           margin-top: 2px;
-                  }
-
-                  .nav-links {
-                           display: flex;
-                           align-items: center;
-                           gap: 4px;
-                           list-style: none;
-                           margin: 0 auto;
-                           padding: 0;
-                           font-family: 'Manrope', sans-serif;
-                  }
-
-                  .nav-links a {
-                           display: inline-block;
-                           padding: 9px 16px;
-                           border-radius: 3px;
-                           color: var(--muted);
-                           font-size: 12.5px;
-                           font-weight: 700;
-                           letter-spacing: .06em;
-                           transition: color .15s ease, background .15s ease;
-                  }
-
-                  .nav-links a:hover {
-                           color: var(--white);
-                           background: rgba(112, 255, 150, .07);
-                  }
-
-                  .nav-links a.active {
-                           color: var(--black);
-                           background: var(--green);
-                  }
-
-                  .nav-controls {
-                           display: flex;
-                           align-items: center;
-                           gap: 12px;
-                           flex: none;
-                  }
-
-                  .lang-select {
-                           appearance: none;
-                           -webkit-appearance: none;
-                           padding: 8px 30px 8px 12px;
-                           border: 1px solid var(--line);
-                           background: var(--panel) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6"><path d="M0 0l5 6 5-6z" fill="%238ea297"/></svg>') no-repeat right 11px center;
-                           color: var(--white);
-                           font-family: 'DM Sans', sans-serif;
-                           font-size: 12px;
-                           border-radius: 3px;
-                           cursor: pointer;
-                  }
-
-                  .lang-select:hover {
-                           border-color: var(--line-strong);
-                  }
-
-                  .login-btn {
-                           padding: 9px 20px;
-                           border: 1px solid var(--green);
-                           background: var(--green);
-                           color: var(--black);
-                           font-family: 'Manrope', sans-serif;
-                           font-weight: 700;
-                           font-size: 12.5px;
-                           letter-spacing: .04em;
-                           border-radius: 3px;
-                           cursor: pointer;
-                           box-shadow: 0 0 20px rgba(98, 255, 147, .18);
-                           transition: box-shadow .15s ease, background .15s ease;
-                  }
-
-                  .login-btn:hover {
-                           background: var(--green2);
-                           box-shadow: 0 0 30px rgba(98, 255, 147, .34);
-                  }
-                  .climate-market-link {
-                    background: transparent;
-                    color: var(--green2);
-                    border: 1px solid var(--green);
-                    box-shadow: none;
-                  }
-
-                  .climate-market-link:hover {
-                    background: var(--green);
-                    color: var(--black);
-                    box-shadow: 0 0 24px rgba(98, 255, 147, .28);
-                  }
-                                   
-                  .nav-toggle {
-                           display: none;
-                           width: 36px;
-                           height: 36px;
-                           border: 1px solid var(--line);
-                           background: var(--panel);
-                           border-radius: 3px;
-                           color: var(--green);
-                           font-size: 16px;
-                           cursor: pointer;
-                  }
-
-                  /* ---------- Shell ---------- */
-                  .page-shell {
-                           width: min(1280px, 88vw);
-                           margin: 0 auto;
-                  }
-
-                  /* ---------- Hero ---------- */
-                  .hero-grid {
-                           position: relative;
-                           display: grid;
-                           grid-template-columns: 1.05fr .95fr;
-                           gap: 7vw;
-                           min-height: 640px;
-                           padding: 88px 0 100px;
-                           overflow: hidden;
-                  }
-
-                  .hero-grid:before {
-                           position: absolute;
-                           z-index: -1;
-                           top: 10px;
-                           left: -17vw;
-                           width: 620px;
-                           height: 620px;
-                           border-radius: 50%;
-                           background: radial-gradient(circle, rgba(35, 174, 83, .16), transparent 68%);
-                           content: '';
-                           filter: blur(15px);
-                  }
-
-                  .scanline {
-                           position: absolute;
-                           left: -10%;
-                           right: -10%;
-                           height: 1px;
-                           background: linear-gradient(90deg, transparent, rgba(98, 255, 147, .55), transparent);
-                           opacity: .5;
-                           animation: sweep 7s linear infinite;
-                           pointer-events: none;
-                  }
-
-                  @keyframes sweep {
-                           0% {
-                                    top: 6%;
-                                    opacity: 0;
-                           }
-
-                           8% {
-                                    opacity: .55;
-                           }
-
-                           50% {
-                                    opacity: .2;
-                           }
-
-                           92% {
-                                    opacity: .55;
-                           }
-
-                           100% {
-                                    top: 96%;
-                                    opacity: 0;
-                           }
-                  }
-
-                  @media (prefers-reduced-motion: reduce) {
-
-                           .scanline,
-                           .ribbon .dot,
-                           .live-dot {
-                                    animation: none !important;
-                           }
-
-                           html {
-                                    scroll-behavior: auto;
-                           }
-                  }
-
-                  .eyebrow {
-                           display: inline-block;
-                           color: var(--green);
-                           font-family: 'Manrope', sans-serif;
-                           font-size: 10.5px;
-                           font-weight: 700;
-                           letter-spacing: .2em;
-                           margin: 0 0 16px;
-                  }
-
-                  .hero-copy h1 {
-                           max-width: 720px;
-                           margin: 0 0 25px;
-                           color: var(--white);
-                           font-family: 'Playfair Display', Georgia, serif;
-                           font-size: clamp(42px, 5.6vw, 76px);
-                           line-height: 1.02;
-                           letter-spacing: -.03em;
-                  }
-
-                  .hero-copy h1 em {
-                           color: var(--green2);
-                           font-style: normal;
-                  }
-
-                  .hero-text {
-                           max-width: 560px;
-                           color: var(--muted);
-                           font-size: 16.5px;
-                           line-height: 1.8;
-                           margin: 0 0 30px;
-                  }
-
-                  .principle-box {
-                           max-width: 560px;
-                           padding: 17px 20px;
-                           border: 1px solid var(--line);
-                           border-left: 3px solid var(--green);
-                           background: linear-gradient(100deg, rgba(98, 255, 147, .09), rgba(98, 255, 147, .01));
-                           box-shadow: 0 0 35px rgba(98, 255, 147, .06);
-                           font-size: 14px;
-                           line-height: 1.6;
-                  }
-
-                  .principle-box strong {
-                           display: block;
-                           color: var(--green2);
-                           font-family: 'Manrope', sans-serif;
-                           margin-bottom: 3px;
-                  }
-
-                  .principle-box span {
-                           color: var(--muted);
-                  }
-
-                  .journey {
-                           display: grid;
-                           grid-template-columns: repeat(4, 1fr);
-                           max-width: 640px;
-                           margin-top: 44px;
-                           border: 1px solid var(--line);
-                           background: var(--line);
-                           gap: 1px;
-                  }
-
-                  .journey-step {
-                           min-height: 108px;
-                           padding: 16px;
-                           background: rgba(11, 17, 13, .92);
-                  }
-
-                  .journey-step b {
-                           display: block;
-                           margin-bottom: 12px;
-                           color: var(--amber);
-                           font-size: 10.5px;
-                           letter-spacing: .06em;
-                           font-family: 'Manrope', sans-serif;
-                  }
-
-                  .journey-step strong {
-                           display: block;
-                           color: var(--white);
-                           font-family: 'Manrope', sans-serif;
-                           font-size: 13.5px;
-                  }
-
-                  .journey-step span {
-                           display: block;
-                           margin-top: 4px;
-                           color: var(--muted);
-                           font-size: 11px;
-                           line-height: 1.45;
-                  }
-
-                  /* ---------- Quick-access panel (replaces upload) ---------- */
-                  .quick-panel {
-                           position: relative;
-                           padding: 32px;
-                           border: 1px solid var(--line);
-                           background: linear-gradient(145deg, rgba(19, 29, 22, .98), rgba(7, 11, 8, .98));
-                           box-shadow: 0 22px 70px rgba(0, 0, 0, .42), 0 0 48px rgba(35, 174, 83, .09);
-                           height: fit-content;
-                  }
-
-                  .quick-panel:before {
-                           position: absolute;
-                           top: 0;
-                           right: 30px;
-                           left: 30px;
-                           height: 2px;
-                           background: linear-gradient(90deg, transparent, var(--green), transparent);
-                           content: '';
-                           box-shadow: 0 0 18px var(--green);
-                  }
-
-                  .quick-panel-head {
-                           display: flex;
-                           align-items: flex-start;
-                           justify-content: space-between;
-                           gap: 10px;
-                           margin-bottom: 22px;
-                  }
-
-                  .quick-panel h2 {
-                           margin: 4px 0 0;
-                           color: var(--white);
-                           font-family: 'Manrope', sans-serif;
-                           font-size: 21px;
-                           letter-spacing: -.01em;
-                  }
-
-                  .live-tag {
-                           display: flex;
-                           align-items: center;
-                           gap: 6px;
-                           padding: 5px 10px;
-                           border: 1px solid var(--line);
-                           border-radius: 20px;
-                           color: var(--green2);
-                           font-family: 'Manrope', sans-serif;
-                           font-size: 9.5px;
-                           letter-spacing: .08em;
-                           font-weight: 700;
-                           flex: none;
-                  }
-
-                  .live-dot {
-                           width: 5px;
-                           height: 5px;
-                           border-radius: 50%;
-                           background: var(--green);
-                           box-shadow: 0 0 6px var(--green);
-                           animation: pulse 2.4s ease-in-out infinite;
-                  }
-
-                  .quick-tiles {
-                           display: flex;
-                           flex-direction: column;
-                           gap: 10px;
-                  }
-
-                  .quick-tile {
-                           display: flex;
-                           align-items: center;
-                           gap: 14px;
-                           padding: 15px 16px;
-                           border: 1px solid var(--line);
-                           background: rgba(5, 8, 6, .5);
-                           border-radius: 3px;
-                           transition: border-color .15s ease, background .15s ease, transform .15s ease;
-                  }
-
-                  .quick-tile:hover {
-                           border-color: var(--line-strong);
-                           background: rgba(98, 255, 147, .06);
-                           transform: translateX(2px);
-                  }
-
-                  .quick-tile .tile-icon {
-                           display: grid;
-                           place-items: center;
-                           width: 38px;
-                           height: 38px;
-                           flex: none;
-                           background: rgba(98, 255, 147, .1);
-                           border: 1px solid var(--line);
-                           color: var(--green);
-                           font-size: 17px;
-                  }
-
-                  .quick-tile .tile-copy {
-                           flex: 1;
-                           min-width: 0;
-                  }
-
-                  .quick-tile .tile-copy strong {
-                           display: block;
-                           color: var(--white);
-                           font-family: 'Manrope', sans-serif;
-                           font-size: 13.5px;
-                  }
-
-                  .quick-tile .tile-copy span {
-                           display: block;
-                           margin-top: 2px;
-                           color: var(--muted);
-                           font-size: 11.5px;
-                  }
-
-                  .quick-tile .tile-arrow {
-                           color: var(--muted);
-                           font-size: 15px;
-                           flex: none;
-                  }
-
-                  .quick-tile:hover .tile-arrow {
-                           color: var(--green);
-                  }
-
-                  .trust-line {
-                           display: flex;
-                           align-items: flex-start;
-                           gap: 10px;
-                           margin-top: 22px;
-                           padding-top: 20px;
-                           border-top: 1px solid var(--line);
-                           color: var(--muted);
-                           font-size: 11.5px;
-                           line-height: 1.6;
-                  }
-
-                  .trust-line .mark {
-                           color: var(--amber);
-                           flex: none;
-                  }
-
-                  /* ---------- Why us ---------- */
-                  .section {
-                           padding: 78px 0;
-                           border-top: 1px solid var(--line);
-                  }
-
-                  .section-head {
-                           max-width: 620px;
-                           margin: 0 0 46px;
-                  }
-
-                  .section-head .eyebrow {
-                           margin-bottom: 12px;
-                  }
-
-                  .section-head h2 {
-                           margin: 0 0 12px;
-                           color: var(--white);
-                           font-family: 'Playfair Display', Georgia, serif;
-                           font-size: clamp(28px, 3.2vw, 38px);
-                           letter-spacing: -.02em;
-                  }
-
-                  .section-head p {
-                           margin: 0;
-                           color: var(--muted);
-                           font-size: 15px;
-                           line-height: 1.7;
-                  }
-
-                  .why-grid {
-                           display: grid;
-                           grid-template-columns: repeat(3, 1fr);
-                           gap: 1px;
-                           border: 1px solid var(--line);
-                           background: var(--line);
-                  }
-
-                  .why-card {
-                           padding: 30px 28px;
-                           background: var(--panel2);
-                  }
-
-                  .why-card .why-icon {
-                           display: grid;
-                           place-items: center;
-                           width: 40px;
-                           height: 40px;
-                           border: 1px solid var(--line);
-                           color: var(--green);
-                           font-size: 17px;
-                           margin-bottom: 20px;
-                  }
-
-                  .why-card h3 {
-                           margin: 0 0 10px;
-                           color: var(--white);
-                           font-family: 'Manrope', sans-serif;
-                           font-size: 16px;
-                  }
-
-                  .why-card p {
-                           margin: 0;
-                           color: var(--muted);
-                           font-size: 13.5px;
-                           line-height: 1.7;
-                  }
-
-                  /* ---------- Stats strip ---------- */
-                  .stats-strip {
-                           display: grid;
-                           grid-template-columns: repeat(4, 1fr);
-                           border: 1px solid var(--line);
-                           border-radius: 4px;
-                           overflow: hidden;
-                  }
-
-                  .stat-cell {
-                           padding: 26px 22px;
-                           border-left: 1px solid var(--line);
-                           background: linear-gradient(180deg, rgba(98, 255, 147, .04), transparent);
-                  }
-
-                  .stat-cell:first-child {
-                           border-left: none;
-                  }
-
-                  .stat-cell .stat-num {
-                           color: var(--green2);
-                           font-family: 'Playfair Display', serif;
-                           font-size: 32px;
-                           letter-spacing: -.01em;
-                  }
-
-                  .stat-cell .stat-label {
-                           margin-top: 6px;
-                           color: var(--muted);
-                           font-size: 11.5px;
-                           letter-spacing: .04em;
-                           line-height: 1.5;
-                  }
-
-                  /* ---------- Services (mirrors nav) ---------- */
-                  .service-grid {
-                           display: grid;
-                           grid-template-columns: repeat(3, 1fr);
-                           gap: 20px;
-                  }
-
-                  .service-card {
-                           display: flex;
-                           flex-direction: column;
-                           padding: 30px 28px 26px;
-                           border: 1px solid var(--line);
-                           background: var(--panel2);
-                           transition: border-color .15s ease, transform .15s ease;
-                  }
-
-                  .service-card:hover {
-                           border-color: var(--line-strong);
-                           transform: translateY(-3px);
-                  }
-
-                  .service-card .service-num {
-                           color: var(--amber);
-                           font-family: 'Manrope', sans-serif;
-                           font-size: 11px;
-                           letter-spacing: .1em;
-                           margin-bottom: 18px;
-                  }
-
-                  .service-card h3 {
-                           margin: 0 0 10px;
-                           color: var(--white);
-                           font-family: 'Manrope', sans-serif;
-                           font-size: 18px;
-                  }
-
-                  .service-card p {
-                           margin: 0 0 22px;
-                           color: var(--muted);
-                           font-size: 13.5px;
-                           line-height: 1.7;
-                           flex: 1;
-                  }
-
-                  .service-card .service-link {
-                           color: var(--green);
-                           font-family: 'Manrope', sans-serif;
-                           font-size: 12.5px;
-                           font-weight: 700;
-                           letter-spacing: .04em;
-                  }
-
-                  .service-card .service-link span {
-                           transition: margin .15s ease;
-                           display: inline-block;
-                  }
-
-                  .service-card:hover .service-link span {
-                           margin-left: 4px;
-                  }
-
-                  /* ---------- Advisory note ---------- */
-                  .advisory {
-                           display: flex;
-                           gap: 16px;
-                           padding: 24px 26px;
-                           border: 1px solid var(--line);
-                           border-left: 3px solid var(--amber);
-                           background: linear-gradient(100deg, rgba(231, 200, 94, .07), transparent);
-                  }
-
-                  .advisory .mark {
-                           color: var(--amber);
-                           font-size: 20px;
-                           flex: none;
-                  }
-
-                  .advisory strong {
-                           display: block;
-                           color: var(--white);
-                           font-family: 'Manrope', sans-serif;
-                           font-size: 13.5px;
-                           margin-bottom: 5px;
-                  }
-
-                  .advisory span {
-                           color: var(--muted);
-                           font-size: 13px;
-                           line-height: 1.7;
-                  }
-
-                  /* ---------- Footer ---------- */
-                  .footer {
-                           border-top: 1px solid var(--line);
-                           background: var(--black);
-                  }
-
-                  .footer-grid {
-                           display: grid;
-                           grid-template-columns: 1.4fr 1fr 1fr 1fr;
-                           gap: 40px;
-                           padding: 60px 0 40px;
-                  }
-
-                  .footer-brand .brand {
-                           display: block;
-                           margin-bottom: 12px;
-                  }
-
-                  .footer-brand p {
-                           color: var(--muted);
-                           font-size: 13px;
-                           line-height: 1.8;
-                           max-width: 320px;
-                           margin: 0;
-                  }
-
-                  .footer-col h4 {
-                           margin: 0 0 16px;
-                           color: var(--white);
-                           font-family: 'Manrope', sans-serif;
-                           font-size: 12px;
-                           letter-spacing: .08em;
-                  }
-
-                  .footer-col ul {
-                           list-style: none;
-                           margin: 0;
-                           padding: 0;
-                           display: flex;
-                           flex-direction: column;
-                           gap: 10px;
-                  }
-
-                  .footer-col a {
-                           color: var(--muted);
-                           font-size: 13px;
-                  }
-
-                  .footer-col a:hover {
-                           color: var(--green2);
-                  }
-
-                  .footer-bottom {
-                           display: flex;
-                           align-items: center;
-                           justify-content: space-between;
-                           gap: 16px;
-                           padding: 22px 0 34px;
-                           border-top: 1px solid var(--line);
-                           color: #6d7e70;
-                           font-size: 11.5px;
-                           flex-wrap: wrap;
-                  }
-
-                  /* ---------- Responsive ---------- */
-                  @media (max-width: 980px) {
-                           .nav-links {
-                                    display: none;
-                           }
-
-                           .nav-toggle {
-                                    display: block;
-                           }
-
-                           .hero-grid {
-                                    grid-template-columns: 1fr;
-                                    gap: 50px;
-                                    padding: 55px 0 70px;
-                           }
-
-                           .journey {
-                                    max-width: none;
-                           }
-
-                           .why-grid {
-                                    grid-template-columns: 1fr;
-                           }
-
-                           .stats-strip {
-                                    grid-template-columns: repeat(2, 1fr);
-                           }
-
-                           .stat-cell:nth-child(3) {
-                                    border-left: none;
-                           }
-
-                           .stat-cell:nth-child(odd) {
-                                    border-left: none;
-                           }
-
-                           .service-grid {
-                                    grid-template-columns: 1fr;
-                           }
-
-                           .footer-grid {
-                                    grid-template-columns: 1fr 1fr;
-                           }
-                  }
-
-                  @media (max-width: 600px) {
-                           .topbar {
-                                    padding: 0 5vw;
-                                    height: 66px;
-                           }
-
-                           .brand-tagline {
-                                    display: none;
-                           }
-
-                           .ribbon {
-                                    font-size: 10px;
-                                    padding: 7px 5vw;
-                           }
-
-                           .lang-select {
-                                    font-size: 0;
-                                    width: 38px;
-                                    padding: 8px;
-                                    background-position: center;
-                           }
-
-                           .login-btn {
-                                    padding: 8px 14px;
-                                    font-size: 11.5px;
-                           }
-
-                           .journey {
-                                    grid-template-columns: repeat(2, 1fr);
-                           }
-
-                           .quick-panel {
-                                    padding: 24px;
-                           }
-
-                           .footer-grid {
-                                    grid-template-columns: 1fr;
-                                    padding: 46px 0 30px;
-                           }
-
-                           .footer-bottom {
-                                    flex-direction: column;
-                                    align-items: flex-start;
-                           }
-                  }
-         </style>
-
-         <style id="dronacharya-ai-help-style">
-                  .dronacharya-ai-help {
-                           position: fixed;
-                           right: 24px;
-                           bottom: 24px;
-                           z-index: 80;
-                           display: flex;
-                           align-items: center;
-                           gap: 10px;
-                           padding: 10px 14px 10px 11px;
-                           border: 1px solid rgba(94, 235, 138, .72);
-                           border-radius: 4px;
-                           background: rgba(13, 25, 16, .94);
-                           color: #c8ffd6;
-                           font: 700 11px/1.2 Manrope, Arial, sans-serif;
-                           letter-spacing: .03em;
-                           box-shadow: 0 0 0 1px rgba(94, 235, 138, .08), 0 12px 32px rgba(0, 0, 0, .42), 0 0 22px rgba(94, 235, 138, .12);
-                           backdrop-filter: blur(14px);
-                           cursor: pointer;
-                           transition: transform .18s cubic-bezier(.23, 1, .32, 1), background .18s ease, box-shadow .18s ease
-                  }
-
-                  .dronacharya-ai-help:hover {
-                           transform: translateY(-3px);
-                           background: #14291a;
-                           box-shadow: 0 18px 42px rgba(0, 0, 0, .46), 0 0 28px rgba(94, 235, 138, .22)
-                  }
-
-                  .dronacharya-ai-help:active {
-                           transform: translateY(-1px) scale(.97)
-                  }
-
-                  .dronacharya-ai-help:focus-visible {
-                           outline: 2px solid #5eeb8a;
-                           outline-offset: 3px
-                  }
-
-                  .dronacharya-ai-help-mark {
-                           display: grid;
-                           place-items: center;
-                           width: 25px;
-                           height: 25px;
-                           border: 1px solid rgba(231, 200, 94, .72);
-                           color: #e7c85e;
-                           font: 700 13px/1 'Playfair Display', Georgia, serif
-                  }
-
-                  .dronacharya-ai-help-copy {
-                           display: flex;
-                           flex-direction: column;
-                           gap: 3px;
-                           text-align: left
-                  }
-
-                  .dronacharya-ai-help-copy strong {
-                           color: #eef7f0;
-                           font: 700 11px Manrope, Arial, sans-serif
-                  }
-
-                  .dronacharya-ai-help-copy span {
-                           color: #8ea297;
-                           font: 400 10px 'DM Sans', Arial, sans-serif
-                  }
-
-                  .dronacharya-ai-help-panel {
-                           position: fixed;
-                           right: 24px;
-                           bottom: 78px;
-                           z-index: 79;
-                           width: min(290px, calc(100vw - 32px));
-                           padding: 16px;
-                           border: 1px solid rgba(112, 255, 150, .28);
-                           background: rgba(13, 21, 16, .97);
-                           color: #eef7f0;
-                           box-shadow: 0 20px 50px rgba(0, 0, 0, .48);
-                           backdrop-filter: blur(16px);
-                           opacity: 0;
-                           transform: translateY(10px);
-                           pointer-events: none;
-                           transition: opacity .18s ease, transform .18s cubic-bezier(.23, 1, .32, 1)
-                  }
-
-                  .dronacharya-ai-help-panel.is-open {
-                           opacity: 1;
-                           transform: translateY(0);
-                           pointer-events: auto
-                  }
-
-                  .dronacharya-ai-help-panel strong {
-                           display: block;
-                           margin-bottom: 6px;
-                           color: #c8ffd6;
-                           font: 700 12px Manrope, Arial, sans-serif
-                  }
-
-                  .dronacharya-ai-help-panel p {
-                           margin: 0;
-                           color: #8ea297;
-                           font: 400 11px/1.55 'DM Sans', Arial, sans-serif
-                  }
-
-
-
-                  @media(max-width:600px) {
-                           .dronacharya-ai-help {
-                                    right: 16px;
-                                    bottom: 16px
-                           }
-
-                           .dronacharya-ai-help-panel {
-                                    right: 16px;
-                                    bottom: 70px
-                           }
-                  }
-
-                  @media(prefers-reduced-motion:reduce) {
-
-                           .dronacharya-ai-help,
-                           .dronacharya-ai-help-panel {
-                                    transition: none
-                           }
-                  }
-         </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DRONACHARYA agriculture predictive intelligence platform.">
+  <title>DRONACHARYA | Field Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Playfair+Display:wght@600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --black: #050806;
+      --black2: #0b110d;
+      --panel: #111a14;
+      --panel2: #0d1510;
+      --line: rgba(112, 255, 150, .16);
+      --line-strong: rgba(112, 255, 150, .3);
+      --green: #5eeb8a;
+      --green2: #c8ffd6;
+      --amber: #e7c85e;
+      --muted: #8ea297;
+      --white: #eef7f0;
+      --red-soft: #ff9d91;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Sans', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 3px;
+    }
+
+    /* ---------- Status ribbon ---------- */
+    .ribbon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 7px 6vw;
+      background: var(--black2);
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-family: 'Manrope', sans-serif;
+      font-size: 11px;
+      letter-spacing: .04em;
+      text-align: center;
+    }
+
+    .ribbon .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      flex: none;
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: .45;
+        transform: scale(.72);
+      }
+    }
+
+    .ribbon strong {
+      color: var(--green2);
+      font-weight: 600;
+    }
+
+    /* ---------- Navbar ---------- */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      height: 76px;
+      padding: 0 6vw;
+      border-bottom: 1px solid var(--line);
+      background: rgba(5, 8, 6, .88);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      flex: none;
+    }
+
+    .brand-glyph {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--line-strong);
+      background: linear-gradient(160deg, rgba(94, 235, 138, .16), transparent);
+      color: var(--green);
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+
+    .brand {
+      color: var(--green);
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: .2em;
+      text-shadow: 0 0 25px rgba(98, 255, 147, .3);
+    }
+
+    .brand-tagline {
+      color: var(--muted);
+      font-size: 9.5px;
+      letter-spacing: .1em;
+      margin-top: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+      margin: 0 auto;
+      padding: 0;
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .nav-links a {
+      display: inline-block;
+      padding: 9px 16px;
+      border-radius: 3px;
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      transition: color .15s ease, background .15s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+      background: rgba(112, 255, 150, .07);
+    }
+
+    .nav-links a.active {
+      color: var(--black);
+      background: var(--green);
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: none;
+    }
+
+    .lang-select {
+      appearance: none;
+      -webkit-appearance: none;
+      padding: 8px 30px 8px 12px;
+      border: 1px solid var(--line);
+      background: var(--panel) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6"><path d="M0 0l5 6 5-6z" fill="%238ea297"/></svg>') no-repeat right 11px center;
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .lang-select:hover {
+      border-color: var(--line-strong);
+    }
+
+    .login-btn {
+      padding: 9px 20px;
+      border: 1px solid var(--green);
+      background: var(--green);
+      color: var(--black);
+      font-family: 'Manrope', sans-serif;
+      font-weight: 700;
+      font-size: 12.5px;
+      letter-spacing: .04em;
+      border-radius: 3px;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(98, 255, 147, .18);
+      transition: box-shadow .15s ease, background .15s ease;
+    }
+
+    .login-btn:hover {
+      background: var(--green2);
+      box-shadow: 0 0 30px rgba(98, 255, 147, .34);
+    }
+
+    .climate-market-link {
+      background: transparent;
+      color: var(--green2);
+      border: 1px solid var(--green);
+      box-shadow: none;
+    }
+
+    .climate-market-link:hover {
+      background: var(--green);
+      color: var(--black);
+      box-shadow: 0 0 24px rgba(98, 255, 147, .28);
+    }
+
+    .nav-toggle {
+      display: none;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 3px;
+      color: var(--green);
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    /* ---------- Shell ---------- */
+    .page-shell {
+      width: min(1280px, 88vw);
+      margin: 0 auto;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 7vw;
+      min-height: 640px;
+      padding: 88px 0 100px;
+      overflow: hidden;
+    }
+
+    .hero-grid:before {
+      position: absolute;
+      z-index: -1;
+      top: 10px;
+      left: -17vw;
+      width: 620px;
+      height: 620px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(35, 174, 83, .16), transparent 68%);
+      content: '';
+      filter: blur(15px);
+    }
+
+    .scanline {
+      position: absolute;
+      left: -10%;
+      right: -10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(98, 255, 147, .55), transparent);
+      opacity: .5;
+      animation: sweep 7s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes sweep {
+      0% {
+        top: 6%;
+        opacity: 0;
+      }
+
+      8% {
+        opacity: .55;
+      }
+
+      50% {
+        opacity: .2;
+      }
+
+      92% {
+        opacity: .55;
+      }
+
+      100% {
+        top: 96%;
+        opacity: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .scanline,
+      .ribbon .dot,
+      .live-dot {
+        animation: none !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    .eyebrow {
+      display: inline-block;
+      color: var(--green);
+      font-family: 'Manrope', sans-serif;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .2em;
+      margin: 0 0 16px;
+    }
+
+    .hero-copy h1 {
+      max-width: 720px;
+      margin: 0 0 25px;
+      color: var(--white);
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(42px, 5.6vw, 76px);
+      line-height: 1.02;
+      letter-spacing: -.03em;
+    }
+
+    .hero-copy h1 em {
+      color: var(--green2);
+      font-style: normal;
+    }
+
+    .hero-text {
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 16.5px;
+      line-height: 1.8;
+      margin: 0 0 30px;
+    }
+
+    .principle-box {
+      max-width: 560px;
+      padding: 17px 20px;
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--green);
+      background: linear-gradient(100deg, rgba(98, 255, 147, .09), rgba(98, 255, 147, .01));
+      box-shadow: 0 0 35px rgba(98, 255, 147, .06);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .principle-box strong {
+      display: block;
+      color: var(--green2);
+      font-family: 'Manrope', sans-serif;
+      margin-bottom: 3px;
+    }
+
+    .principle-box span {
+      color: var(--muted);
+    }
+
+    .journey {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      max-width: 640px;
+      margin-top: 44px;
+      border: 1px solid var(--line);
+      background: var(--line);
+      gap: 1px;
+    }
+
+    .journey-step {
+      min-height: 108px;
+      padding: 16px;
+      background: rgba(11, 17, 13, .92);
+    }
+
+    .journey-step b {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--amber);
+      font-size: 10.5px;
+      letter-spacing: .06em;
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .journey-step strong {
+      display: block;
+      color: var(--white);
+      font-family: 'Manrope', sans-serif;
+      font-size: 13.5px;
+    }
+
+    .journey-step span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    /* ---------- Quick-access panel (replaces upload) ---------- */
+    .quick-panel {
+      position: relative;
+      padding: 32px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(19, 29, 22, .98), rgba(7, 11, 8, .98));
+      box-shadow: 0 22px 70px rgba(0, 0, 0, .42), 0 0 48px rgba(35, 174, 83, .09);
+      height: fit-content;
+    }
+
+    .quick-panel:before {
+      position: absolute;
+      top: 0;
+      right: 30px;
+      left: 30px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+      content: '';
+      box-shadow: 0 0 18px var(--green);
+    }
+
+    .quick-panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .quick-panel h2 {
+      margin: 4px 0 0;
+      color: var(--white);
+      font-family: 'Manrope', sans-serif;
+      font-size: 21px;
+      letter-spacing: -.01em;
+    }
+
+    .live-tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      color: var(--green2);
+      font-family: 'Manrope', sans-serif;
+      font-size: 9.5px;
+      letter-spacing: .08em;
+      font-weight: 700;
+      flex: none;
+    }
+
+    .live-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+
+    .quick-tiles {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .quick-tile {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 15px 16px;
+      border: 1px solid var(--line);
+      background: rgba(5, 8, 6, .5);
+      border-radius: 3px;
+      transition: border-color .15s ease, background .15s ease, transform .15s ease;
+    }
+
+    .quick-tile:hover {
+      border-color: var(--line-strong);
+      background: rgba(98, 255, 147, .06);
+      transform: translateX(2px);
+    }
+
+    .quick-tile .tile-icon {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      flex: none;
+      background: rgba(98, 255, 147, .1);
+      border: 1px solid var(--line);
+      color: var(--green);
+      font-size: 17px;
+    }
+
+    .quick-tile .tile-copy {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .quick-tile .tile-copy strong {
+      display: block;
+      color: var(--white);
+      font-family: 'Manrope', sans-serif;
+      font-size: 13.5px;
+    }
+
+    .quick-tile .tile-copy span {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 11.5px;
+    }
+
+    .quick-tile .tile-arrow {
+      color: var(--muted);
+      font-size: 15px;
+      flex: none;
+    }
+
+    .quick-tile:hover .tile-arrow {
+      color: var(--green);
+    }
+
+    .trust-line {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 22px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11.5px;
+      line-height: 1.6;
+    }
+
+    .trust-line .mark {
+      color: var(--amber);
+      flex: none;
+    }
+
+    /* ---------- Why us ---------- */
+    .section {
+      padding: 78px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-head {
+      max-width: 620px;
+      margin: 0 0 46px;
+    }
+
+    .section-head .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .section-head h2 {
+      margin: 0 0 12px;
+      color: var(--white);
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(28px, 3.2vw, 38px);
+      letter-spacing: -.02em;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      border: 1px solid var(--line);
+      background: var(--line);
+    }
+
+    .why-card {
+      padding: 30px 28px;
+      background: var(--panel2);
+    }
+
+    .why-card .why-icon {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--line);
+      color: var(--green);
+      font-size: 17px;
+      margin-bottom: 20px;
+    }
+
+    .why-card h3 {
+      margin: 0 0 10px;
+      color: var(--white);
+      font-family: 'Manrope', sans-serif;
+      font-size: 16px;
+    }
+
+    .why-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.7;
+    }
+
+    /* ---------- Stats strip ---------- */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .stat-cell {
+      padding: 26px 22px;
+      border-left: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(98, 255, 147, .04), transparent);
+    }
+
+    .stat-cell:first-child {
+      border-left: none;
+    }
+
+    .stat-cell .stat-num {
+      color: var(--green2);
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      letter-spacing: -.01em;
+    }
+
+    .stat-cell .stat-label {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 11.5px;
+      letter-spacing: .04em;
+      line-height: 1.5;
+    }
+
+    /* ---------- Services (mirrors nav) ---------- */
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .service-card {
+      display: flex;
+      flex-direction: column;
+      padding: 30px 28px 26px;
+      border: 1px solid var(--line);
+      background: var(--panel2);
+      transition: border-color .15s ease, transform .15s ease;
+    }
+
+    .service-card:hover {
+      border-color: var(--line-strong);
+      transform: translateY(-3px);
+    }
+
+    .service-card .service-num {
+      color: var(--amber);
+      font-family: 'Manrope', sans-serif;
+      font-size: 11px;
+      letter-spacing: .1em;
+      margin-bottom: 18px;
+    }
+
+    .service-card h3 {
+      margin: 0 0 10px;
+      color: var(--white);
+      font-family: 'Manrope', sans-serif;
+      font-size: 18px;
+    }
+
+    .service-card p {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .service-card .service-link {
+      color: var(--green);
+      font-family: 'Manrope', sans-serif;
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+
+    .service-card .service-link span {
+      transition: margin .15s ease;
+      display: inline-block;
+    }
+
+    .service-card:hover .service-link span {
+      margin-left: 4px;
+    }
+
+    /* ---------- Advisory note ---------- */
+    .advisory {
+      display: flex;
+      gap: 16px;
+      padding: 24px 26px;
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--amber);
+      background: linear-gradient(100deg, rgba(231, 200, 94, .07), transparent);
+    }
+
+    .advisory .mark {
+      color: var(--amber);
+      font-size: 20px;
+      flex: none;
+    }
+
+    .advisory strong {
+      display: block;
+      color: var(--white);
+      font-family: 'Manrope', sans-serif;
+      font-size: 13.5px;
+      margin-bottom: 5px;
+    }
+
+    .advisory span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    /* ---------- Footer ---------- */
+    .footer {
+      border-top: 1px solid var(--line);
+      background: var(--black);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 40px;
+      padding: 60px 0 40px;
+    }
+
+    .footer-brand .brand {
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .footer-brand p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+      max-width: 320px;
+      margin: 0;
+    }
+
+    .footer-col h4 {
+      margin: 0 0 16px;
+      color: var(--white);
+      font-family: 'Manrope', sans-serif;
+      font-size: 12px;
+      letter-spacing: .08em;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col a {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-col a:hover {
+      color: var(--green2);
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 22px 0 34px;
+      border-top: 1px solid var(--line);
+      color: #6d7e70;
+      font-size: 11.5px;
+      flex-wrap: wrap;
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 980px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+        padding: 55px 0 70px;
+      }
+
+      .journey {
+        max-width: none;
+      }
+
+      .why-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-strip {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stat-cell:nth-child(3) {
+        border-left: none;
+      }
+
+      .stat-cell:nth-child(odd) {
+        border-left: none;
+      }
+
+      .service-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .topbar {
+        padding: 0 5vw;
+        height: 66px;
+      }
+
+      .brand-tagline {
+        display: none;
+      }
+
+      .ribbon {
+        font-size: 10px;
+        padding: 7px 5vw;
+      }
+
+      .lang-select {
+        font-size: 0;
+        width: 38px;
+        padding: 8px;
+        background-position: center;
+      }
+
+      .login-btn {
+        padding: 8px 14px;
+        font-size: 11.5px;
+      }
+
+      .journey {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .quick-panel {
+        padding: 24px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        padding: 46px 0 30px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+
+  <style id="dronacharya-ai-help-style">
+    .dronacharya-ai-help {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 80;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px 10px 11px;
+      border: 1px solid rgba(94, 235, 138, .72);
+      border-radius: 4px;
+      background: rgba(13, 25, 16, .94);
+      color: #c8ffd6;
+      font: 700 11px/1.2 Manrope, Arial, sans-serif;
+      letter-spacing: .03em;
+      box-shadow: 0 0 0 1px rgba(94, 235, 138, .08), 0 12px 32px rgba(0, 0, 0, .42), 0 0 22px rgba(94, 235, 138, .12);
+      backdrop-filter: blur(14px);
+      cursor: pointer;
+      transition: transform .18s cubic-bezier(.23, 1, .32, 1), background .18s ease, box-shadow .18s ease
+    }
+
+    .dronacharya-ai-help:hover {
+      transform: translateY(-3px);
+      background: #14291a;
+      box-shadow: 0 18px 42px rgba(0, 0, 0, .46), 0 0 28px rgba(94, 235, 138, .22)
+    }
+
+    .dronacharya-ai-help:active {
+      transform: translateY(-1px) scale(.97)
+    }
+
+    .dronacharya-ai-help:focus-visible {
+      outline: 2px solid #5eeb8a;
+      outline-offset: 3px
+    }
+
+    .dronacharya-ai-help-mark {
+      display: grid;
+      place-items: center;
+      width: 25px;
+      height: 25px;
+      border: 1px solid rgba(231, 200, 94, .72);
+      color: #e7c85e;
+      font: 700 13px/1 'Playfair Display', Georgia, serif
+    }
+
+    .dronacharya-ai-help-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      text-align: left
+    }
+
+    .dronacharya-ai-help-copy strong {
+      color: #eef7f0;
+      font: 700 11px Manrope, Arial, sans-serif
+    }
+
+    .dronacharya-ai-help-copy span {
+      color: #8ea297;
+      font: 400 10px 'DM Sans', Arial, sans-serif
+    }
+
+    .dronacharya-ai-help-panel {
+      position: fixed;
+      right: 24px;
+      bottom: 78px;
+      z-index: 79;
+      width: min(290px, calc(100vw - 32px));
+      padding: 16px;
+      border: 1px solid rgba(112, 255, 150, .28);
+      background: rgba(13, 21, 16, .97);
+      color: #eef7f0;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .48);
+      backdrop-filter: blur(16px);
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity .18s ease, transform .18s cubic-bezier(.23, 1, .32, 1)
+    }
+
+    .dronacharya-ai-help-panel.is-open {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto
+    }
+
+    .dronacharya-ai-help-panel strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #c8ffd6;
+      font: 700 12px Manrope, Arial, sans-serif
+    }
+
+    .dronacharya-ai-help-panel p {
+      margin: 0;
+      color: #8ea297;
+      font: 400 11px/1.55 'DM Sans', Arial, sans-serif
+    }
+
+
+
+    @media(max-width:600px) {
+      .dronacharya-ai-help {
+        right: 16px;
+        bottom: 16px
+      }
+
+      .dronacharya-ai-help-panel {
+        right: 16px;
+        bottom: 70px
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+
+      .dronacharya-ai-help,
+      .dronacharya-ai-help-panel {
+        transition: none
+      }
+    }
+  </style>
+  <style id="background-video-style">
+    .background-video {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      background: #050806;
+      pointer-events: none;
+    }
+
+    .video-shade {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(5, 8, 6, .94) 0%, rgba(5, 8, 6, .74) 39%, rgba(5, 8, 6, .44) 100%),
+        linear-gradient(180deg, rgba(5, 8, 6, .72) 0%, rgba(5, 8, 6, .28) 38%, rgba(5, 8, 6, .82) 100%);
+    }
+
+    .video-vignette {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 28%, rgba(5, 8, 6, .46) 100%);
+    }
+
+    body>*:not(.background-video):not(.video-shade):not(.video-vignette):not(.dronacharya-ai-help):not(.dronacharya-ai-help-panel) {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-grid {
+      isolation: isolate;
+      min-height: 700px;
+    }
+
+    .hero-grid::before {
+      opacity: .42;
+    }
+
+    .quick-panel,
+    .section .quick-panel,
+    .why-card,
+    .service-card,
+    .advisory,
+    .stats-strip,
+    .principle-box {
+      background-color: rgba(8, 14, 10, .76);
+      backdrop-filter: blur(12px);
+    }
+
+    .quick-panel {
+      box-shadow: 0 24px 70px rgba(0, 0, 0, .38), 0 0 38px rgba(35, 174, 83, .09);
+    }
+
+    .footer {
+      background: rgba(5, 8, 6, .9);
+    }
+
+    @media (max-width: 980px) {
+      .video-shade {
+        background:
+          linear-gradient(180deg, rgba(5, 8, 6, .78) 0%, rgba(5, 8, 6, .55) 44%, rgba(5, 8, 6, .9) 100%),
+          linear-gradient(90deg, rgba(5, 8, 6, .5), rgba(5, 8, 6, .32));
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .background-video {
+        display: none;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-         <div class="ribbon">
-                  <span class="dot" aria-hidden="true"></span>
-                  <span>Advisory tool for field decisions &mdash; <strong>always confirm with your local Krishi Vigyan
-                                    Kendra or agriculture officer</strong> before acting on any recommendation.</span>
-         </div>
+  <!-- Put your video files in static/videos/ -->
+  <video class="background-video" autoplay muted loop playsinline preload="metadata"
+    poster="{{ url_for('static', filename='static/images/farm-back.webp') }}" aria-hidden="true">
+    <source src="{{ url_for('static', filename='static/videos/farm-back.mp4') }}" type="video/mp4">
+    <source src="{{ url_for('static', filename='static/videos/farm-back.webm') }}" type="video/webm">
+  </video>
+  <div class="video-shade" aria-hidden="true"></div>
+  <div class="video-vignette" aria-hidden="true"></div>
 
-         <header class="topbar">
-                  <a class="brand-mark" href="index.html">
-                           <span class="brand-glyph" aria-hidden="true">D</span>
-                           <span class="brand-text">
-                                    <span class="brand">DRONACHARYA</span>
-                                    <span class="brand-tagline">Field Intelligence Network</span>
-                           </span>
-                  </a>
+  <div class="ribbon">
+    <span class="dot" aria-hidden="true"></span>
+    <span>Advisory tool for field decisions &mdash; <strong>always confirm with your local Krishi Vigyan
+        Kendra or agriculture officer</strong> before acting on any recommendation.</span>
+  </div>
 
-                  <nav>
-                           <ul class="nav-links">
-                                    <li><a class="active" href="index.html">Home</a></li>
-                                    <li><a href="field_visit.html">Field Visit</a></li>
-                                    <li><a href="estimate_yield.html">Estimate Yield</a></li>
-                                    <li><a class="login-btn climate-market-link"
-                                                      href="climate.html">Climate &amp; Market</a>
-                                    </li>
-                                    <li><a href="store.html">Store</a></li>
-                           </ul>
-                  </nav>
+  <header class="topbar">
+    <a class="brand-mark" href="index.html">
+      <span class="brand-glyph" aria-hidden="true">D</span>
+      <span class="brand-text">
+        <span class="brand">DRONACHARYA</span>
+        <span class="brand-tagline">Field Intelligence Network</span>
+      </span>
+    </a>
 
-                  <div class="nav-controls">
-                           <select class="lang-select" aria-label="Select language">
-                                    <option value="en">English</option>
-                                    <option value="hi">हिंदी (Hindi)</option>
-                                    <option value="bn">বাংলা (Bengali)</option>
-                                    <option value="ta">தமிழ் (Tamil)</option>
-                                    <option value="te">తెలుగు (Telugu)</option>
-                                    <option value="mr">मराठी (Marathi)</option>
-                                    <option value="gu">ગુજરાતી (Gujarati)</option>
-                                    <option value="kn">ಕನ್ನಡ (Kannada)</option>
-                                    <option value="ml">മലയാളം (Malayalam)</option>
-                                    <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
-                                    <option value="or">ଓଡ଼ିଆ (Odia)</option>
-                                    <option value="as">অসমীয়া (Assamese)</option>
-                           </select>
-                           <a class="login-btn" href="login.html">Log in</a>
-                           <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
-                  </div>
-         </header>
+    <nav>
+      <ul class="nav-links">
+        <li><a class="active" href="index.html">Home</a></li>
+        <li><a href="field_visit.html">Field Visit</a></li>
+        <li><a href="estimate_yield.html">Estimate Yield</a></li>
+        <li><a class="login-btn climate-market-link" href="climate.html">Climate &amp; Market</a>
+        </li>
+        <li><a href="store.html">Store</a></li>
+      </ul>
+    </nav>
 
-         <main>
-                  <section class="page-shell hero-grid">
-                           <div class="scanline" aria-hidden="true"></div>
+    <div class="nav-controls">
+      <select class="lang-select" aria-label="Select language">
+        <option value="en">English</option>
+        <option value="hi">हिंदी (Hindi)</option>
+        <option value="bn">বাংলা (Bengali)</option>
+        <option value="ta">தமிழ் (Tamil)</option>
+        <option value="te">తెలుగు (Telugu)</option>
+        <option value="mr">मराठी (Marathi)</option>
+        <option value="gu">ગુજરાતી (Gujarati)</option>
+        <option value="kn">ಕನ್ನಡ (Kannada)</option>
+        <option value="ml">മലയാളം (Malayalam)</option>
+        <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+        <option value="or">ଓଡ଼ିଆ (Odia)</option>
+        <option value="as">অসমীয়া (Assamese)</option>
+      </select>
+      <a class="login-btn" href="login.html">Log in</a>
+      <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
+    </div>
+  </header>
 
-                           <div class="hero-copy">
-                                    <p class="eyebrow">AGRICULTURE PREDICTIVE INTELLIGENCE</p>
-                                    <h1>Read the field before you <em>act on it.</em></h1>
-                                    <p class="hero-text">DRONACHARYA turns rainfall, soil moisture, temperature,
-                                             irrigation
-                                             and past yield records from your region into a clear, explainable outlook
-                                             &mdash; so the next decision on your field is an informed one.</p>
+  <main>
+    <section class="page-shell hero-grid">
+      <div class="scanline" aria-hidden="true"></div>
 
-                                    <div class="principle-box">
-                                             <strong>Decision support, not decision replacement.</strong>
-                                             <span>DRONACHARYA explains patterns, uncertainty and options while the
-                                                      farmer or planner remains in control.</span>
-                                    </div>
+      <div class="hero-copy">
+        <p class="eyebrow">AGRICULTURE PREDICTIVE INTELLIGENCE</p>
+        <h1>Read the field before you <em>act on it.</em></h1>
+        <p class="hero-text">DRONACHARYA turns rainfall, soil moisture, temperature,
+          irrigation
+          and past yield records from your region into a clear, explainable outlook
+          &mdash; so the next decision on your field is an informed one.</p>
 
-                                    <div class="journey" aria-label="How DRONACHARYA is used?">
-                                             <div class="journey-step"><b>STEP 01</b><strong>Field
-                                                               Visit</strong><span>Log soil, crop stage and conditions
-                                                               on-site</span></div>
-                                             <div class="journey-step"><b>STEP
-                                                               02</b><strong>Verify</strong><span>Cross-check against
-                                                               regional weather and history</span></div>
-                                             <div class="journey-step"><b>STEP 03</b><strong>Estimate
-                                                               Yield</strong><span>See a range, not a guess, with
-                                                               confidence noted</span></div>
-                                             <div class="journey-step"><b>STEP
-                                                               04</b><strong>Decide</strong><span>Compare options, then
-                                                               plan inputs via the Store</span></div>
-                                    </div>
-                           </div>
+        <div class="principle-box">
+          <strong>Decision support, not decision replacement.</strong>
+          <span>DRONACHARYA explains patterns, uncertainty and options while the
+            farmer or planner remains in control.</span>
+        </div>
 
-                           <aside class="quick-panel">
-                                    <div class="quick-panel-head">
-                                             <div>
-                                                      <p class="eyebrow" style="margin-bottom:6px;">START HERE</p>
-                                                      <h2>Where do you want to begin?</h2>
-                                             </div>
-                                             <span class="live-tag"><span class="live-dot"
-                                                               aria-hidden="true"></span>LIVE FEED</span>
-                                    </div>
+        <div class="journey" aria-label="How DRONACHARYA is used?">
+          <div class="journey-step"><b>STEP 01</b><strong>Field
+              Visit</strong><span>Log soil, crop stage and conditions
+              on-site</span></div>
+          <div class="journey-step"><b>STEP
+              02</b><strong>Verify</strong><span>Cross-check against
+              regional weather and history</span></div>
+          <div class="journey-step"><b>STEP 03</b><strong>Estimate
+              Yield</strong><span>See a range, not a guess, with
+              confidence noted</span></div>
+          <div class="journey-step"><b>STEP
+              04</b><strong>Decide</strong><span>Compare options, then
+              plan inputs via the Store</span></div>
+        </div>
+      </div>
 
-                                    <div class="quick-tiles">
-                                             <a class="quick-tile" href="field_visit.html">
-                                                      <span class="tile-icon" aria-hidden="true">&#128205;</span>
-                                                      <span class="tile-copy">
-                                                               <strong>Log a Field Visit</strong>
-                                                               <span>Record soil, crop stage and site conditions</span>
-                                                      </span>
-                                                      <span class="tile-arrow" aria-hidden="true">&rarr;</span>
-                                             </a>
-                                             <a class="quick-tile" href="estimate_yield.html">
-                                                      <span class="tile-icon" aria-hidden="true">&#128200;</span>
-                                                      <span class="tile-copy">
-                                                               <strong>Estimate Yield</strong>
-                                                               <span>Get a confidence-ranged harvest outlook</span>
-                                                      </span>
-                                                      <span class="tile-arrow" aria-hidden="true">&rarr;</span>
-                                             </a>
-                                             <a class="quick-tile" href="store.html">
-                                                      <span class="tile-icon" aria-hidden="true">&#127974;</span>
-                                                      <span class="tile-copy">
-                                                               <strong>Visit the Store</strong>
-                                                               <span>Source seeds, inputs and equipment nearby</span>
-                                                      </span>
-                                                      <span class="tile-arrow" aria-hidden="true">&rarr;</span>
-                                             </a>
-                                    </div>
+      <aside class="quick-panel">
+        <div class="quick-panel-head">
+          <div>
+            <p class="eyebrow" style="margin-bottom:6px;">START HERE</p>
+            <h2>Where do you want to begin?</h2>
+          </div>
+          <span class="live-tag"><span class="live-dot" aria-hidden="true"></span>LIVE FEED</span>
+        </div>
 
-                                    <div class="trust-line">
-                                             <span class="mark" aria-hidden="true">&#10003;</span>
-                                             <span>Built with agricultural extension officers across multiple districts.
-                                                      Available in 12 Indian languages and designed to work on
-                                                      low-bandwidth
-                                                      connections.</span>
-                                    </div>
-                           </aside>
-                  </section>
-                  <section class="section" aria-labelledby="dataset-upload-title">
-                           <div class="page-shell">
-                                    <div class="quick-panel">
-                                             <p class="eyebrow">DATA WORKSPACE</p>
-                                             <h2 id="dataset-upload-title">Analyze a historical CSV</h2>
-                                             <p class="hero-text">Upload a small historical dataset to generate a
-                                                      data-quality report,
-                                                      trend baseline, and recommendations.</p>
+        <div class="quick-tiles">
+          <a class="quick-tile" href="field_visit.html">
+            <span class="tile-icon" aria-hidden="true">&#128205;</span>
+            <span class="tile-copy">
+              <strong>Log a Field Visit</strong>
+              <span>Record soil, crop stage and site conditions</span>
+            </span>
+            <span class="tile-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          <a class="quick-tile" href="estimate_yield.html">
+            <span class="tile-icon" aria-hidden="true">&#128200;</span>
+            <span class="tile-copy">
+              <strong>Estimate Yield</strong>
+              <span>Get a confidence-ranged harvest outlook</span>
+            </span>
+            <span class="tile-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          <a class="quick-tile" href="store.html">
+            <span class="tile-icon" aria-hidden="true">&#127974;</span>
+            <span class="tile-copy">
+              <strong>Visit the Store</strong>
+              <span>Source seeds, inputs and equipment nearby</span>
+            </span>
+            <span class="tile-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
 
-                                             <form id="uploadForm" enctype="multipart/form-data">
-                                                      <label for="dataset">CSV file</label>
-                                                      <input id="dataset" name="dataset" type="file"
-                                                               accept=".csv,text/csv" required>
-                                                      <span id="fileLabel">Choose a CSV file</span>
+        <div class="trust-line">
+          <span class="mark" aria-hidden="true">&#10003;</span>
+          <span>Built with agricultural extension officers across multiple districts.
+            Available in 12 Indian languages and designed to work on
+            low-bandwidth
+            connections.</span>
+        </div>
+      </aside>
+    </section>
+    <section class="section" aria-labelledby="dataset-upload-title">
+      <div class="page-shell">
+        <div class="quick-panel">
+          <p class="eyebrow">DATA WORKSPACE</p>
+          <h2 id="dataset-upload-title">Analyze a historical CSV</h2>
+          <p class="hero-text">Upload a small historical dataset to generate a
+            data-quality report,
+            trend baseline, and recommendations.</p>
 
-                                                      <label for="target_column">Target column (optional)</label>
-                                                      <input id="target_column" name="target_column" type="text"
-                                                               placeholder="e.g. yield">
+          <form id="uploadForm" enctype="multipart/form-data">
+            <label for="dataset">CSV file</label>
+            <input id="dataset" name="dataset" type="file" accept=".csv,text/csv" required>
+            <span id="fileLabel">Choose a CSV file</span>
 
-                                                      <button id="uploadButton" type="submit">Analyze dataset</button>
-                                                      <p id="uploadStatus" class="status-message" role="status"
-                                                               aria-live="polite"></p>
-                                             </form>
-                                    </div>
-                           </div>
-                  </section>
-                  <section class="section">
-                           <div class="page-shell">
-                                    <div class="section-head">
-                                             <p class="eyebrow">WHY DRONACHARYA?</p>
-                                             <h2>Built for the field, not the spreadsheet.</h2>
-                                             <p>Most tools ask farmers to adapt to the software. DRONACHARYA is built
-                                                      around how field decisions actually get made &mdash; on-site,
-                                                      under
-                                                      time pressure, with incomplete information.</p>
-                                    </div>
-                                    <div class="why-grid">
-                                             <div class="why-card">
-                                                      <div class="why-icon" aria-hidden="true">&#127760;</div>
-                                                      <h3>Hyperlocal, not generic</h3>
-                                                      <p>Forecasts are grounded in your district's rainfall, soil and
-                                                               cropping history &mdash; not a national average that
-                                                               doesn't reflect your field.</p>
-                                             </div>
-                                             <div class="why-card">
-                                                      <div class="why-icon" aria-hidden="true">&#128172;</div>
-                                                      <h3>Speaks your language</h3>
-                                                      <p>Every outlook, alert and recommendation is available in your
-                                                               preferred language, read aloud where literacy is a
-                                                               barrier.</p>
-                                             </div>
-                                             <div class="why-card">
-                                                      <div class="why-icon" aria-hidden="true">&#9878;</div>
-                                                      <h3>Transparent, always</h3>
-                                                      <p>Every estimate comes with its confidence range and the factors
-                                                               behind it, so you can judge the advice rather than just
-                                                               trust it.</p>
-                                             </div>
-                                    </div>
-                           </div>
-                  </section>
+            <label for="target_column">Target column (optional)</label>
+            <input id="target_column" name="target_column" type="text" placeholder="e.g. yield">
 
-                  <section class="section">
-                           <div class="page-shell">
-                                    <div class="stats-strip">
-                                             <div class="stat-cell">
-                                                      <div class="stat-num">48</div>
-                                                      <div class="stat-label">District agriculture offices onboarded
-                                                      </div>
-                                             </div>
-                                             <div class="stat-cell">
-                                                      <div class="stat-num">12</div>
-                                                      <div class="stat-label">Indian languages supported</div>
-                                             </div>
-                                             <div class="stat-cell">
-                                                      <div class="stat-num">3.2M+</div>
-                                                      <div class="stat-label">Field records analysed to date</div>
-                                             </div>
-                                             <div class="stat-cell">
-                                                      <div class="stat-num">24/7</div>
-                                                      <div class="stat-label">Offline-friendly field logging</div>
-                                             </div>
-                                    </div>
-                           </div>
-                  </section>
+            <button id="uploadButton" type="submit">Analyze dataset</button>
+            <p id="uploadStatus" class="status-message" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="page-shell">
+        <div class="section-head">
+          <p class="eyebrow">WHY DRONACHARYA?</p>
+          <h2>Built for the field, not the spreadsheet.</h2>
+          <p>Most tools ask farmers to adapt to the software. DRONACHARYA is built
+            around how field decisions actually get made &mdash; on-site,
+            under
+            time pressure, with incomplete information.</p>
+        </div>
+        <div class="why-grid">
+          <div class="why-card">
+            <div class="why-icon" aria-hidden="true">&#127760;</div>
+            <h3>Hyperlocal, not generic</h3>
+            <p>Forecasts are grounded in your district's rainfall, soil and
+              cropping history &mdash; not a national average that
+              doesn't reflect your field.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon" aria-hidden="true">&#128172;</div>
+            <h3>Speaks your language</h3>
+            <p>Every outlook, alert and recommendation is available in your
+              preferred language, read aloud where literacy is a
+              barrier.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon" aria-hidden="true">&#9878;</div>
+            <h3>Transparent, always</h3>
+            <p>Every estimate comes with its confidence range and the factors
+              behind it, so you can judge the advice rather than just
+              trust it.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-                  <section class="section">
-                           <div class="page-shell">
-                                    <div class="section-head">
-                                             <p class="eyebrow">WHAT YOU CAN DO HERE</p>
-                                             <h2>Three ways to get started.</h2>
-                                    </div>
-                                    <div class="service-grid">
-                                             <div class="service-card">
-                                                      <div class="service-num">FIELD VISIT</div>
-                                                      <h3>Log what you see on-site</h3>
-                                                      <p>Record soil condition, crop stage, irrigation and any visible
-                                                               stress directly from your field, even without a network
-                                                               connection.</p>
-                                                      <a class="service-link" href="field_visit.html">Start
-                                                               a field visit <span>&rarr;</span></a>
-                                             </div>
-                                             <div class="service-card">
-                                                      <div class="service-num">ESTIMATE YIELD</div>
-                                                      <h3>See a confidence-ranged outlook</h3>
-                                                      <p>Combine your field visit data with regional weather and
-                                                               historical yield patterns to get a harvest range, not a
-                                                               single number.</p>
-                                                      <a class="service-link" href="estimate_yield.html">Estimate my yield
-                                                               <span>&rarr;</span></a>
-                                             </div>
-                                             <div class="service-card">
-                                                      <div class="service-num">STORE</div>
-                                                      <h3>Plan your next input</h3>
-                                                      <p>Browse seeds, fertiliser and equipment matched to your crop
-                                                               and outlook, sourced from verified sellers near you.</p>
-                                                      <a class="service-link" href="store.html">Visit the
-                                                               store <span>&rarr;</span></a>
-                                             </div>
-                                    </div>
-                           </div>
-                  </section>
+    <section class="section">
+      <div class="page-shell">
+        <div class="stats-strip">
+          <div class="stat-cell">
+            <div class="stat-num">48</div>
+            <div class="stat-label">District agriculture offices onboarded
+            </div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">12</div>
+            <div class="stat-label">Indian languages supported</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">3.2M+</div>
+            <div class="stat-label">Field records analysed to date</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">24/7</div>
+            <div class="stat-label">Offline-friendly field logging</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-                  <section class="section">
-                           <div class="page-shell">
-                                    <div class="advisory">
-                                             <span class="mark" aria-hidden="true">&#9432;</span>
-                                             <span>
-                                                      <strong>Advisory disclaimer</strong>
-                                                      <span>DRONACHARYA provides data-driven guidance to support, not
-                                                               replace, the judgement of the farmer, agronomist or local
-                                                               agriculture officer. Weather and yield conditions can
-                                                               change
-                                                               quickly &mdash; always verify significant decisions on
-                                                               the
-                                                               ground.</span>
-                                             </span>
-                                    </div>
-                           </div>
-                  </section>
-         </main>
+    <section class="section">
+      <div class="page-shell">
+        <div class="section-head">
+          <p class="eyebrow">WHAT YOU CAN DO HERE</p>
+          <h2>Three ways to get started.</h2>
+        </div>
+        <div class="service-grid">
+          <div class="service-card">
+            <div class="service-num">FIELD VISIT</div>
+            <h3>Log what you see on-site</h3>
+            <p>Record soil condition, crop stage, irrigation and any visible
+              stress directly from your field, even without a network
+              connection.</p>
+            <a class="service-link" href="field_visit.html">Start
+              a field visit <span>&rarr;</span></a>
+          </div>
+          <div class="service-card">
+            <div class="service-num">ESTIMATE YIELD</div>
+            <h3>See a confidence-ranged outlook</h3>
+            <p>Combine your field visit data with regional weather and
+              historical yield patterns to get a harvest range, not a
+              single number.</p>
+            <a class="service-link" href="estimate_yield.html">Estimate my yield
+              <span>&rarr;</span></a>
+          </div>
+          <div class="service-card">
+            <div class="service-num">STORE</div>
+            <h3>Plan your next input</h3>
+            <p>Browse seeds, fertiliser and equipment matched to your crop
+              and outlook, sourced from verified sellers near you.</p>
+            <a class="service-link" href="store.html">Visit the
+              store <span>&rarr;</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-         <footer class="footer">
-                  <div class="page-shell footer-grid">
-                           <div class="footer-brand">
-                                    <span class="brand">DRONACHARYA</span>
-                                    <p>An agricultural extension initiative bringing field-level weather, soil and
-                                             yield intelligence to farmers and planners across India.</p>
-                           </div>
-                           <div class="footer-col">
-                                    <h4>PLATFORM</h4>
-                                    <ul>
-                                             <li><a href="field_visit.html">Field Visit</a></li>
-                                             <li><a href="estimate_yield.html">Estimate Yield</a></li>
-                                             <li><a href="store.html">Store</a></li>
-                                    </ul>
-                           </div>
-                           <div class="footer-col">
-                                    <h4>SUPPORT</h4>
-                                    <ul>
-                                             <li><a href="#">Help Centre</a></li>
-                                             <li><a href="#">Contact an Officer</a></li>
-                                             <li><a href="#">Grievance Redressal</a></li>
-                                    </ul>
-                           </div>
-                           <div class="footer-col">
-                                    <h4>LEGAL</h4>
-                                    <ul>
-                                             <li><a href="#">Terms of Use</a></li>
-                                             <li><a href="#">Privacy Policy</a></li>
-                                             <li><a href="#">Accessibility</a></li>
-                                    </ul>
-                           </div>
-                  </div>
-                  <div class="page-shell footer-bottom">
-                           <span>&copy; 2026 DRONACHARYA &middot; Better cultivation begins with better signals.</span>
-                           <span>Content available in 12 Indian languages!</span>
-                  </div>
-         </footer>
+    <section class="section">
+      <div class="page-shell">
+        <div class="advisory">
+          <span class="mark" aria-hidden="true">&#9432;</span>
+          <span>
+            <strong>Advisory disclaimer</strong>
+            <span>DRONACHARYA provides data-driven guidance to support, not
+              replace, the judgement of the farmer, agronomist or local
+              agriculture officer. Weather and yield conditions can
+              change
+              quickly &mdash; always verify significant decisions on
+              the
+              ground.</span>
+          </span>
+        </div>
+      </div>
+    </section>
+  </main>
 
-         <script>
-                  document.querySelectorAll('.nav-links a').forEach(function (link) {
-                           link.addEventListener('click', function () {
-                                    document.querySelectorAll('.nav-links a').forEach(function (l) { l.classList.remove('active'); });
-                                    link.classList.add('active');
-                           });
-                  });
+  <footer class="footer">
+    <div class="page-shell footer-grid">
+      <div class="footer-brand">
+        <span class="brand">DRONACHARYA</span>
+        <p>An agricultural extension initiative bringing field-level weather, soil and
+          yield intelligence to farmers and planners across India.</p>
+      </div>
+      <div class="footer-col">
+        <h4>PLATFORM</h4>
+        <ul>
+          <li><a href="field_visit.html">Field Visit</a></li>
+          <li><a href="estimate_yield.html">Estimate Yield</a></li>
+          <li><a href="store.html">Store</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>SUPPORT</h4>
+        <ul>
+          <li><a href="#">Help Centre</a></li>
+          <li><a href="#">Contact an Officer</a></li>
+          <li><a href="#">Grievance Redressal</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>LEGAL</h4>
+        <ul>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Accessibility</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="page-shell footer-bottom">
+      <span>&copy; 2026 DRONACHARYA &middot; Better cultivation begins with better signals.</span>
+      <span>Content available in 12 Indian languages!</span>
+    </div>
+  </footer>
 
-                  var toggle = document.querySelector('.nav-toggle');
-                  var links = document.querySelector('.nav-links');
-                  if (toggle) {
-                           toggle.addEventListener('click', function () {
-                                    var open = links.style.display === 'flex';
-                                    links.style.display = open ? 'none' : 'flex';
-                                    links.style.cssText += 'position:absolute;top:76px;left:0;right:0;flex-direction:column;align-items:stretch;background:rgba(5,8,6,.98);border-bottom:1px solid rgba(112,255,150,.16);padding:10px 6vw;gap:2px;';
-                           });
-                  }
-         </script>
+  <script>
+    document.querySelectorAll('.nav-links a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        document.querySelectorAll('.nav-links a').forEach(function (l) { l.classList.remove('active'); });
+        link.classList.add('active');
+      });
+    });
+
+    var toggle = document.querySelector('.nav-toggle');
+    var links = document.querySelector('.nav-links');
+    if (toggle) {
+      toggle.addEventListener('click', function () {
+        var open = links.style.display === 'flex';
+        links.style.display = open ? 'none' : 'flex';
+        links.style.cssText += 'position:absolute;top:76px;left:0;right:0;flex-direction:column;align-items:stretch;background:rgba(5,8,6,.98);border-bottom:1px solid rgba(112,255,150,.16);padding:10px 6vw;gap:2px;';
+      });
+    }
+  </script>
 
 
-         <button class="dronacharya-ai-help" id="dronacharyaAiHelpButton" type="button" aria-expanded="false"
-                  aria-controls="dronacharyaAiHelpPanel" aria-label="Need Help? Ask Dronacharya A.I.">
-                  <span class="dronacharya-ai-help-mark" aria-hidden="true">?</span>
-                  <span class="dronacharya-ai-help-copy"><strong>Ask Dronacharya A.I.</strong><span>Need
-                                    Help?</span></span>
-         </button>
-         <script>
-                  document
-                           .getElementById('dronacharyaAiHelpButton')
-                           .addEventListener('click', function () {
-                                    window.location.href = 'assistant.html';
-                           });
-         </script>
-         <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  <button class="dronacharya-ai-help" id="dronacharyaAiHelpButton" type="button" aria-expanded="false"
+    aria-controls="dronacharyaAiHelpPanel" aria-label="Need Help? Ask Dronacharya A.I.">
+    <span class="dronacharya-ai-help-mark" aria-hidden="true">?</span>
+    <span class="dronacharya-ai-help-copy"><strong>Ask Dronacharya A.I.</strong><span>Need
+        Help?</span></span>
+  </button>
+  <script>
+    document
+      .getElementById('dronacharyaAiHelpButton')
+      .addEventListener('click', function () {
+        window.location.href = 'assistant.html';
+      });
+  </script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 
 </html>

@@ -346,7 +346,11 @@ code {
          gap: 30px;
          margin-bottom: 38px;
 }
-
+.farm-image-section {
+         background-image: url("../images/crop-field.webp");
+         background-size: cover;
+         background-position: center;
+}
 .dashboard-heading h1 {
          margin-bottom: 8px;
          font-size: clamp(36px, 5vw, 58px);
